@@ -1,0 +1,3 @@
+[submodule "ZBAnt/Submodules/AFNetworking"]
+	path = ZBAnt/Submodules/AFNetworking
+	url = https://github.com/AFNetworking/AFNetworking.git
