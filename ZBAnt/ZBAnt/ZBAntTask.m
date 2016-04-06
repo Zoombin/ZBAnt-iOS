@@ -14,15 +14,10 @@
 	self = [super init];
 	if (self) {
 		_ID = dictionary[@"id"];
-		_error = dictionary[@"error"];
 		_URLString = dictionary[@"url"];
 		_number = dictionary[@"number"];
 	}
 	return self;
 }
-
-//- (NSString *)description {
-//	return
-//}
 
 @end

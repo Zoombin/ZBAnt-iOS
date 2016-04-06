@@ -20,8 +20,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
-	_ant = [[ZBAnt alloc] init];
-	[_ant start];
 	return YES;
 }
 
@@ -40,6 +38,8 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+	_ant = [[ZBAnt alloc] init];
+	[_ant start];
 	// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
