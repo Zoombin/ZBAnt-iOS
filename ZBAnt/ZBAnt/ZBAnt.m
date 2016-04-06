@@ -8,10 +8,9 @@
 
 #import "ZBAnt.h"
 #import "ZBAntTask.h"
-#import "AFNetworking.h"
 
-NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
-//NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
+//NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
+NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 
 @interface ZBAnt () <UIWebViewDelegate>
 
@@ -23,30 +22,17 @@ NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
 
 @implementation ZBAnt
 
-- (AFHTTPSessionManager *)manager {
-	static AFHTTPSessionManager *_manager = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		_manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HOME_URL_STRING]];
-		_manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
-	});
-	return _manager;
-}
-
-- (UIWebView *)webView {
-	if (!_webView) {
-		_webView = [[UIWebView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-		_webView.delegate = self;
-	}
-	return _webView;
-}
-
 - (void)fetchTaskWithBlock:(void (^)(id responseObject, NSError *error))block {
-	[[self manager] GET:@"gettask" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-		if (block) block(responseObject, nil);
-	} failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-		if (block) block(nil, error);
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, @"gettask"]];
+	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		if (!error) {
+			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+			if (block) block(json, nil);
+		} else {
+			if (block) block(nil, error);
+		}
 	}];
+	[getTask resume];
 }
 
 - (void)submitTask:(NSString *)string withBlock:(void (^)(id responseObject, NSError *error))block {
@@ -59,21 +45,37 @@ NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
 	parameters[@"url"] = _task.URLString;
 	parameters[@"id"] = _task.ID;
 	
-	[[self manager] POST:@"dopostdatasingle" parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-		if (block) block(responseObject, nil);
-	} failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-		if (block) block(nil, error);
-	}];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, @"dopostdatasingle"]];
+	NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+	NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+	request.HTTPMethod = @"POST";
+	NSError *error = nil;
+	NSData *data = [NSJSONSerialization dataWithJSONObject:parameters options:kNilOptions error:&error];
+	if (!error) {
+		NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData *data, NSURLResponse *response,NSError *error) {
+			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+			if (!error) {
+				if (block) block(json, nil);
+			} else {
+				if (block) block(nil, error);
+			}
+		}];
+		[uploadTask resume];
+	}
 }
 
 - (void)start {
+	_webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+	_webView.delegate = self;
+	
 	[self fetchTaskWithBlock:^(id responseObject, NSError *error) {
 		if (!error) {
 			NSLog(@"response: %@", responseObject);
 			NSNumber *error = responseObject[@"error"];
 			if (error.integerValue == 0) {
 				_task = [[ZBAntTask alloc] initWithDictionary:responseObject[@"data"]];
-				[[self webView] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.URLString]]];
+				[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.URLString]]];
 			} else {
 				NSLog(@"task error: %@", responseObject[@"msg"]);
 			}
@@ -85,19 +87,19 @@ NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
 	NSLog(@"autoClick");
 	
 	NSString *titleCode = @"document.getElementById('sogou_vr_11002601_title_0').innerHTML";
-	_task.resultTitle = [[self webView] stringByEvaluatingJavaScriptFromString:titleCode];
+	_task.resultTitle = [_webView stringByEvaluatingJavaScriptFromString:titleCode];
 	
 	NSString *summaryCode = @"document.getElementById('sogou_vr_11002601_summary_0').innerHTML";
-	_task.resultSummary = [[self webView] stringByEvaluatingJavaScriptFromString:summaryCode];
+	_task.resultSummary = [_webView stringByEvaluatingJavaScriptFromString:summaryCode];
 	
 	NSString *timestampCode = @"document.getElementById('sogou_vr_11002601_box_0').getElementsByTagName('div')[1].getElementsByTagName('div')[0].getAttribute('t')";
-	_task.resultTimestamp = [[self webView] stringByEvaluatingJavaScriptFromString:timestampCode];
+	_task.resultTimestamp = [_webView stringByEvaluatingJavaScriptFromString:timestampCode];
 
 	NSString *imageCode = @"document.getElementById('sogou_vr_11002601_img_0').getElementsByTagName('img')[0].src";
-	_task.resultImage = [[self webView] stringByEvaluatingJavaScriptFromString:imageCode];
+	_task.resultImage = [_webView stringByEvaluatingJavaScriptFromString:imageCode];
 	
 	NSString *clickCode = @"document.getElementById('sogou_vr_11002601_title_0').click()";
-	[[self webView] stringByEvaluatingJavaScriptFromString:clickCode];
+	[_webView stringByEvaluatingJavaScriptFromString:clickCode];
 }
 
 #pragma mark - UIWebViewDelegate
@@ -117,13 +119,13 @@ NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
 		NSLog(@"title: %@, summary: %@, image: %@, timestamp: %@, url: %@", _task.resultTitle, _task.resultSummary, _task.resultImage, _task.resultTimestamp, _task.resultURLString);
 		
 		if (_task.resultURLString.length) {
-			[self submitTask:webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
-				if (error) {
-					NSLog(@"submit task error: %@", error);
-				} else {
-					NSLog(@"submit success");
-				}
-			}];
+//			[self submitTask:webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
+//				if (error) {
+//					NSLog(@"submit task error: %@", error);
+//				} else {
+//					NSLog(@"submit success");
+//				}
+//			}];
 		}
 	}
 }
