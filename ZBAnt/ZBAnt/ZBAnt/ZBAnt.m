@@ -97,8 +97,18 @@ NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 	NSString *imageCode = @"document.getElementById('sogou_vr_11002601_img_0').getElementsByTagName('img')[0].src";
 	_task.resultImage = [_webView stringByEvaluatingJavaScriptFromString:imageCode];
 	
-	NSString *clickCode = @"document.getElementById('sogou_vr_11002601_title_0').click()";
-	[_webView stringByEvaluatingJavaScriptFromString:clickCode];
+	if (!titleCode.length && _task.ID && _task.URLString) {//如果获取失败也需要返回给服务器
+		[self submitTask:_webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
+			if (error) {
+				NSLog(@"submit task error: %@", error);
+			} else {
+				NSLog(@"submit success");
+			}
+		}];
+	} else {
+		NSString *clickCode = @"document.getElementById('sogou_vr_11002601_title_0').click()";
+		[_webView stringByEvaluatingJavaScriptFromString:clickCode];
+	}
 }
 
 #pragma mark - UIWebViewDelegate
@@ -118,7 +128,7 @@ NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 		NSLog(@"title: %@, summary: %@, image: %@, timestamp: %@, url: %@", _task.resultTitle, _task.resultSummary, _task.resultImage, _task.resultTimestamp, _task.resultURLString);
 		
 		if (_task.ID && _task.URLString) {
-			[self submitTask:webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
+			[self submitTask:_webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
 				if (error) {
 					NSLog(@"submit task error: %@", error);
 				} else {
