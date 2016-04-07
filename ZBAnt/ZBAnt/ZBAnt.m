@@ -9,8 +9,8 @@
 #import "ZBAnt.h"
 #import "ZBAntTask.h"
 
-//NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
-NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
+NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
+//NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 
 @interface ZBAnt () <UIWebViewDelegate>
 
@@ -46,23 +46,22 @@ NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 	parameters[@"id"] = _task.ID;
 	
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, @"dopostdatasingle"]];
-	NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-	NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 	request.HTTPMethod = @"POST";
-	NSError *error = nil;
-	NSData *data = [NSJSONSerialization dataWithJSONObject:parameters options:kNilOptions error:&error];
-	if (!error) {
-		NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData *data, NSURLResponse *response,NSError *error) {
+	[request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+	[request setHTTPBody:postData];
+
+	NSURLSessionDataTask *postTask = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-			if (!error) {
-				if (block) block(json, nil);
-			} else {
-				if (block) block(nil, error);
-			}
-		}];
-		[uploadTask resume];
-	}
+			if (block) block(json, nil);
+		} else {
+			if (block) block(nil, error);
+		}
+	}];
+	[postTask resume];
 }
 
 - (void)start {
@@ -118,14 +117,14 @@ NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 		
 		NSLog(@"title: %@, summary: %@, image: %@, timestamp: %@, url: %@", _task.resultTitle, _task.resultSummary, _task.resultImage, _task.resultTimestamp, _task.resultURLString);
 		
-		if (_task.resultURLString.length) {
-//			[self submitTask:webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
-//				if (error) {
-//					NSLog(@"submit task error: %@", error);
-//				} else {
-//					NSLog(@"submit success");
-//				}
-//			}];
+		if (_task.ID && _task.URLString) {
+			[self submitTask:webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
+				if (error) {
+					NSLog(@"submit task error: %@", error);
+				} else {
+					NSLog(@"submit success");
+				}
+			}];
 		}
 	}
 }
