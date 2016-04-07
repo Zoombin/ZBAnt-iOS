@@ -74,7 +74,9 @@ NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 			NSNumber *error = responseObject[@"error"];
 			if (error.integerValue == 0) {
 				_task = [[ZBAntTask alloc] initWithDictionary:responseObject[@"data"]];
-				[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.URLString]]];
+				if (_task.ID && _task.URLString) {
+					[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.URLString]]];
+				}
 			} else {
 				NSLog(@"task error: %@", responseObject[@"msg"]);
 			}
@@ -97,7 +99,7 @@ NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 	NSString *imageCode = @"document.getElementById('sogou_vr_11002601_img_0').getElementsByTagName('img')[0].src";
 	_task.resultImage = [_webView stringByEvaluatingJavaScriptFromString:imageCode];
 	
-	if (!titleCode.length && _task.ID && _task.URLString) {//如果获取失败也需要返回给服务器
+	if (!_task.resultTitle.length) {//如果获取失败也需要返回给服务器
 		[self submitTask:_webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
 			if (error) {
 				NSLog(@"submit task error: %@", error);
@@ -127,15 +129,13 @@ NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 		
 		NSLog(@"title: %@, summary: %@, image: %@, timestamp: %@, url: %@", _task.resultTitle, _task.resultSummary, _task.resultImage, _task.resultTimestamp, _task.resultURLString);
 		
-		if (_task.ID && _task.URLString) {
-			[self submitTask:_webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
-				if (error) {
-					NSLog(@"submit task error: %@", error);
-				} else {
-					NSLog(@"submit success");
-				}
-			}];
-		}
+		[self submitTask:_webView.request.URL.absoluteString withBlock:^(id responseObject, NSError *error) {
+			if (error) {
+				NSLog(@"submit task error: %@", error);
+			} else {
+				NSLog(@"submit success");
+			}
+		}];
 	}
 }
 

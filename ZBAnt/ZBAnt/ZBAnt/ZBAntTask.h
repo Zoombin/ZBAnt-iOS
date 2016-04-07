@@ -10,7 +10,7 @@
 
 @interface ZBAntTask : NSObject
 
-@property (nonatomic, strong) NSNumber *ID;
+@property (nonatomic, strong) NSString *ID;
 @property (nonatomic, strong) NSString *URLString;
 @property (nonatomic, strong) NSString *number;
 #pragma mark - result data
