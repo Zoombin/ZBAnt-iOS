@@ -9,8 +9,8 @@
 #import "ZBAnt.h"
 #import "ZBAntTask.h"
 
-NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
-//NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
+//NSString * const HOME_URL_STRING = @"http://localhost:3030/admin/";
+NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
 
 @interface ZBAnt () <UIWebViewDelegate>
 
