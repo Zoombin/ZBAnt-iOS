@@ -14,8 +14,14 @@
 	self = [super init];
 	if (self) {
 		_ID = dictionary[@"id"];
-		_URLString = dictionary[@"url"];
+		_url = dictionary[@"url"];
 		_number = dictionary[@"number"];
+		_type = dictionary[@"type"];
+		if ([_type.lowercaseString isEqualToString:@"wechat"]) {
+			_taskType = ZBAntTaskTypeWechat;
+		} else {
+			_taskType = ZBAntTaskTypeArticle;
+		}
 	}
 	return self;
 }
