@@ -15,7 +15,7 @@
 	if (self) {
 		_Id = dictionary[@"id"];
 		_url = dictionary[@"url"];
-		_openId = dictionary[@"number"];
+		_openId = dictionary[@"openId"];
 		_type = dictionary[@"type"];
 		
 		if ([_type.lowercaseString isEqualToString:@"weixin"]) {

@@ -12,7 +12,7 @@
 
 NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
 //NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
-NSString * const TASK_TYPE = @"weixin";
+NSString * const TASK_TYPE = @"task";
 
 @interface ZBAnt () <UIWebViewDelegate>
 
@@ -63,31 +63,15 @@ NSString * const TASK_TYPE = @"weixin";
 		_task.wechatName = [[_webView stringByEvaluatingJavaScriptFromString:_task.nameCode] stringByStrippingHTML];
 		_task.wechatThumb = [_webView stringByEvaluatingJavaScriptFromString:_task.thumbCode];
 		_task.wechatSummary = [[_webView stringByEvaluatingJavaScriptFromString:_task.summaryCode] stringByStrippingHTML];
-		_task.wechatOpenId = [[_webView stringByEvaluatingJavaScriptFromString:_task.openIdCode] stringByStrippingHTML];
+		_task.openId = [[_webView stringByEvaluatingJavaScriptFromString:_task.openIdCode] stringByStrippingHTML];
 		_task.wechatOwner = [[_webView stringByEvaluatingJavaScriptFromString:_task.ownerCode] stringByStrippingHTML];
-		
-		if (_task.wechatName.length) {
-			[_webView stringByEvaluatingJavaScriptFromString:_task.clickCode];
-		} else {//TODO: 失败也提交给服务器
-			
-		}
+		[_webView stringByEvaluatingJavaScriptFromString:_task.clickCode];
 	} else if (_task.taskType == ZBAntTaskTypeArticle) {
 		_task.articleTitle = [_webView stringByEvaluatingJavaScriptFromString:_task.articleTitleCode];
 		_task.articleSummary = [_webView stringByEvaluatingJavaScriptFromString:_task.articleSummaryCode];
 		_task.articleTimestamp = [_webView stringByEvaluatingJavaScriptFromString:_task.articleTimestampCode];
 		_task.articleThumb = [_webView stringByEvaluatingJavaScriptFromString:_task.articleThumbCode];
-		
-		if (_task.articleTitle.length) {
-			[_webView stringByEvaluatingJavaScriptFromString:_task.articleClickCode];
-		} else {//如果获取失败也需要返回给服务器
-//			[self postTaskWithBlock:^(id responseObject, NSError *error) {
-//				if (error) {
-//					NSLog(@"submit task error: %@", error);
-//				} else {
-//					NSLog(@"submit success");
-//				}
-//			}];
-		}
+		[_webView stringByEvaluatingJavaScriptFromString:_task.articleClickCode];
 	}
 }
 
@@ -96,15 +80,15 @@ NSString * const TASK_TYPE = @"weixin";
 	parameters[@"type"] = _task.type;
 	
 	if (_task.taskType == ZBAntTaskTypeWeixin) {
-		parameters[@"openId"] = _task.wechatOpenId ?: @"";
+		parameters[@"openId"] = _task.openId ?: @"";
 		parameters[@"name"] = _task.wechatName ?: @"";
 		parameters[@"thumb"] = _task.wechatThumb ?: @"";
 		parameters[@"summary"] = _task.wechatSummary ?: @"";
 		parameters[@"owner"] = _task.wechatOwner ?: @"";
 		parameters[@"url"] = _task.wechatUrl ?: @"";
-		
 		parameters[@"id"] = _task.Id;
 	} else {
+		parameters[@"openId"] = _task.openId;
 		parameters[@"articleTitle"] = _task.articleTitle ?: @"";
 		parameters[@"articleUrl"] = _task.articleUrl ?: @"";
 		parameters[@"articleSummary"] = _task.articleSummary ?: @"";
@@ -133,6 +117,32 @@ NSString * const TASK_TYPE = @"weixin";
 	[postTask resume];
 }
 
+- (void)postAntispiderWithBlock:(void (^)(id responseObject, NSError *error))block {
+	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+	parameters[@"type"] = _task.type;
+	parameters[@"id"] = _task.Id;
+	parameters[@"openId"] = _task.openId ?: @"";
+	
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, @"antispider"]];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+	request.HTTPMethod = @"POST";
+	[request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+	[request setHTTPBody:postData];
+	
+	NSURLSessionDataTask *postTask = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+		if (!error) {
+			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+			if (block) block(json, nil);
+		} else {
+			if (block) block(nil, error);
+		}
+	}];
+	[postTask resume];
+}
+
+
 #pragma mark - UIWebViewDelegate
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -143,10 +153,17 @@ NSString * const TASK_TYPE = @"weixin";
 	NSString *urlString = webView.request.URL.absoluteString;
 	NSLog(@"did finish load: %@", urlString);
 	
+	if ([urlString containsString:@"antispider"]) {
+		[self postAntispiderWithBlock:^(id responseObject, NSError *error) {
+			
+		}];
+		return;
+	}
+	
 	if (_task.taskType == ZBAntTaskTypeWeixin) {
 		if ([urlString containsString:@"weixin.sogou.com/weixin"]) {//微信公众号信息页
 			_timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(autoClick) userInfo:nil repeats:NO];
-		} else if ([urlString containsString:@"weixin.sogou.com/gzh?openid="]) {//微信公众号的页面（文章列表页）
+		} else if ([urlString containsString:@"mp.weixin.qq.com/profile"]) {//微信公众号的页面（文章列表页）
 			_task.wechatUrl = urlString;
 			[self postTaskWithBlock:^(id responseObject, NSError *error) {
 				if (error) {
@@ -157,9 +174,9 @@ NSString * const TASK_TYPE = @"weixin";
 			}];
 		}
 	} else if (_task.taskType == ZBAntTaskTypeArticle) {
-		if ([urlString containsString:@"weixin.sogou.com/gzh?openid="]) {
+		if ([urlString containsString:@"mp.weixin.qq.com/profile"]) {
 			_timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(autoClick) userInfo:nil repeats:NO];
-		} else if ([urlString containsString:@"weixin.qq.com"]) {//微信公众号图文页
+		} else if ([urlString containsString:@"mp.weixin.qq.com"]) {//微信公众号图文页
 			_task.articleUrl = urlString;
 			[self postTaskWithBlock:^(id responseObject, NSError *error) {
 				if (error) {
@@ -170,7 +187,6 @@ NSString * const TASK_TYPE = @"weixin";
 			}];
 		}
 	}
-	//TODO: weixin.sogou.com/antispider
 }
 
 

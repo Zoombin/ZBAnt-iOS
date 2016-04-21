@@ -32,7 +32,6 @@ typedef NS_ENUM(NSUInteger, ZBAntTaskType) {
 @property (nonatomic, strong) NSString *ownerCode;
 @property (nonatomic, strong) NSString *clickCode;
 
-@property (nonatomic, strong) NSString *wechatOpenId;
 @property (nonatomic, strong) NSString *wechatName;
 @property (nonatomic, strong) NSString *wechatThumb;
 @property (nonatomic, strong) NSString *wechatSummary;
