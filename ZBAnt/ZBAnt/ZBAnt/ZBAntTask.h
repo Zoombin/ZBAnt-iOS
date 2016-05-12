@@ -32,6 +32,7 @@
 #pragma mark - article
 
 @property (nonatomic, strong) NSString *articleClickCode;
+@property (nonatomic, strong) NSString *articleReadCountCode;
 
 @property (nonatomic, strong) NSString *articleTitleCode;
 @property (nonatomic, strong) NSString *articleSummaryCode;
@@ -44,6 +45,7 @@
 @property (nonatomic, strong) NSString *articleThumb;
 
 @property (nonatomic, strong) NSString *articleUrl;
+@property (nonatomic, strong) NSString *articleReadCount;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

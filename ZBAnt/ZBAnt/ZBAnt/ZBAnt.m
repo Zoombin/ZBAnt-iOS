@@ -19,10 +19,26 @@ NSString * const TASK_TYPE = @"task";
 @property (nonatomic, readwrite) UIWebView *webView;
 @property (nonatomic, readwrite) NSTimer *timer;
 @property (nonatomic, readwrite) ZBAntTask *task;
+@property (nonatomic, readwrite) NSString *ipAddress;
 
 @end
 
 @implementation ZBAnt
+
+- (void)ipAddressWithBlock:(void (^)(id responseObject, NSError *error))block {
+	NSURL *url = [NSURL URLWithString:@"http://ipof.in/json"];
+	NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		if (!error) {
+			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//			NSLog(@"ip address data: %@", json);
+			_ipAddress = json[@"ip"];
+			if (block) block(json, nil);
+		} else {
+			if (block) block(nil, error);
+		}
+	}];
+	[task resume];
+}
 
 - (void)taskWithBlock:(void (^)(id responseObject, NSError *error))block {
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK_TYPE]];
@@ -40,6 +56,10 @@ NSString * const TASK_TYPE = @"task";
 - (void)start {
 	_webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
 	_webView.delegate = self;
+	
+	[self ipAddressWithBlock:^(id responseObject, NSError *error) {
+		
+	}];
 	
 	[self taskWithBlock:^(id responseObject, NSError *error) {
 		if (!error) {
@@ -87,7 +107,6 @@ NSString * const TASK_TYPE = @"task";
 
 - (void)postTaskWithBlock:(void (^)(id responseObject, NSError *error))block {
 	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	
 	parameters[@"id"] = _task.Id;
 	parameters[@"openId"] = _task.openId;
 	
@@ -100,12 +119,16 @@ NSString * const TASK_TYPE = @"task";
 	parameters[@"articleSummary"] = _task.articleSummary ?: @"";
 	parameters[@"articleTimestamp"] = _task.articleTimestamp ?: @"";
 	parameters[@"articleThumb"] = _task.articleThumb ?: @"";
-	
 	parameters[@"articleUrl"] = _task.articleUrl ?: @"";
+	parameters[@"articleReadCount"] = _task.articleReadCount ?: @"";
+	
+	parameters[@"ip"] = _ipAddress ?: @"";
 	
 	NSLog(@"articleTitle: %@", _task.articleTitle);
 	NSLog(@"name: %@", _task.name);
 	NSLog(@"articleSummary: %@", _task.articleSummary);
+	NSLog(@"ip: %@", _ipAddress);
+	NSLog(@"articleReadCount: %@", _task.articleReadCount);
 	
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK_TYPE]];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -169,20 +192,29 @@ NSString * const TASK_TYPE = @"task";
 	}
 	
 	if ([urlString containsString:@"weixin.sogou.com/weixin?type=1&query="]) {//微信公众号查询
-		[self autoClickWeixin];
+		[self performSelector:@selector(autoClickWeixin) withObject:NULL afterDelay:1];
 	} else if ([urlString containsString:@"mp.weixin.qq.com/profile"]) {//微信公众号的页面（文章列表页）
-		[self autoClick];
+		[self performSelector:@selector(autoClick) withObject:NULL afterDelay:1];
 	} else if ([urlString containsString:@"mp.weixin.qq.com/s"]) {//图文页
 		_task.articleUrl = urlString;
-		[self postTaskWithBlock:^(id responseObject, NSError *error) {
-			if (error) {
-				NSLog(@"submit error: %@", error);
-			} else {
-				NSLog(@"submit success");
-			}
-		}];
+		[self performSelector:@selector(readCount) withObject:NULL afterDelay:1];
+		[self performSelector:@selector(doPostTask) withObject:NULL afterDelay:1.5];
 	}
 }
 
+- (void)readCount {
+	_task.articleReadCount = [_webView stringByEvaluatingJavaScriptFromString:_task.articleReadCountCode];
+	NSLog(@"read count: %@", _task.articleReadCount);
+}
+
+- (void)doPostTask {
+	[self postTaskWithBlock:^(id responseObject, NSError *error) {
+		if (error) {
+			NSLog(@"submit error: %@", error);
+		} else {
+			NSLog(@"submit success");
+		}
+	}];
+}
 
 @end

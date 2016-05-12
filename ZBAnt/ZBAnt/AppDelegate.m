@@ -17,7 +17,6 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
 	return YES;
@@ -38,6 +37,30 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+	NSString *deviceName = [[[UIDevice currentDevice] name] mutableCopy];
+	NSLog(@"deviceName: %@", deviceName);
+	
+	NSString *systemName = [[UIDevice currentDevice] systemName];
+	NSLog(@"systemName: %@", systemName);
+	
+	NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+	NSLog(@"systemVersion: %@", systemVersion);
+	
+	NSString *model = [[UIDevice currentDevice] model];
+	NSLog(@"model: %@", model);
+	
+	NSUUID *uuid = [[UIDevice currentDevice] identifierForVendor];
+	NSLog(@"uuid: %@", [uuid UUIDString]);
+	
+	NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+	NSLog(@"bundleid: %@", bundleIdentifier);
+	
+	NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+	NSLog(@"version: %@", version);
+	
+	NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+	NSLog(@"build: %@", build);
+	
 	_ant = [[ZBAnt alloc] init];
 	[_ant start];
 	// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.

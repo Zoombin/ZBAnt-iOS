@@ -25,6 +25,7 @@
 		_ownerCode = dictionary[@"ownerCode"];
 	
 		_articleClickCode = dictionary[@"articleClickCode"];
+		_articleReadCountCode = dictionary[@"articleReadCountCode"];
 		
 		_articleTitleCode = dictionary[@"articleTitleCode"];
 		_articleThumbCode = dictionary[@"articleThumbCode"];
