@@ -12,7 +12,7 @@
 
 NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
 //NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
-NSString * const TASK_TYPE = @"task";
+NSString * const TASK = @"task";
 
 @interface ZBAnt () <UIWebViewDelegate>
 
@@ -41,7 +41,7 @@ NSString * const TASK_TYPE = @"task";
 }
 
 - (void)taskWithBlock:(void (^)(id responseObject, NSError *error))block {
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK_TYPE]];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK]];
 	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -130,7 +130,7 @@ NSString * const TASK_TYPE = @"task";
 	NSLog(@"ip: %@", _ipAddress);
 	NSLog(@"articleReadCount: %@", _task.articleReadCount);
 	
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK_TYPE]];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK]];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 	request.HTTPMethod = @"POST";
 	[request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
