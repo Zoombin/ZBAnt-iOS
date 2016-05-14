@@ -30,8 +30,8 @@ NSString * const TASK = @"task";
 	NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-			NSLog(@"ip address data: %@", json);
 			_ipAddress = json[@"ip"];
+			NSLog(@"ip address: %@", _ipAddress);
 			if (block) block(json, nil);
 		} else {
 			if (block) block(nil, error);
@@ -45,7 +45,6 @@ NSString * const TASK = @"task";
 	NSURL *url = [NSURL URLWithString:urlString];
 	
 	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-		NSLog(@"response: %@", response);
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 			NSNumber *error = json[@"error"];
@@ -54,6 +53,8 @@ NSString * const TASK = @"task";
 				if (_task.Id.length && _task.url.length && _task.openId.length) {
 					[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.url]]];
 				}
+			} else {
+				NSLog(@"task error: %@", json[@"message"]);
 			}
 			if (block) block(json, nil);
 		} else {
