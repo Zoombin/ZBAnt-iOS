@@ -30,7 +30,7 @@ NSString * const TASK = @"task";
 	NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//			NSLog(@"ip address data: %@", json);
+			NSLog(@"ip address data: %@", json);
 			_ipAddress = json[@"ip"];
 			if (block) block(json, nil);
 		} else {
@@ -41,13 +41,24 @@ NSString * const TASK = @"task";
 }
 
 - (void)taskWithBlock:(void (^)(id responseObject, NSError *error))block {
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK]];
+	NSString *urlString = [NSString stringWithFormat:@"%@%@?ip=%@", HOME_URL_STRING, TASK, _ipAddress.length > 0 ? _ipAddress : @""];
+	NSURL *url = [NSURL URLWithString:urlString];
+	
 	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		NSLog(@"response: %@", response);
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+			NSNumber *error = json[@"error"];
+			if (error.integerValue == 0) {
+				_task = [[ZBAntTask alloc] initWithDictionary:json[@"data"]];
+				if (_task.Id.length && _task.url.length && _task.openId.length) {
+					[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.url]]];
+				}
+			}
 			if (block) block(json, nil);
 		} else {
 			if (block) block(nil, error);
+			
 		}
 	}];
 	[getTask resume];
@@ -58,22 +69,8 @@ NSString * const TASK = @"task";
 	_webView.delegate = self;
 	
 	[self ipAddressWithBlock:^(id responseObject, NSError *error) {
-		
-	}];
-	
-	[self taskWithBlock:^(id responseObject, NSError *error) {
-		if (!error) {
-			NSLog(@"response: %@", responseObject);
-			NSNumber *error = responseObject[@"error"];
-			if (error.integerValue == 0) {
-				_task = [[ZBAntTask alloc] initWithDictionary:responseObject[@"data"]];
-				if (_task.Id.length && _task.url.length && _task.openId.length) {
-					[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.url]]];
-				}
-			} else {
-				NSLog(@"task error: %@", responseObject[@"message"]);
-			}
-		}
+		[self taskWithBlock:^(id responseObject, NSError *error) {
+		}];
 	}];
 }
 
