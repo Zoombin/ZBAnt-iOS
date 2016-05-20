@@ -31,7 +31,7 @@ NSString * const TASK = @"task";
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 			_ipAddress = json[@"ip"];
-//			NSLog(@"ip address: %@", _ipAddress);
+			NSLog(@"ip address: %@", _ipAddress);
 			if (block) block(json, nil);
 		} else {
 			if (block) block(nil, error);
