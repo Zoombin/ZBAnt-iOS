@@ -10,8 +10,8 @@
 #import "ZBAntTask.h"
 #import "NSString+HTML.h"
 
-NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
-//NSString * const HOME_URL_STRING = @"http://112.124.98.9:3030/admin/";
+//NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
+NSString * const HOME_URL_STRING = @"http://112.124.98.9:3008/api/";
 NSString * const TASK = @"task";
 
 @interface ZBAnt () <UIWebViewDelegate>
@@ -31,7 +31,7 @@ NSString * const TASK = @"task";
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 			_ipAddress = json[@"ip"];
-			NSLog(@"ip address: %@", _ipAddress);
+//			NSLog(@"ip address: %@", _ipAddress);
 			if (block) block(json, nil);
 		} else {
 			if (block) block(nil, error);
@@ -54,7 +54,7 @@ NSString * const TASK = @"task";
 					[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.url]]];
 				}
 			} else {
-				NSLog(@"task error: %@", json[@"message"]);
+//				NSLog(@"task error: %@", json[@"message"]);
 			}
 			if (block) block(json, nil);
 		} else {
@@ -76,12 +76,12 @@ NSString * const TASK = @"task";
 }
 
 - (void)autoClickWeixin {
-	NSLog(@"autoClickWeixin");
+//	NSLog(@"autoClickWeixin");
 	[_webView stringByEvaluatingJavaScriptFromString:_task.clickCode];
 }
 
 - (void)autoClick {
-	NSLog(@"autoClick");
+//	NSLog(@"autoClick");
 	_task.name = [[_webView stringByEvaluatingJavaScriptFromString:_task.nameCode] stringByStrippingHTML];
 	_task.name = [_task.name stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	_task.name = [_task.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -122,11 +122,11 @@ NSString * const TASK = @"task";
 	
 	parameters[@"ip"] = _ipAddress ?: @"";
 	
-	NSLog(@"articleTitle: %@", _task.articleTitle);
-	NSLog(@"name: %@", _task.name);
-	NSLog(@"articleSummary: %@", _task.articleSummary);
-	NSLog(@"ip: %@", _ipAddress);
-	NSLog(@"articleReadCount: %@", _task.articleReadCount);
+//	NSLog(@"articleTitle: %@", _task.articleTitle);
+//	NSLog(@"name: %@", _task.name);
+//	NSLog(@"articleSummary: %@", _task.articleSummary);
+//	NSLog(@"ip: %@", _ipAddress);
+//	NSLog(@"articleReadCount: %@", _task.articleReadCount);
 	
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK]];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -175,12 +175,12 @@ NSString * const TASK = @"task";
 #pragma mark - UIWebViewDelegate
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-	NSLog(@"webview error: %@", error);
+//	NSLog(@"webview error: %@", error);
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	NSString *urlString = webView.request.URL.absoluteString;
-	NSLog(@"did finish load: %@", urlString);
+//	NSLog(@"did finish load: %@", urlString);
 	
 	if ([urlString containsString:@"antispider"]) {
 		[self postAntispiderWithBlock:^(id responseObject, NSError *error) {
@@ -202,15 +202,15 @@ NSString * const TASK = @"task";
 
 - (void)readCount {
 	_task.articleReadCount = [_webView stringByEvaluatingJavaScriptFromString:_task.articleReadCountCode];
-	NSLog(@"read count: %@", _task.articleReadCount);
+//	NSLog(@"read count: %@", _task.articleReadCount);
 }
 
 - (void)doPostTask {
 	[self postTaskWithBlock:^(id responseObject, NSError *error) {
 		if (error) {
-			NSLog(@"submit error: %@", error);
+//			NSLog(@"submit error: %@", error);
 		} else {
-			NSLog(@"submit success");
+			NSLog(@"ant data submit success");
 		}
 	}];
 }
