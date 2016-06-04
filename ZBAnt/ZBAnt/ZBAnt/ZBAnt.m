@@ -69,10 +69,10 @@ NSString * const TASK = @"task";
 	_webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
 	_webView.delegate = self;
 	
-	[self ipAddressWithBlock:^(id responseObject, NSError *error) {
+//	[self ipAddressWithBlock:^(id responseObject, NSError *error) {
 		[self taskWithBlock:^(id responseObject, NSError *error) {
 		}];
-	}];
+//	}];
 }
 
 - (void)autoClickWeixin {
