@@ -7,12 +7,89 @@
 //
 
 #import "ZBAnt.h"
-#import "ZBAntTask.h"
-#import "NSString+HTML.h"
 
 //NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
 NSString * const HOME_URL_STRING = @"http://112.124.98.9:3008/api/";
 NSString * const TASK = @"task";
+
+
+#pragma mark - ZBAntTask
+
+@interface ZBAntTask : NSObject
+
+#pragma mark - base
+@property (nonatomic, strong) NSString *Id;
+@property (nonatomic, strong) NSString *openId;
+@property (nonatomic, strong) NSString *url;
+
+#pragma mark - weixin
+
+@property (nonatomic, strong) NSString *clickCode;
+
+@property (nonatomic, strong) NSString *nameCode;
+@property (nonatomic, strong) NSString *thumbCode;
+@property (nonatomic, strong) NSString *summaryCode;
+@property (nonatomic, strong) NSString *ownerCode;
+
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *thumb;
+@property (nonatomic, strong) NSString *summary;
+@property (nonatomic, strong) NSString *owner;
+
+#pragma mark - article
+
+@property (nonatomic, strong) NSString *articleClickCode;
+@property (nonatomic, strong) NSString *articleReadCountCode;
+
+@property (nonatomic, strong) NSString *articleTitleCode;
+@property (nonatomic, strong) NSString *articleSummaryCode;
+@property (nonatomic, strong) NSString *articleTimestampCode;
+@property (nonatomic, strong) NSString *articleThumbCode;
+
+@property (nonatomic, strong) NSString *articleTitle;
+@property (nonatomic, strong) NSString *articleSummary;
+@property (nonatomic, strong) NSString *articleTimestamp;
+@property (nonatomic, strong) NSString *articleThumb;
+
+@property (nonatomic, strong) NSString *articleUrl;
+@property (nonatomic, strong) NSString *articleReadCount;
+
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
+
+@end
+
+@implementation ZBAntTask
+
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary {
+	self = [super init];
+	if (self) {
+		_Id = dictionary[@"id"];
+		_openId = dictionary[@"openId"];
+		_url = dictionary[@"url"];
+		
+		_clickCode = dictionary[@"clickCode"];
+		
+		_nameCode = dictionary[@"nameCode"];
+		_thumbCode = dictionary[@"thumbCode"];
+		_summaryCode = dictionary[@"summaryCode"];
+		_ownerCode = dictionary[@"ownerCode"];
+		
+		_articleClickCode = dictionary[@"articleClickCode"];
+		_articleReadCountCode = dictionary[@"articleReadCountCode"];
+		
+		_articleTitleCode = dictionary[@"articleTitleCode"];
+		_articleThumbCode = dictionary[@"articleThumbCode"];
+		_articleSummaryCode = dictionary[@"articleSummaryCode"];
+		_articleTimestampCode = dictionary[@"articleTimestampCode"];
+	}
+	return self;
+}
+
+@end
+
+#pragma mark - ZBAnt
+
+
 
 @interface ZBAnt () <UIWebViewDelegate>
 
@@ -82,23 +159,23 @@ NSString * const TASK = @"task";
 
 - (void)autoClick {
 //	NSLog(@"autoClick");
-	_task.name = [[_webView stringByEvaluatingJavaScriptFromString:_task.nameCode] stringByStrippingHTML];
+	_task.name = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.nameCode]];
 	_task.name = [_task.name stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	_task.name = [_task.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	_task.name = [_task.name stringByReplacingOccurrencesOfString:@" " withString:@""];
 	
-	_task.thumb = [[_webView stringByEvaluatingJavaScriptFromString:_task.thumbCode] stringByStrippingHTML];
-	_task.summary = [[_webView stringByEvaluatingJavaScriptFromString:_task.summaryCode] stringByStrippingHTML];
-	_task.owner = [[_webView stringByEvaluatingJavaScriptFromString:_task.ownerCode] stringByStrippingHTML];
+	_task.thumb = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.thumbCode]];
+	_task.summary = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.summaryCode]];
+	_task.owner = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.ownerCode]];
 	
-	_task.articleTitle = [[_webView stringByEvaluatingJavaScriptFromString:_task.articleTitleCode] stringByStrippingHTML];
+	_task.articleTitle = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.articleTitleCode]];
 	_task.articleTitle = [_task.articleTitle stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	_task.articleTitle = [_task.articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	_task.articleTitle = [_task.articleTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
 	
-	_task.articleSummary = [[_webView stringByEvaluatingJavaScriptFromString:_task.articleSummaryCode] stringByStrippingHTML];
-	_task.articleTimestamp = [[_webView stringByEvaluatingJavaScriptFromString:_task.articleTimestampCode] stringByStrippingHTML];
-	_task.articleThumb = [[_webView stringByEvaluatingJavaScriptFromString:_task.articleThumbCode] stringByStrippingHTML];
+	_task.articleSummary = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.articleSummaryCode]];
+	_task.articleTimestamp = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.articleTimestampCode]];
+	_task.articleThumb = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.articleThumbCode]];
 	
 	[_webView stringByEvaluatingJavaScriptFromString:_task.articleClickCode];
 }
@@ -213,6 +290,16 @@ NSString * const TASK = @"task";
 			NSLog(@"ant data submit success");
 		}
 	}];
+}
+
+#pragma mark - HTML method
+
+- (NSString *)stringByStrippingHTML:(NSString *)string {
+	NSRange r;
+	NSString *s = [string copy];
+	while ((r = [s rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
+		s = [s stringByReplacingCharactersInRange:r withString:@""];
+	return s;
 }
 
 @end

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		772687591CB6468B005A9CC3 /* ZBAnt.m in Sources */ = {isa = PBXBuildFile; fileRef = 772687561CB6468B005A9CC3 /* ZBAnt.m */; };
-		7726875A1CB6468B005A9CC3 /* ZBAntTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 772687581CB6468B005A9CC3 /* ZBAntTask.m */; };
 		7737091A1CB509760072FE7D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 773709191CB509760072FE7D /* WebKit.framework */; };
 		779161581CB2324E00CB0C77 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 779161571CB2324E00CB0C77 /* main.m */; };
 		7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7791615A1CB2324E00CB0C77 /* AppDelegate.m */; };
@@ -17,14 +16,11 @@
 		779161641CB2324E00CB0C77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779161621CB2324E00CB0C77 /* Main.storyboard */; };
 		779161661CB2324E00CB0C77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 779161651CB2324E00CB0C77 /* Assets.xcassets */; };
 		779161691CB2324E00CB0C77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779161671CB2324E00CB0C77 /* LaunchScreen.storyboard */; };
-		77CCEBF41CB6BC3000B35063 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CCEBF31CB6BC3000B35063 /* NSString+HTML.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		772687551CB6468B005A9CC3 /* ZBAnt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBAnt.h; sourceTree = "<group>"; };
 		772687561CB6468B005A9CC3 /* ZBAnt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBAnt.m; sourceTree = "<group>"; };
-		772687571CB6468B005A9CC3 /* ZBAntTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBAntTask.h; sourceTree = "<group>"; };
-		772687581CB6468B005A9CC3 /* ZBAntTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBAntTask.m; sourceTree = "<group>"; };
 		773709191CB509760072FE7D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		779161531CB2324E00CB0C77 /* ZBAnt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZBAnt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		779161571CB2324E00CB0C77 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ZBAnt/main.m; sourceTree = "<group>"; };
@@ -38,8 +34,6 @@
 		779161651CB2324E00CB0C77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ZBAnt/Assets.xcassets; sourceTree = "<group>"; };
 		779161681CB2324E00CB0C77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7791616A1CB2324E00CB0C77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ZBAnt/Info.plist; sourceTree = "<group>"; };
-		77CCEBF21CB6BC3000B35063 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
-		77CCEBF31CB6BC3000B35063 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,10 +53,6 @@
 			children = (
 				772687551CB6468B005A9CC3 /* ZBAnt.h */,
 				772687561CB6468B005A9CC3 /* ZBAnt.m */,
-				772687571CB6468B005A9CC3 /* ZBAntTask.h */,
-				772687581CB6468B005A9CC3 /* ZBAntTask.m */,
-				77CCEBF21CB6BC3000B35063 /* NSString+HTML.h */,
-				77CCEBF31CB6BC3000B35063 /* NSString+HTML.m */,
 			);
 			name = ZBAnt;
 			path = ZBAnt/ZBAnt;
@@ -177,8 +167,6 @@
 			files = (
 				779161611CB2324E00CB0C77 /* SecondViewController.m in Sources */,
 				7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */,
-				7726875A1CB6468B005A9CC3 /* ZBAntTask.m in Sources */,
-				77CCEBF41CB6BC3000B35063 /* NSString+HTML.m in Sources */,
 				7791615E1CB2324E00CB0C77 /* FirstViewController.m in Sources */,
 				772687591CB6468B005A9CC3 /* ZBAnt.m in Sources */,
 				779161581CB2324E00CB0C77 /* main.m in Sources */,
