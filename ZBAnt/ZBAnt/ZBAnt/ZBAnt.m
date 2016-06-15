@@ -208,12 +208,7 @@ NSString * const VERSION = @"1";
 	parameters[@"articleReadCount"] = _task.articleReadCount ?: @"";
 	
 	parameters[@"ip"] = _ipAddress ?: @"";
-	
-//	NSLog(@"articleTitle: %@", _task.articleTitle);
-//	NSLog(@"name: %@", _task.name);
-//	NSLog(@"articleSummary: %@", _task.articleSummary);
-//	NSLog(@"ip: %@", _ipAddress);
-//	NSLog(@"articleReadCount: %@", _task.articleReadCount);
+	parameters[@"version"] = VERSION;
 	
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK]];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
