@@ -8,9 +8,10 @@
 
 #import "ZBAnt.h"
 
-//NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
-NSString * const HOME_URL_STRING = @"http://112.124.98.9:3008/api/";
+NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
+//NSString * const HOME_URL_STRING = @"http://ant.zoombin.com:3008/api/";
 NSString * const TASK = @"task";
+NSString * const VERSION = @"1";
 
 
 #pragma mark - ZBAntTask
@@ -118,7 +119,16 @@ NSString * const TASK = @"task";
 }
 
 - (void)taskWithBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *urlString = [NSString stringWithFormat:@"%@%@?ip=%@", HOME_URL_STRING, TASK, _ipAddress.length > 0 ? _ipAddress : @""];
+	NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+	
+	NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK];
+	[urlString appendString:@"?"];
+	[urlString appendFormat:@"ip=%@", _ipAddress.length > 0 ? _ipAddress : @""];
+	[urlString appendString:@"&"];
+	[urlString appendFormat:@"bundleId=%@", bundleId ?: @""];
+	[urlString appendString:@"&"];
+	[urlString appendFormat:@"version=%@", VERSION];
+	
 	NSURL *url = [NSURL URLWithString:urlString];
 	
 	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
