@@ -8,8 +8,8 @@
 
 #import "ZBAnt.h"
 
-NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
-//NSString * const HOME_URL_STRING = @"http://ant.zoombin.com:3008/api/";
+//NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
+NSString * const HOME_URL_STRING = @"http://ant.zoombin.com:3008/api/";
 NSString * const TASK = @"task";
 NSString * const VERSION = @"1";
 
@@ -134,6 +134,7 @@ NSString * const VERSION = @"1";
 	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//			NSLog(@"get task response object: %@", json);
 			NSNumber *error = json[@"error"];
 			if (error.integerValue == 0) {
 				_task = [[ZBAntTask alloc] initWithDictionary:json[@"data"]];
