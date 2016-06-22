@@ -12,6 +12,7 @@
 NSString * const HOME_URL_STRING = @"http://ant.zoombin.com:3008/api/";
 NSString * const TASK = @"task";
 NSString * const VERSION = @"1";
+BOOL const OPEN_LOG = NO;
 
 
 #pragma mark - ZBAntTask
@@ -109,7 +110,7 @@ NSString * const VERSION = @"1";
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 			_ipAddress = json[@"ip"];
-			NSLog(@"ip address: %@", _ipAddress);
+			if (OPEN_LOG) NSLog(@"ip address: %@", _ipAddress);
 			if (block) block(json, nil);
 		} else {
 			if (block) block(nil, error);
@@ -134,7 +135,7 @@ NSString * const VERSION = @"1";
 	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//			NSLog(@"get task response object: %@", json);
+			if (OPEN_LOG) NSLog(@"get task response object: %@", json);
 			NSNumber *error = json[@"error"];
 			if (error.integerValue == 0) {
 				_task = [[ZBAntTask alloc] initWithDictionary:json[@"data"]];
@@ -142,7 +143,7 @@ NSString * const VERSION = @"1";
 					[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_task.url]]];
 				}
 			} else {
-//				NSLog(@"task error: %@", json[@"message"]);
+				if (OPEN_LOG) NSLog(@"task error: %@", json[@"message"]);
 			}
 			if (block) block(json, nil);
 		} else {
@@ -164,12 +165,12 @@ NSString * const VERSION = @"1";
 }
 
 - (void)autoClickWeixin {
-//	NSLog(@"autoClickWeixin");
+	if (OPEN_LOG) NSLog(@"autoClickWeixin");
 	[_webView stringByEvaluatingJavaScriptFromString:_task.clickCode];
 }
 
 - (void)autoClick {
-//	NSLog(@"autoClick");
+	if (OPEN_LOG) NSLog(@"autoClick");
 	_task.name = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.nameCode]];
 	_task.name = [_task.name stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	_task.name = [_task.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -210,6 +211,8 @@ NSString * const VERSION = @"1";
 	
 	parameters[@"ip"] = _ipAddress ?: @"";
 	parameters[@"version"] = VERSION;
+	
+	if (OPEN_LOG) NSLog(@"submit params: %@", parameters);
 	
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK]];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -285,15 +288,15 @@ NSString * const VERSION = @"1";
 
 - (void)readCount {
 	_task.articleReadCount = [_webView stringByEvaluatingJavaScriptFromString:_task.articleReadCountCode];
-//	NSLog(@"read count: %@", _task.articleReadCount);
+	if (OPEN_LOG) NSLog(@"read count: %@", _task.articleReadCount);
 }
 
 - (void)doPostTask {
 	[self postTaskWithBlock:^(id responseObject, NSError *error) {
 		if (error) {
-//			NSLog(@"submit error: %@", error);
+			if (OPEN_LOG) NSLog(@"submit error: %@", error);
 		} else {
-			NSLog(@"ant data submit success");
+			if (OPEN_LOG) NSLog(@"ant data submit success");
 		}
 	}];
 }
