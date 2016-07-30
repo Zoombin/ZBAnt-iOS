@@ -101,33 +101,17 @@ BOOL const OPEN_LOG = NO;
 @property (nonatomic, readwrite) UIWebView *webView;
 @property (nonatomic, readwrite) NSTimer *timer;
 @property (nonatomic, readwrite) ZBAntTask *task;
-@property (nonatomic, readwrite) NSString *ipAddress;
 
 @end
 
 @implementation ZBAnt
 
-- (void)ipAddressWithBlock:(void (^)(id responseObject, NSError *error))block {
-	NSURL *url = [NSURL URLWithString:@"http://ipof.in/json"];
-	NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-		if (!error) {
-			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-			_ipAddress = json[@"ip"];
-			if (OPEN_LOG) NSLog(@"ip address: %@", _ipAddress);
-			if (block) block(json, nil);
-		} else {
-			if (block) block(nil, error);
-		}
-	}];
-	[task resume];
-}
 
 - (void)taskWithBlock:(void (^)(id responseObject, NSError *error))block {
 	NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
 	
 	NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK];
 	[urlString appendString:@"?"];
-	[urlString appendFormat:@"ip=%@", _ipAddress.length > 0 ? _ipAddress : @""];
 	[urlString appendString:@"&"];
 	[urlString appendFormat:@"bundleId=%@", bundleId ?: @""];
 	[urlString appendString:@"&"];
@@ -161,10 +145,8 @@ BOOL const OPEN_LOG = NO;
 	_webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
 	_webView.delegate = self;
 	
-//	[self ipAddressWithBlock:^(id responseObject, NSError *error) {
-		[self taskWithBlock:^(id responseObject, NSError *error) {
-		}];
-//	}];
+	[self taskWithBlock:^(id responseObject, NSError *error) {
+	}];
 }
 
 - (void)autoClickWeixin {
@@ -214,7 +196,6 @@ BOOL const OPEN_LOG = NO;
 	parameters[@"articleUrl"] = _task.articleUrl ?: @"";
 	parameters[@"articleReadCount"] = _task.articleReadCount ?: @"";
 	
-	parameters[@"ip"] = _ipAddress ?: @"";
 	parameters[@"version"] = VERSION;
 	
 	if (OPEN_LOG) NSLog(@"submit params: %@", parameters);
