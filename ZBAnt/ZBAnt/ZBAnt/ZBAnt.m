@@ -11,7 +11,7 @@
 //NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
 NSString * const HOME_URL_STRING = @"http://ant.zoombin.com:3008/api/";
 NSString * const TASK = @"task";
-NSString * const VERSION = @"1";
+NSString * const VERSION = @"2";
 BOOL const OPEN_LOG = NO;
 
 
@@ -21,7 +21,7 @@ BOOL const OPEN_LOG = NO;
 
 #pragma mark - base
 @property (nonatomic, strong) NSString *Id;
-@property (nonatomic, strong) NSString *openId;
+@property (nonatomic, strong) NSString *openId;//服务器指派过来的
 @property (nonatomic, strong) NSString *url;
 
 #pragma mark - weixin
@@ -29,11 +29,13 @@ BOOL const OPEN_LOG = NO;
 @property (nonatomic, strong) NSString *clickCode;
 
 @property (nonatomic, strong) NSString *nameCode;
+@property (nonatomic, strong) NSString *openIdStringCode;
 @property (nonatomic, strong) NSString *thumbCode;
 @property (nonatomic, strong) NSString *summaryCode;
 @property (nonatomic, strong) NSString *ownerCode;
 
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *openIdString;//抓到的
 @property (nonatomic, strong) NSString *thumb;
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSString *owner;
@@ -72,6 +74,7 @@ BOOL const OPEN_LOG = NO;
 		_clickCode = dictionary[@"clickCode"];
 		
 		_nameCode = dictionary[@"nameCode"];
+		_openIdStringCode = dictionary[@"openIdStringCode"];
 		_thumbCode = dictionary[@"thumbCode"];
 		_summaryCode = dictionary[@"summaryCode"];
 		_ownerCode = dictionary[@"ownerCode"];
@@ -176,6 +179,7 @@ BOOL const OPEN_LOG = NO;
 	_task.name = [_task.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	_task.name = [_task.name stringByReplacingOccurrencesOfString:@" " withString:@""];
 	
+	_task.openIdString = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.openIdStringCode]];
 	_task.thumb = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.thumbCode]];
 	_task.summary = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.summaryCode]];
 	_task.owner = [self stringByStrippingHTML: [_webView stringByEvaluatingJavaScriptFromString:_task.ownerCode]];
@@ -198,6 +202,7 @@ BOOL const OPEN_LOG = NO;
 	parameters[@"openId"] = _task.openId;
 	
 	parameters[@"name"] = _task.name ?: @"";
+	parameters[@"openIdString"] = _task.openIdString ?: @"";
 	parameters[@"thumb"] = _task.thumb ?: @"";
 	parameters[@"summary"] = _task.summary ?: @"";
 	parameters[@"owner"] = _task.owner ?: @"";
@@ -225,6 +230,7 @@ BOOL const OPEN_LOG = NO;
 	NSURLSessionDataTask *postTask = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 		if (!error) {
 			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+			if (OPEN_LOG) NSLog(@"post task response: %@", json);
 			if (block) block(json, nil);
 		} else {
 			if (block) block(nil, error);
@@ -261,7 +267,7 @@ BOOL const OPEN_LOG = NO;
 #pragma mark - UIWebViewDelegate
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-//	NSLog(@"webview error: %@", error);
+	if (OPEN_LOG) NSLog(@"webview error: %@", error);
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
