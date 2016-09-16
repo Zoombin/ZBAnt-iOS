@@ -1,0 +1,11 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'ZBAnt' do
+  pod 'AFNetworking', '~> 2.0'
+  pod 'MJExtension'
+  pod 'SDWebImage'
+  pod 'CRToast'
+  pod 'UITextView+Placeholder', '~> 1.2'
+  pod 'ActionSheetPicker-3.0'
+end

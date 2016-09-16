@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "ZBAnt.h"
+#import "ZBStatisticsViewController.h"
+#import "ZBServersViewController.h"
 
 @interface AppDelegate ()
 
@@ -18,7 +20,20 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	// Override point for customization after application launch.
+	ZBStatisticsViewController *statisticsViewController = [[ZBStatisticsViewController alloc] init];
+	statisticsViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Statistics" image:[UIImage imageNamed:@"first"] tag:0];
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:statisticsViewController];
+	
+	ZBServersViewController *serversViewController = [[ZBServersViewController alloc] init];
+	serversViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Servers" image:[UIImage imageNamed:@"second"] tag:1];
+	UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:serversViewController];
+	
+	UITabBarController *tabBarController = [[UITabBarController alloc] initWithNibName:nil bundle:nil];
+	tabBarController.viewControllers = @[nav, nav2];
+	
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window.rootViewController = tabBarController;
+	[self.window makeKeyAndVisible];
 	return YES;
 }
 

@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		703EE013630C21DB13CD748C /* libPods-ZBAnt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE83F78D45ADA8B1D77D17C /* libPods-ZBAnt.a */; };
+		7707A6FA1D8C362A00B2328F /* ZBStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7707A6F91D8C362A00B2328F /* ZBStatisticsViewController.m */; };
+		7707A6FD1D8C3A6D00B2328F /* ZBServersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7707A6FC1D8C3A6D00B2328F /* ZBServersViewController.m */; };
 		772687591CB6468B005A9CC3 /* ZBAnt.m in Sources */ = {isa = PBXBuildFile; fileRef = 772687561CB6468B005A9CC3 /* ZBAnt.m */; };
+		7730ED081D8BF0EE0056877C /* ZBHTTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730ED071D8BF0EE0056877C /* ZBHTTPManager.m */; };
 		7737091A1CB509760072FE7D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 773709191CB509760072FE7D /* WebKit.framework */; };
 		779161581CB2324E00CB0C77 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 779161571CB2324E00CB0C77 /* main.m */; };
 		7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7791615A1CB2324E00CB0C77 /* AppDelegate.m */; };
@@ -16,11 +20,19 @@
 		779161641CB2324E00CB0C77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779161621CB2324E00CB0C77 /* Main.storyboard */; };
 		779161661CB2324E00CB0C77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 779161651CB2324E00CB0C77 /* Assets.xcassets */; };
 		779161691CB2324E00CB0C77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779161671CB2324E00CB0C77 /* LaunchScreen.storyboard */; };
+		77C9CD0F1D6F2AD90049097F /* NSString+AESCrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C9CD0E1D6F2AD90049097F /* NSString+AESCrypt.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4FE83F78D45ADA8B1D77D17C /* libPods-ZBAnt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZBAnt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7707A6F81D8C362A00B2328F /* ZBStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBStatisticsViewController.h; path = ZBAnt/ZBStatisticsViewController.h; sourceTree = "<group>"; };
+		7707A6F91D8C362A00B2328F /* ZBStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBStatisticsViewController.m; path = ZBAnt/ZBStatisticsViewController.m; sourceTree = "<group>"; };
+		7707A6FB1D8C3A6D00B2328F /* ZBServersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBServersViewController.h; path = ZBAnt/ZBServersViewController.h; sourceTree = "<group>"; };
+		7707A6FC1D8C3A6D00B2328F /* ZBServersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBServersViewController.m; path = ZBAnt/ZBServersViewController.m; sourceTree = "<group>"; };
 		772687551CB6468B005A9CC3 /* ZBAnt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBAnt.h; sourceTree = "<group>"; };
 		772687561CB6468B005A9CC3 /* ZBAnt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZBAnt.m; sourceTree = "<group>"; };
+		7730ED061D8BF0EE0056877C /* ZBHTTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBHTTPManager.h; path = ZBAnt/ZBHTTPManager.h; sourceTree = "<group>"; };
+		7730ED071D8BF0EE0056877C /* ZBHTTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBHTTPManager.m; path = ZBAnt/ZBHTTPManager.m; sourceTree = "<group>"; };
 		773709191CB509760072FE7D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		779161531CB2324E00CB0C77 /* ZBAnt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZBAnt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		779161571CB2324E00CB0C77 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ZBAnt/main.m; sourceTree = "<group>"; };
@@ -34,6 +46,10 @@
 		779161651CB2324E00CB0C77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ZBAnt/Assets.xcassets; sourceTree = "<group>"; };
 		779161681CB2324E00CB0C77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7791616A1CB2324E00CB0C77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ZBAnt/Info.plist; sourceTree = "<group>"; };
+		77C9CD0D1D6F2AD90049097F /* NSString+AESCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AESCrypt.h"; sourceTree = "<group>"; };
+		77C9CD0E1D6F2AD90049097F /* NSString+AESCrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AESCrypt.m"; sourceTree = "<group>"; };
+		A056646329995E61274C7746 /* Pods-ZBAnt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZBAnt.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZBAnt/Pods-ZBAnt.debug.xcconfig"; sourceTree = "<group>"; };
+		F74214331E04B05602FDEE98 /* Pods-ZBAnt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZBAnt.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZBAnt/Pods-ZBAnt.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,15 +58,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				7737091A1CB509760072FE7D /* WebKit.framework in Frameworks */,
+				703EE013630C21DB13CD748C /* libPods-ZBAnt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24D401B6036A942ABAE75BA8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4FE83F78D45ADA8B1D77D17C /* libPods-ZBAnt.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		772687541CB6468B005A9CC3 /* ZBAnt */ = {
 			isa = PBXGroup;
 			children = (
+				77C9CD0D1D6F2AD90049097F /* NSString+AESCrypt.h */,
+				77C9CD0E1D6F2AD90049097F /* NSString+AESCrypt.m */,
 				772687551CB6468B005A9CC3 /* ZBAnt.h */,
 				772687561CB6468B005A9CC3 /* ZBAnt.m */,
 			);
@@ -61,6 +88,12 @@
 		7791614A1CB2324E00CB0C77 = {
 			isa = PBXGroup;
 			children = (
+				7707A6FB1D8C3A6D00B2328F /* ZBServersViewController.h */,
+				7707A6FC1D8C3A6D00B2328F /* ZBServersViewController.m */,
+				7707A6F81D8C362A00B2328F /* ZBStatisticsViewController.h */,
+				7707A6F91D8C362A00B2328F /* ZBStatisticsViewController.m */,
+				7730ED061D8BF0EE0056877C /* ZBHTTPManager.h */,
+				7730ED071D8BF0EE0056877C /* ZBHTTPManager.m */,
 				772687541CB6468B005A9CC3 /* ZBAnt */,
 				779161591CB2324E00CB0C77 /* AppDelegate.h */,
 				7791615A1CB2324E00CB0C77 /* AppDelegate.m */,
@@ -76,6 +109,8 @@
 				773709191CB509760072FE7D /* WebKit.framework */,
 				779161571CB2324E00CB0C77 /* main.m */,
 				779161541CB2324E00CB0C77 /* Products */,
+				94714D12EF080C446354B7D0 /* Pods */,
+				24D401B6036A942ABAE75BA8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,6 +130,15 @@
 			path = ZBAnt;
 			sourceTree = "<group>";
 		};
+		94714D12EF080C446354B7D0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A056646329995E61274C7746 /* Pods-ZBAnt.debug.xcconfig */,
+				F74214331E04B05602FDEE98 /* Pods-ZBAnt.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -102,9 +146,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7791616D1CB2324E00CB0C77 /* Build configuration list for PBXNativeTarget "ZBAnt" */;
 			buildPhases = (
+				4479922457AF53D3D4021ADD /* [CP] Check Pods Manifest.lock */,
 				7791614F1CB2324E00CB0C77 /* Sources */,
 				779161501CB2324E00CB0C77 /* Frameworks */,
 				779161511CB2324E00CB0C77 /* Resources */,
+				601849A825F9469AA43233A0 /* [CP] Embed Pods Frameworks */,
+				A08F77533E5C130C0C1A048A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -160,16 +207,68 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4479922457AF53D3D4021ADD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		601849A825F9469AA43233A0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZBAnt/Pods-ZBAnt-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A08F77533E5C130C0C1A048A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZBAnt/Pods-ZBAnt-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7791614F1CB2324E00CB0C77 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C9CD0F1D6F2AD90049097F /* NSString+AESCrypt.m in Sources */,
 				779161611CB2324E00CB0C77 /* SecondViewController.m in Sources */,
 				7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */,
 				7791615E1CB2324E00CB0C77 /* FirstViewController.m in Sources */,
+				7707A6FA1D8C362A00B2328F /* ZBStatisticsViewController.m in Sources */,
+				7730ED081D8BF0EE0056877C /* ZBHTTPManager.m in Sources */,
 				772687591CB6468B005A9CC3 /* ZBAnt.m in Sources */,
 				779161581CB2324E00CB0C77 /* main.m in Sources */,
+				7707A6FD1D8C3A6D00B2328F /* ZBServersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +380,7 @@
 		};
 		7791616E1CB2324E00CB0C77 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A056646329995E61274C7746 /* Pods-ZBAnt.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ZBAnt/Info.plist;
@@ -292,6 +392,7 @@
 		};
 		7791616F1CB2324E00CB0C77 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F74214331E04B05602FDEE98 /* Pods-ZBAnt.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ZBAnt/Info.plist;

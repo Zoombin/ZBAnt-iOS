@@ -7,6 +7,7 @@
 //
 
 #import "ZBAnt.h"
+//#import "NSString+AESCrypt.h"
 
 //NSString * const HOME_URL_STRING = @"http://localhost:3000/api/";
 NSString * const HOME_URL_STRING = @"http://ant.zoombin.com:3008/api/";
@@ -112,10 +113,12 @@ BOOL const OPEN_LOG = NO;
 	
 	NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK];
 	[urlString appendString:@"?"];
-	[urlString appendString:@"&"];
-	[urlString appendFormat:@"bundleId=%@", bundleId ?: @""];
-	[urlString appendString:@"&"];
-	[urlString appendFormat:@"version=%@", VERSION];
+	[urlString appendString:@"edata="];
+	
+	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+	dict[@"bundleId"] = bundleId ?: @"";
+	dict[@"version"] = VERSION;
+		
 	
 	NSURL *url = [NSURL URLWithString:urlString];
 	
