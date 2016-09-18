@@ -8,6 +8,7 @@
 
 #import "ZBServerSettingsViewController.h"
 #import "ZBHTTPManager.h"
+#import "ZBLoginViewController.h"
 
 @interface ZBServerSettingsViewController ()
 
@@ -30,10 +31,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor whiteColor];
-	if (_server) {
-		self.title = [NSString stringWithFormat:@"%@:%@", _server.name, _server.outerIp];
-	}
+	self.title = [NSString stringWithFormat:@"%@:%@", _server.name, _server.outerIp];
 	
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
 	
 	CGRect rect = CGRectMake(50, 100, 60, 40);
 	CGSize labelSize = CGSizeMake(320, 30);
@@ -177,6 +177,19 @@
 	saveButton.backgroundColor = [UIColor orangeColor];
 	[saveButton addTarget:self action:@selector(saveSettings) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:saveButton];
+	
+	rect.origin.y += 70;
+	UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	loginButton.frame = rect;
+	[loginButton setTitle:@"Login" forState:UIControlStateNormal];
+	[loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	loginButton.backgroundColor = [UIColor greenColor];
+	[loginButton addTarget:self action:@selector(pushToLogin) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:loginButton];
+}
+
+- (void)dismiss {
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)toogleButton:(UIButton *)sender {
@@ -215,6 +228,12 @@
 			NSLog(@"error: %@", error);
 		}
 	}];
+}
+
+- (void)pushToLogin {
+	ZBLoginViewController *loginViewController = [[ZBLoginViewController alloc] init];
+	loginViewController.server = _server;
+	[self.navigationController pushViewController:loginViewController animated:YES];
 }
 
 

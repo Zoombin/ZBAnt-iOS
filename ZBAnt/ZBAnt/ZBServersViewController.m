@@ -113,7 +113,7 @@ static NSString *GAP = @"\t";
 	ZBServerSettingsViewController *serverSettingsViewController = [[ZBServerSettingsViewController alloc] init];
 	serverSettingsViewController.server = server;
 	serverSettingsViewController.hidesBottomBarWhenPushed = YES;
-	[self.navigationController pushViewController:serverSettingsViewController animated:YES];
+	[self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:serverSettingsViewController ] animated:YES completion:nil];
 }
 
 @end

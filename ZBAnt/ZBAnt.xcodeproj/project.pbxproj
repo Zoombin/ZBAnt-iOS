@@ -15,6 +15,7 @@
 		7737091A1CB509760072FE7D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 773709191CB509760072FE7D /* WebKit.framework */; };
 		774B426C1D8E5894006AE931 /* ZBServerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774B426B1D8E5894006AE931 /* ZBServerSettingsViewController.m */; };
 		774B426F1D8E68CB006AE931 /* ZBAntServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 774B426E1D8E68CB006AE931 /* ZBAntServer.m */; };
+		774B42731D8E99FD006AE931 /* ZBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774B42721D8E99FD006AE931 /* ZBLoginViewController.m */; };
 		779161581CB2324E00CB0C77 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 779161571CB2324E00CB0C77 /* main.m */; };
 		7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7791615A1CB2324E00CB0C77 /* AppDelegate.m */; };
 		7791615E1CB2324E00CB0C77 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7791615D1CB2324E00CB0C77 /* FirstViewController.m */; };
@@ -40,6 +41,8 @@
 		774B426B1D8E5894006AE931 /* ZBServerSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBServerSettingsViewController.m; path = ZBAnt/ZBServerSettingsViewController.m; sourceTree = "<group>"; };
 		774B426D1D8E68CB006AE931 /* ZBAntServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBAntServer.h; path = ZBAnt/ZBAntServer.h; sourceTree = "<group>"; };
 		774B426E1D8E68CB006AE931 /* ZBAntServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBAntServer.m; path = ZBAnt/ZBAntServer.m; sourceTree = "<group>"; };
+		774B42711D8E99FD006AE931 /* ZBLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBLoginViewController.h; path = ZBAnt/ZBLoginViewController.h; sourceTree = "<group>"; };
+		774B42721D8E99FD006AE931 /* ZBLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBLoginViewController.m; path = ZBAnt/ZBLoginViewController.m; sourceTree = "<group>"; };
 		779161531CB2324E00CB0C77 /* ZBAnt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZBAnt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		779161571CB2324E00CB0C77 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ZBAnt/main.m; sourceTree = "<group>"; };
 		779161591CB2324E00CB0C77 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ZBAnt/AppDelegate.h; sourceTree = "<group>"; };
@@ -94,6 +97,8 @@
 		7791614A1CB2324E00CB0C77 = {
 			isa = PBXGroup;
 			children = (
+				774B42711D8E99FD006AE931 /* ZBLoginViewController.h */,
+				774B42721D8E99FD006AE931 /* ZBLoginViewController.m */,
 				774B426D1D8E68CB006AE931 /* ZBAntServer.h */,
 				774B426E1D8E68CB006AE931 /* ZBAntServer.m */,
 				7707A6F81D8C362A00B2328F /* ZBStatisticsViewController.h */,
@@ -276,6 +281,7 @@
 				774B426C1D8E5894006AE931 /* ZBServerSettingsViewController.m in Sources */,
 				7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */,
 				7791615E1CB2324E00CB0C77 /* FirstViewController.m in Sources */,
+				774B42731D8E99FD006AE931 /* ZBLoginViewController.m in Sources */,
 				7707A6FA1D8C362A00B2328F /* ZBStatisticsViewController.m in Sources */,
 				7730ED081D8BF0EE0056877C /* ZBHTTPManager.m in Sources */,
 				772687591CB6468B005A9CC3 /* ZBAnt.m in Sources */,
