@@ -29,7 +29,7 @@
 	UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:serversViewController];
 	
 	UITabBarController *tabBarController = [[UITabBarController alloc] initWithNibName:nil bundle:nil];
-	tabBarController.viewControllers = @[nav, nav2];
+	tabBarController.viewControllers = @[nav2, nav];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = tabBarController;

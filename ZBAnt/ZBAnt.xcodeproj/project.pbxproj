@@ -13,6 +13,8 @@
 		772687591CB6468B005A9CC3 /* ZBAnt.m in Sources */ = {isa = PBXBuildFile; fileRef = 772687561CB6468B005A9CC3 /* ZBAnt.m */; };
 		7730ED081D8BF0EE0056877C /* ZBHTTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730ED071D8BF0EE0056877C /* ZBHTTPManager.m */; };
 		7737091A1CB509760072FE7D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 773709191CB509760072FE7D /* WebKit.framework */; };
+		774B426C1D8E5894006AE931 /* ZBServerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774B426B1D8E5894006AE931 /* ZBServerSettingsViewController.m */; };
+		774B426F1D8E68CB006AE931 /* ZBAntServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 774B426E1D8E68CB006AE931 /* ZBAntServer.m */; };
 		779161581CB2324E00CB0C77 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 779161571CB2324E00CB0C77 /* main.m */; };
 		7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7791615A1CB2324E00CB0C77 /* AppDelegate.m */; };
 		7791615E1CB2324E00CB0C77 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7791615D1CB2324E00CB0C77 /* FirstViewController.m */; };
@@ -34,6 +36,10 @@
 		7730ED061D8BF0EE0056877C /* ZBHTTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBHTTPManager.h; path = ZBAnt/ZBHTTPManager.h; sourceTree = "<group>"; };
 		7730ED071D8BF0EE0056877C /* ZBHTTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBHTTPManager.m; path = ZBAnt/ZBHTTPManager.m; sourceTree = "<group>"; };
 		773709191CB509760072FE7D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		774B426A1D8E5894006AE931 /* ZBServerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBServerSettingsViewController.h; path = ZBAnt/ZBServerSettingsViewController.h; sourceTree = "<group>"; };
+		774B426B1D8E5894006AE931 /* ZBServerSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBServerSettingsViewController.m; path = ZBAnt/ZBServerSettingsViewController.m; sourceTree = "<group>"; };
+		774B426D1D8E68CB006AE931 /* ZBAntServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBAntServer.h; path = ZBAnt/ZBAntServer.h; sourceTree = "<group>"; };
+		774B426E1D8E68CB006AE931 /* ZBAntServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBAntServer.m; path = ZBAnt/ZBAntServer.m; sourceTree = "<group>"; };
 		779161531CB2324E00CB0C77 /* ZBAnt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZBAnt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		779161571CB2324E00CB0C77 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ZBAnt/main.m; sourceTree = "<group>"; };
 		779161591CB2324E00CB0C77 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ZBAnt/AppDelegate.h; sourceTree = "<group>"; };
@@ -88,10 +94,14 @@
 		7791614A1CB2324E00CB0C77 = {
 			isa = PBXGroup;
 			children = (
-				7707A6FB1D8C3A6D00B2328F /* ZBServersViewController.h */,
-				7707A6FC1D8C3A6D00B2328F /* ZBServersViewController.m */,
+				774B426D1D8E68CB006AE931 /* ZBAntServer.h */,
+				774B426E1D8E68CB006AE931 /* ZBAntServer.m */,
 				7707A6F81D8C362A00B2328F /* ZBStatisticsViewController.h */,
 				7707A6F91D8C362A00B2328F /* ZBStatisticsViewController.m */,
+				7707A6FB1D8C3A6D00B2328F /* ZBServersViewController.h */,
+				7707A6FC1D8C3A6D00B2328F /* ZBServersViewController.m */,
+				774B426A1D8E5894006AE931 /* ZBServerSettingsViewController.h */,
+				774B426B1D8E5894006AE931 /* ZBServerSettingsViewController.m */,
 				7730ED061D8BF0EE0056877C /* ZBHTTPManager.h */,
 				7730ED071D8BF0EE0056877C /* ZBHTTPManager.m */,
 				772687541CB6468B005A9CC3 /* ZBAnt */,
@@ -262,6 +272,8 @@
 			files = (
 				77C9CD0F1D6F2AD90049097F /* NSString+AESCrypt.m in Sources */,
 				779161611CB2324E00CB0C77 /* SecondViewController.m in Sources */,
+				774B426F1D8E68CB006AE931 /* ZBAntServer.m in Sources */,
+				774B426C1D8E5894006AE931 /* ZBServerSettingsViewController.m in Sources */,
 				7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */,
 				7791615E1CB2324E00CB0C77 /* FirstViewController.m in Sources */,
 				7707A6FA1D8C362A00B2328F /* ZBStatisticsViewController.m in Sources */,

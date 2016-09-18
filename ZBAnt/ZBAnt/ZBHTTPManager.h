@@ -12,5 +12,7 @@
 
 + (instancetype)shared;
 - (void)statisticsWithBlock:(void (^)(id responseObject, NSError *error))block;
+- (void)settingsWithBlock:(void (^)(id responseObject, NSError *error))block;
+- (void)saveSettings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block;
 
 @end

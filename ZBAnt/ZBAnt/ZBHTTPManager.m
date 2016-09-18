@@ -36,16 +36,33 @@ static AFHTTPRequestOperationManager *manager;
 			block(nil, error);
 		}
 	}];
-
-//	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//		if (!error) {
-//			NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//			if (block) block(json, nil);
-//		} else {
-//			if (block) block(nil, error);
-//		}
-//	}];
-//	[getTask resume];
 }
+
+- (void)settingsWithBlock:(void (^)(id responseObject, NSError *error))block {
+	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@", BASE_URL_STRING, @"settings"];
+	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		if (block) {
+			block(responseObject, nil);
+		}
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		if (block) {
+			block(nil, error);
+		}
+	}];
+}
+
+- (void)saveSettings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block; {
+	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@", BASE_URL_STRING, @"settings"];
+	[manager POST:requestUrl parameters:settings success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		if (block) {
+			block(responseObject, nil);
+		}
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		if (block) {
+			block(nil, error);
+		}
+	}];
+}
+
 
 @end
