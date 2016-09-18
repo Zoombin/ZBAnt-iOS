@@ -57,51 +57,51 @@ static NSString *GAP = @"\t";
 	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_servers[indexPath.row]];
 	NSMutableString *string = [NSMutableString string];
 	[string appendString:server.name];
-	[string appendString:GAP];
+	[string appendString:@"    "];
 	
 	[string appendFormat:@"status: %@", [server.status boolValue] ? @"正常" : @"异常"];
+	cell.textLabel.textColor = [server.status boolValue] ? [UIColor blackColor] : [UIColor orangeColor];
 	[string appendString:@"\n"];
 	
 	[string appendFormat:@"outerIP: %@", server.outerIp];
-	[string appendString:GAP];
+	[string appendString:@"    "];
 	[string appendFormat:@"innerIp: %@", server.innerIp];
 	[string appendString:@"\n"];
 	
 	[string appendFormat:@"masterJob: %@", [ZBAntServer onOrOff:server.masterJobOn]];
 	[string appendString:GAP];
-	[string appendFormat:@"var: %@", server.sjMasterVar];
+	[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjMasterVar]];
 	[string appendString:GAP];
 	[string appendFormat:@"interval: %@", server.masterJobInterval];
 	[string appendString:GAP];
 	[string appendString:@"\n"];
 	
-	[string appendFormat:@"grabWeixinsJob: %@", [ZBAntServer onOrOff:server.grabWeixinsJobOn]];
+	[string appendFormat:@"weixinsJob: %@", [ZBAntServer onOrOff:server.grabWeixinsJobOn]];
 	[string appendString:GAP];
-	[string appendFormat:@"var: %@", server.sjWeixinsVar];
+	[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjWeixinsVar]];
 	[string appendString:GAP];
 	[string appendFormat:@"interval: %@", server.grabWeixinsJobInterval];
 	[string appendString:@"\n"];
 	
-	[string appendFormat:@"grabArticlesJob: %@", [ZBAntServer onOrOff:server.grabArticlesJobOn]];
+	[string appendFormat:@"articlesJob: %@", [ZBAntServer onOrOff:server.grabArticlesJobOn]];
 	[string appendString:GAP];
-	[string appendFormat:@"var: %@", server.sjArticlesVar];
+	[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjArticlesVar]];
 	[string appendString:GAP];
 	[string appendFormat:@"interval: %@", server.grabArticlesJobInterval];
 	[string appendString:@"\n"];
 	
-	[string appendFormat:@"processWeixinsJob: %@", [ZBAntServer onOrOff:server.processWeixinsJobOn]];
+	[string appendFormat:@"pWeixinsJob: %@", [ZBAntServer onOrOff:server.processWeixinsJobOn]];
 	[string appendString:GAP];
-	[string appendFormat:@"var: %@", server.sjProcessWeixinsVar];
+	[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjProcessWeixinsVar]];
 	[string appendString:GAP];
 	[string appendFormat:@"interval: %@", server.processWeixinsJobInterval];
 	[string appendString:@"\n"];
 	
-	[string appendFormat:@"processArticlesJob: %@", [ZBAntServer onOrOff:server.processArticlesJobOn]];
+	[string appendFormat:@"pArticlesJob: %@", [ZBAntServer onOrOff:server.processArticlesJobOn]];
 	[string appendString:GAP];
-	[string appendFormat:@"var: %@", server.sjProcessArticlesVar];
+	[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjProcessArticlesVar]];
 	[string appendString:GAP];
 	[string appendFormat:@"interval: %@", server.processArticlesJobInterval];
-	[string appendString:@"\n"];
 	cell.textLabel.text = string;
 	cell.textLabel.numberOfLines = 0;
 	cell.textLabel.font = [UIFont systemFontOfSize:13];

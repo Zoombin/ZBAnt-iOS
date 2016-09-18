@@ -27,8 +27,8 @@
 		_processArticlesJobOn = dictionary[@"processArticlesJobOn"];
 		_processArticlesJobInterval = dictionary[@"processArticlesJobInterval"];
 		_sjMasterVar = dictionary[@"sjMasterVar"];
-		_sjWeixinsVar = dictionary[@"sjMasterVar"];
-		_sjArticlesVar = dictionary[@"sjMasterVar"];
+		_sjWeixinsVar = dictionary[@"sjWeixinsVar"];
+		_sjArticlesVar = dictionary[@"sjArticlesVar"];
 		_sjProcessWeixinsVar = dictionary[@"sjProcessWeixinsVar"];
 		_sjProcessArticlesVar = dictionary[@"sjProcessArticlesVar"];
 		_name = [self nameWithOuterIp:_outerIp];
@@ -72,12 +72,12 @@
 	return outerIp;
 }
 
-+ (NSString *)onOrOff:(NSNumber *)onOrOff {
-	return [onOrOff boolValue] ? @"On" : @"Off";
++ (NSString *)onOrOff:(NSNumber *)number {
+	return [number boolValue] ? @"On" : @"Off";
 }
 
-+ (UIColor *)colorOnOrOff:(NSNumber *)onOrOff {
-	return [onOrOff boolValue] ? [UIColor greenColor] : [UIColor redColor];
++ (UIColor *)colorOnOrOff:(NSNumber *)number {
+	return [number boolValue] ? [UIColor greenColor] : [UIColor redColor];
 }
 
 

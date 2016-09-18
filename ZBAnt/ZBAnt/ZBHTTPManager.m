@@ -9,10 +9,10 @@
 #import "ZBHTTPManager.h"
 #import "AFNetworking.h"
 
-NSString * const HOST = @"http://localhost";
-NSString * const PORT = @"3000";
-//NSString * const HOST = @"http://ant.zoombin.com";
-//NSString * const PORT = @"3008";
+//NSString * const HOST = @"http://localhost";
+//NSString * const PORT = @"3000";
+NSString * const HOST = @"http://ant.zoombin.com";
+NSString * const PORT = @"3008";
 
 static ZBHTTPManager *httpManager;
 static AFHTTPRequestOperationManager *manager;
@@ -55,8 +55,9 @@ static NSString *BASE_URL_STRING;
 	}];
 }
 
-- (void)saveSettings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block; {
-	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@", BASE_URL_STRING, @"settings"];
+- (void)save:(NSString *)outerIp settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/weiboyi/", outerIp, PORT];
+	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@", baseUrlString, @"settings"];
 	[manager POST:requestUrl parameters:settings success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);

@@ -223,7 +223,7 @@
 	_server.processWeixinsJobInterval = @([_processWeixinsJobIntervalTextField.text integerValue]);
 	_server.processArticlesJobInterval = @([_processArticlesJobIntervalTextField.text integerValue]);
 	
-	[[ZBHTTPManager shared] saveSettings:[_server settings] withBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] save:_server.outerIp settings:[_server settings] withBlock:^(id responseObject, NSError *error) {
 		if (error) {
 			NSLog(@"error: %@", error);
 		}
