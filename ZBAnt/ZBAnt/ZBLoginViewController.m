@@ -27,6 +27,8 @@
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.title = [NSString stringWithFormat:@"%@:%@", _server.name, _server.outerIp];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
+	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self.view action:@selector(endEditing:)];
+	[self.view addGestureRecognizer:tap];
 	
 	_options = [@{
 	  kCRToastTextKey : @"test",
@@ -38,7 +40,7 @@
 	  kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionRight)
 	} mutableCopy];
 	
-	CGRect rect = CGRectMake(50, 100, 80, 40);
+	CGRect rect = CGRectMake(40, 80, 80, 40);
 	
 	UIButton *captchaButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	captchaButton.frame = rect;
@@ -49,9 +51,9 @@
 	
 	
 	rect.origin.x = 10;
-	rect.origin.y += 70;
+	rect.origin.y += 60;
 	rect.size.width = self.view.bounds.size.width - 10 * 2;
-	rect.size.height = 80;
+	rect.size.height = 60;
 	_imageUrlLabel = [[UILabel alloc] initWithFrame:rect];
 	_imageUrlLabel.backgroundColor = [UIColor grayColor];
 	_imageUrlLabel.numberOfLines = 0;
@@ -61,19 +63,22 @@
 	
 	
 	rect.origin.x = 50;
-	rect.origin.y += 120;
+	rect.origin.y += 80;
 	rect.size = CGSizeMake(100, 80);
 	_imageView = [[UIImageView alloc] initWithFrame:rect];
 	_imageView.backgroundColor = [UIColor lightGrayColor];
 	[self.view addSubview:_imageView];
 	
-	rect.origin.y += 140;
+	rect.origin.x += 150;
 	rect.size = CGSizeMake(100, 40);
 	_codeTextField = [[UITextField alloc] initWithFrame:rect];
 	_codeTextField.backgroundColor = [UIColor grayColor];
 	[self.view addSubview:_codeTextField];
 	
+	rect.origin.x = 0;
 	rect.origin.y += 100;
+	rect.size.width = self.view.bounds.size.width;
+	rect.size.height = 40;
 	UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	loginButton.frame = rect;
 	[loginButton setTitle:@"Login" forState:UIControlStateNormal];
