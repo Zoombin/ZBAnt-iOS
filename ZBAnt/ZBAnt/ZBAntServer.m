@@ -16,6 +16,7 @@
 		_status = dictionary[@"status"];
 		_innerIp = dictionary[@"innerIp"];
 		_outerIp = dictionary[@"outerIp"];
+		_inChargeOfReloadTasks = dictionary[@"inChargeOfReloadTasks"];
 		_masterJobOn = dictionary[@"masterJobOn"];
 		_masterJobInterval = dictionary[@"masterJobInterval"];
 		_grabWeixinsJobOn = dictionary[@"grabWeixinsJobOn"];
@@ -38,6 +39,9 @@
 
 - (NSDictionary *)settings {
 	NSMutableDictionary *settings = [@{} mutableCopy];
+	
+	settings[@"inChargeOfReloadTasks"] = [self trueOrFalseString:_inChargeOfReloadTasks];
+	
 	settings[@"masterJobOn"] = [self trueOrFalseString:_masterJobOn];
 	settings[@"masterJobInterval"] = _masterJobInterval;
 	

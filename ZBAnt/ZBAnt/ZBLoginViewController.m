@@ -80,6 +80,7 @@
 	rect.size.width = self.view.bounds.size.width;
 	rect.size.height = 40;
 	UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	loginButton.showsTouchWhenHighlighted = YES;
 	loginButton.frame = rect;
 	[loginButton setTitle:@"Login" forState:UIControlStateNormal];
 	[loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

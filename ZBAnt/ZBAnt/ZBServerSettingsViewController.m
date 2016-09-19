@@ -9,10 +9,12 @@
 #import "ZBServerSettingsViewController.h"
 #import "ZBHTTPManager.h"
 #import "ZBLoginViewController.h"
+#import "CRToast.h"
 
 @interface ZBServerSettingsViewController ()
 
 @property (readwrite) UIButton *masterJobButton;
+@property (readwrite) UIButton *inChargeOfReloadTasksButton;
 @property (readwrite) UIButton *grabWeixinsJobButton;
 @property (readwrite) UIButton *grabArticlesJobButton;
 @property (readwrite) UIButton *processWeixinsJobButton;
@@ -23,6 +25,8 @@
 @property (readwrite) UITextField *grabArticlesJobIntervalTextField;
 @property (readwrite) UITextField *processWeixinsJobIntervalTextField;
 @property (readwrite) UITextField *processArticlesJobIntervalTextField;
+
+@property (readwrite) NSMutableDictionary *options;
 
 @end
 
@@ -37,10 +41,20 @@
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
 	
-	CGRect rect = CGRectMake(50, 100, 60, 40);
+	_options = [@{
+				  kCRToastTextKey : @"设置成功",
+				  kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
+				  kCRToastBackgroundColorKey : [UIColor greenColor],
+				  kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
+				  kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
+				  kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionLeft),
+				  kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionRight)
+				  } mutableCopy];
+	
+	CGRect rect = CGRectMake(10, 70, 60, 40);
 	CGSize labelSize = CGSizeMake(320, 30);
 	CGSize buttonSize = CGSizeMake(60, 40);
-	CGSize textFieldSize = CGSizeMake(120, 40);
+	CGSize textFieldSize = CGSizeMake(80, 40);
 	
 	rect.size = labelSize;
 	UILabel *masterJobLabel = [[UILabel alloc] initWithFrame:rect];
@@ -65,8 +79,26 @@
 	[self.view addSubview:_masterJobIntervalTextField];
 	
 	
+	rect.origin.x += 100;
+	rect.origin.y = 70;
+	rect.size = labelSize;
+	UILabel *inChargeOfReloadTasksLabel = [[UILabel alloc] initWithFrame:rect];
+	inChargeOfReloadTasksLabel.text = @"inChargeOfReloadTasks";
+	[self.view addSubview:inChargeOfReloadTasksLabel];
 	
-	rect.origin.x = 50;
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_inChargeOfReloadTasksButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_inChargeOfReloadTasksButton.frame = rect;
+	[_inChargeOfReloadTasksButton setTitle:[ZBAntServer onOrOff:_server.inChargeOfReloadTasks] forState:UIControlStateNormal];
+	[_inChargeOfReloadTasksButton setTitleColor:[ZBAntServer colorOnOrOff:_server.inChargeOfReloadTasks] forState:UIControlStateNormal];
+	_inChargeOfReloadTasksButton.backgroundColor = [UIColor grayColor];
+	[_inChargeOfReloadTasksButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:_inChargeOfReloadTasksButton];
+	
+	
+	
+	rect.origin.x = 10;
 	rect.origin.y += 50;
 	rect.size = labelSize;
 	UILabel *grabWeixinsJobLabel = [[UILabel alloc] initWithFrame:rect];
@@ -92,7 +124,7 @@
 	
 	
 	
-	rect.origin.x = 50;
+	rect.origin.x = 10;
 	rect.origin.y += 50;
 	rect.size = labelSize;
 	UILabel *grabArticlesJobLabel = [[UILabel alloc] initWithFrame:rect];
@@ -118,7 +150,7 @@
 	
 	
 	
-	rect.origin.x = 50;
+	rect.origin.x = 10;
 	rect.origin.y += 50;
 	rect.size = labelSize;
 	UILabel *processWeixinsJobLabel = [[UILabel alloc] initWithFrame:rect];
@@ -144,7 +176,7 @@
 	
 	
 	
-	rect.origin.x = 50;
+	rect.origin.x = 10;
 	rect.origin.y += 50;
 	rect.size = labelSize;
 	UILabel *processArticlesJobLabel = [[UILabel alloc] initWithFrame:rect];
@@ -173,6 +205,7 @@
 	rect.size.width = self.view.bounds.size.width;
 	rect.size.height = 50;
 	UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	saveButton.showsTouchWhenHighlighted = YES;
 	saveButton.frame = rect;
 	[saveButton setTitle:@"Save" forState:UIControlStateNormal];
 	[saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -182,6 +215,7 @@
 	
 	rect.origin.y += 70;
 	UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	loginButton.showsTouchWhenHighlighted = YES;
 	loginButton.frame = rect;
 	[loginButton setTitle:@"Login" forState:UIControlStateNormal];
 	[loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -211,6 +245,9 @@
 	} else if (sender == _processArticlesJobButton) {
 		_server.processArticlesJobOn = @(![_server.processArticlesJobOn boolValue]);
 		value = _server.processArticlesJobOn;
+	} else if (sender == _inChargeOfReloadTasksButton) {
+		_server.inChargeOfReloadTasks = @(![_server.inChargeOfReloadTasks boolValue]);
+		value = _server.inChargeOfReloadTasks;
 	}
 	if (value) {
 		[sender setTitle:[ZBAntServer onOrOff:value] forState:UIControlStateNormal];
@@ -227,8 +264,17 @@
 	
 	[[ZBHTTPManager shared] save:_server.outerIp settings:[_server settings] withBlock:^(id responseObject, NSError *error) {
 		if (error) {
-			NSLog(@"error: %@", error);
+			_options[kCRToastTextKey] = @"设置失败!";
+			_options[kCRToastBackgroundColorKey] = [UIColor redColor];
 		}
+		
+		if (![responseObject[@"error"] isEqual:@0]) {
+			_options[kCRToastTextKey] = @"设置失败!";
+			_options[kCRToastBackgroundColorKey] = [UIColor redColor];
+		}
+		
+		[CRToastManager showNotificationWithOptions:_options completionBlock:^{
+		}];
 	}];
 }
 

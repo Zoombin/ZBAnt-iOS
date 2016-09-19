@@ -61,6 +61,10 @@ static NSString *GAP = @"\t";
 	
 	[string appendFormat:@"status: %@", [server.status boolValue] ? @"正常" : @"异常"];
 	cell.textLabel.textColor = [server.status boolValue] ? [UIColor blackColor] : [UIColor orangeColor];
+	[string appendString:@"    "];
+	if ([server.inChargeOfReloadTasks boolValue]) {
+		[string appendFormat:@"inChargeOfReloadTasks: %@", [ZBAntServer onOrOff:server.inChargeOfReloadTasks]];
+	}
 	[string appendString:@"\n"];
 	
 	[string appendFormat:@"outerIP: %@", server.outerIp];
