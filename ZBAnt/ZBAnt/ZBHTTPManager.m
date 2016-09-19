@@ -97,5 +97,10 @@ static NSString *BASE_URL_STRING;
 	}];
 }
 
+- (NSString *)adminLoginUrlStringWithOuterIp:(NSString *)outerIp {
+	NSString *urlString = [NSString stringWithFormat:@"http://%@:%@/admin/login", outerIp, PORT];
+	return urlString;
+}
+
 
 @end

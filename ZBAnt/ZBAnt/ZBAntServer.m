@@ -72,6 +72,10 @@
 		return @"ant3";
 	} else if ([outerIp isEqualToString:@"139.224.72.56"]) {
 		return @"ant4";
+	} else if ([outerIp isEqualToString:@"115.28.202.112"]) {
+		return @"ant5";
+	} else if ([outerIp isEqualToString:@"115.29.136.212"]) {
+		return @"ant6";
 	}
 	return outerIp;
 }

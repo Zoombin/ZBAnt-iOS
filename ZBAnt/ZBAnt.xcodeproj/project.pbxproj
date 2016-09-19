@@ -24,6 +24,7 @@
 		779161661CB2324E00CB0C77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 779161651CB2324E00CB0C77 /* Assets.xcassets */; };
 		779161691CB2324E00CB0C77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779161671CB2324E00CB0C77 /* LaunchScreen.storyboard */; };
 		77C9CD0F1D6F2AD90049097F /* NSString+AESCrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C9CD0E1D6F2AD90049097F /* NSString+AESCrypt.m */; };
+		77EB905D1D8FF1F5004C74DC /* ZBPingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77EB905C1D8FF1F5004C74DC /* ZBPingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,8 @@
 		7791616A1CB2324E00CB0C77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ZBAnt/Info.plist; sourceTree = "<group>"; };
 		77C9CD0D1D6F2AD90049097F /* NSString+AESCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AESCrypt.h"; sourceTree = "<group>"; };
 		77C9CD0E1D6F2AD90049097F /* NSString+AESCrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AESCrypt.m"; sourceTree = "<group>"; };
+		77EB905B1D8FF1F5004C74DC /* ZBPingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBPingViewController.h; path = ZBAnt/ZBPingViewController.h; sourceTree = "<group>"; };
+		77EB905C1D8FF1F5004C74DC /* ZBPingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBPingViewController.m; path = ZBAnt/ZBPingViewController.m; sourceTree = "<group>"; };
 		A056646329995E61274C7746 /* Pods-ZBAnt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZBAnt.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZBAnt/Pods-ZBAnt.debug.xcconfig"; sourceTree = "<group>"; };
 		F74214331E04B05602FDEE98 /* Pods-ZBAnt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZBAnt.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZBAnt/Pods-ZBAnt.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,6 +100,8 @@
 		7791614A1CB2324E00CB0C77 = {
 			isa = PBXGroup;
 			children = (
+				77EB905B1D8FF1F5004C74DC /* ZBPingViewController.h */,
+				77EB905C1D8FF1F5004C74DC /* ZBPingViewController.m */,
 				774B42711D8E99FD006AE931 /* ZBLoginViewController.h */,
 				774B42721D8E99FD006AE931 /* ZBLoginViewController.m */,
 				774B426D1D8E68CB006AE931 /* ZBAntServer.h */,
@@ -287,6 +292,7 @@
 				772687591CB6468B005A9CC3 /* ZBAnt.m in Sources */,
 				779161581CB2324E00CB0C77 /* main.m in Sources */,
 				7707A6FD1D8C3A6D00B2328F /* ZBServersViewController.m in Sources */,
+				77EB905D1D8FF1F5004C74DC /* ZBPingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

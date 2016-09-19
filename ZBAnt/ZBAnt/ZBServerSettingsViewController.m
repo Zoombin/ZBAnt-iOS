@@ -10,6 +10,7 @@
 #import "ZBHTTPManager.h"
 #import "ZBLoginViewController.h"
 #import "CRToast.h"
+#import "ZBPingViewController.h"
 
 @interface ZBServerSettingsViewController ()
 
@@ -40,6 +41,8 @@
 	[self.view addGestureRecognizer:tap];
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
+	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(ping)];
 	
 	_options = [@{
 				  kCRToastTextKey : @"设置成功",
@@ -282,6 +285,12 @@
 	ZBLoginViewController *loginViewController = [[ZBLoginViewController alloc] init];
 	loginViewController.server = _server;
 	[self.navigationController pushViewController:loginViewController animated:YES];
+}
+
+- (void)ping {
+	ZBPingViewController *pingViewController = [[ZBPingViewController alloc] init];
+	pingViewController.server = _server;
+	[self.navigationController pushViewController:pingViewController animated:YES];
 }
 
 
