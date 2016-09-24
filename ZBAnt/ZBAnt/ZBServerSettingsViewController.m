@@ -21,12 +21,14 @@
 @property (readwrite) UIButton *grabArticlesJobButton;
 @property (readwrite) UIButton *processWeixinsJobButton;
 @property (readwrite) UIButton *processArticlesJobButton;
+@property (readwrite) UIButton *grabArticlesDeepJobButton;
 
 @property (readwrite) UITextField *masterJobIntervalTextField;
 @property (readwrite) UITextField *grabWeixinsJobIntervalTextField;
 @property (readwrite) UITextField *grabArticlesJobIntervalTextField;
 @property (readwrite) UITextField *processWeixinsJobIntervalTextField;
 @property (readwrite) UITextField *processArticlesJobIntervalTextField;
+@property (readwrite) UITextField *grabArticlesDeepJobIntervalTextField;
 
 @property (readwrite) NSMutableDictionary *options;
 
@@ -221,6 +223,36 @@
 	_processArticlesJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.processArticlesJobInterval];
 	[self.view addSubview:_processArticlesJobIntervalTextField];
 	
+	
+	
+	rect.origin.x = grabArticlesJobLabel.frame.origin.x;
+	rect.origin.y += 50;
+	rect.size = labelSize;
+	UILabel *grabArticlesDeepLabel = [[UILabel alloc] initWithFrame:rect];
+	grabArticlesDeepLabel.text = @"articlesDeep";
+	[self.view addSubview:grabArticlesDeepLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_grabArticlesDeepJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_grabArticlesDeepJobButton.frame = rect;
+	[_grabArticlesDeepJobButton setTitle:[ZBAntServer onOrOff:_server.grabArticlesDeepJobOn] forState:UIControlStateNormal];
+	[_grabArticlesDeepJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.grabArticlesDeepJobOn] forState:UIControlStateNormal];
+	_grabArticlesDeepJobButton.backgroundColor = [UIColor grayColor];
+	[_grabArticlesDeepJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:_grabArticlesDeepJobButton];
+	
+	rect.origin.x += 80;
+	rect.size = textFieldSize;
+	_grabArticlesDeepJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
+	_grabArticlesDeepJobIntervalTextField.backgroundColor = [UIColor grayColor];
+	_grabArticlesDeepJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.grabArticlesDeepJobInterval];
+	[self.view addSubview:_grabArticlesDeepJobIntervalTextField];
+	
+	
+	
+	
+	//save button
 	rect.origin.x = 0;
 	rect.origin.y += 50;
 	rect.size.width = self.view.bounds.size.width;
@@ -234,6 +266,7 @@
 	[saveButton addTarget:self action:@selector(saveSettings) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:saveButton];
 	
+	//login button
 	rect.origin.y += 70;
 	UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	loginButton.showsTouchWhenHighlighted = YES;
@@ -272,6 +305,9 @@
 	} else if (sender == _inChargeOfReloadTasksDeepButton) {
 		_server.inChargeOfReloadTasksDeep = @(![_server.inChargeOfReloadTasksDeep boolValue]);
 		value = _server.inChargeOfReloadTasksDeep;
+	} else if (sender == _grabArticlesDeepJobButton) {
+		_server.grabArticlesDeepJobOn = @(![_server.grabArticlesDeepJobOn boolValue]);
+		value = _server.grabArticlesDeepJobOn;
 	}
 	if (value) {
 		[sender setTitle:[ZBAntServer onOrOff:value] forState:UIControlStateNormal];
@@ -285,6 +321,7 @@
 	_server.grabArticlesJobInterval = @([_grabArticlesJobIntervalTextField.text integerValue]);
 	_server.processWeixinsJobInterval = @([_processWeixinsJobIntervalTextField.text integerValue]);
 	_server.processArticlesJobInterval = @([_processArticlesJobIntervalTextField.text integerValue]);
+	_server.grabArticlesDeepJobInterval = @([_grabArticlesDeepJobIntervalTextField.text integerValue]);
 	
 	[[ZBHTTPManager shared] save:_server.outerIp settings:[_server settings] withBlock:^(id responseObject, NSError *error) {
 		if (error) {

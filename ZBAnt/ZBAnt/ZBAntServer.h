@@ -33,6 +33,10 @@
 @property (nonatomic, copy) NSNumber *sjProcessWeixinsVar;
 @property (nonatomic, copy) NSNumber *sjProcessArticlesVar;
 
+@property (nonatomic, copy) NSNumber *grabArticlesDeepJobOn;
+@property (nonatomic, copy) NSNumber *grabArticlesDeepJobInterval;
+@property (nonatomic, copy) NSNumber *sjArticlesDeepVar;
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 - (NSDictionary *)settings;
 + (NSString *)onOrOff:(NSNumber *)onOrOff;

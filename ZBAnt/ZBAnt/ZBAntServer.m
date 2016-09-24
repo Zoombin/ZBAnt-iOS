@@ -34,6 +34,9 @@
 		_sjProcessWeixinsVar = dictionary[@"sjProcessWeixinsVar"];
 		_sjProcessArticlesVar = dictionary[@"sjProcessArticlesVar"];
 		_name = [self nameWithOuterIp:_outerIp];
+		_grabArticlesDeepJobOn = dictionary[@"grabArticlesDeepJobOn"];
+		_grabArticlesDeepJobInterval = dictionary[@"grabArticlesDeepJobInterval"];
+		_sjArticlesDeepVar = dictionary[@"sjArticlesDeepVar"];
 	}
 	return self;
 }
@@ -58,6 +61,9 @@
 	
 	settings[@"processArticlesJobOn"] = [self trueOrFalseString:_processArticlesJobOn];
 	settings[@"processArticlesJobInterval"] = _processArticlesJobInterval;
+
+	settings[@"grabArticlesDeepJobOn"] = [self trueOrFalseString:_grabArticlesDeepJobOn];
+	settings[@"grabArticlesDeepJobInterval"] = _grabArticlesDeepJobInterval;
 	return settings;
 }
 
