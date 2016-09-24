@@ -10,6 +10,7 @@
 #import "ZBAnt.h"
 #import "ZBStatisticsViewController.h"
 #import "ZBServersViewController.h"
+#import "ZBNewrankViewController.h"
 
 @interface AppDelegate ()
 
@@ -20,16 +21,20 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	ZBStatisticsViewController *statisticsViewController = [[ZBStatisticsViewController alloc] init];
-	statisticsViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Statistics" image:[UIImage imageNamed:@"first"] tag:0];
-	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:statisticsViewController];
-	
 	ZBServersViewController *serversViewController = [[ZBServersViewController alloc] init];
-	serversViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Servers" image:[UIImage imageNamed:@"second"] tag:1];
-	UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:serversViewController];
+	serversViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Servers" image:[UIImage imageNamed:@"first"] tag:1];
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:serversViewController];
+	
+	ZBStatisticsViewController *statisticsViewController = [[ZBStatisticsViewController alloc] init];
+	statisticsViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Weiboyi" image:[UIImage imageNamed:@"second"] tag:0];
+	UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:statisticsViewController];
+	
+	ZBNewrankViewController *newrankViewController = [[ZBNewrankViewController alloc] init];
+	newrankViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Newrank" image:[UIImage imageNamed:@"first"] tag:1];
+	UINavigationController *nav3 = [[UINavigationController alloc] initWithRootViewController:newrankViewController];
 	
 	UITabBarController *tabBarController = [[UITabBarController alloc] initWithNibName:nil bundle:nil];
-	tabBarController.viewControllers = @[nav2, nav];
+	tabBarController.viewControllers = @[nav, nav2, nav3];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = tabBarController;
