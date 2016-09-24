@@ -9,10 +9,10 @@
 #import "ZBHTTPManager.h"
 #import "AFNetworking.h"
 
-//NSString * const HOST = @"http://localhost";
-//NSString * const PORT = @"3000";
-NSString * const HOST = @"http://ant.zoombin.com";
-NSString * const PORT = @"3008";
+NSString * const HOST = @"http://localhost";
+NSString * const PORT = @"3000";
+//NSString * const HOST = @"http://ant.zoombin.com";
+//NSString * const PORT = @"3008";
 
 static ZBHTTPManager *httpManager;
 static AFHTTPRequestOperationManager *manager;
@@ -29,8 +29,8 @@ static NSString *BASE_URL_STRING;
 	return httpManager;
 }
 
-- (void)statisticsWithBlock:(void (^)(id responseObject, NSError *error))block {
-	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@", BASE_URL_STRING, @"statistics"];
+- (void)statistics:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@?type=%@", BASE_URL_STRING, @"statistics", type];
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);

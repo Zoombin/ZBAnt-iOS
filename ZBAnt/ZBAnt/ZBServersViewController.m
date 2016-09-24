@@ -53,7 +53,7 @@ static NSString *GAP = @"\t";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+	UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[NSString stringWithFormat:@"%ld", (long)indexPath.row]];
 	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_servers[indexPath.row]];
 	NSMutableString *string = [NSMutableString string];
 	[string appendString:server.name];

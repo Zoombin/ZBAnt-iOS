@@ -9,9 +9,11 @@
 #import "ZBStatisticsViewController.h"
 #import "ZBHTTPManager.h"
 
-@interface ZBStatisticsViewController ()
+@interface ZBStatisticsViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, readwrite) UITextView *textView;
+@property (nonatomic, readwrite) UITableView *tableView;
+@property (nonatomic, readwrite) NSArray *types;
+@property (nonatomic, readwrite) NSMutableDictionary *counts;
 
 @end
 
@@ -19,30 +21,44 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	_textView = [[UITextView alloc] initWithFrame:self.view.frame];
-	_textView.editable = NO;
-	_textView.font = [UIFont systemFontOfSize:25];
-	[self.view addSubview:_textView];
-	[self loadData];
+	_types = @[@"phpsessids", @"weixins", @"articles", @"articlesToday", @"tasks", @"tasksDeep", @"grabbed", @"weixinsNotProcessed", @"articlesNotProcessed"];
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(loadData)];
+	_counts = [NSMutableDictionary dictionary];
+	
+	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	[self.view addSubview:_tableView];
 }
 
-- (void)loadData {
-	[[ZBHTTPManager shared] statisticsWithBlock:^(id responseObject, NSError *error) {
+- (void)loadData:(NSString *)type {
+	[[ZBHTTPManager shared] statistics:type withBlock:^(id responseObject, NSError *error) {
 		if (!error) {
-			if (responseObject[@"data"]) {
-				NSArray *data = [NSArray arrayWithArray:responseObject[@"data"]];
-				NSMutableString *string = [NSMutableString string];
-				for (int i = 0; i < data.count; i++) {
-					NSDictionary *dict = data[i];
-					[string appendFormat:@"%@: %@", dict[@"name"], dict[@"count"]];
-					[string appendString:@"\n"];
-				}
-				_textView.text = string;
+			NSDictionary *tmp = responseObject[@"data"];
+			if (tmp) {
+				NSString *name = tmp[@"name"];
+				NSNumber *count = tmp[@"count"];
+				_counts[name] = count;
+				[_tableView reloadData];
 			}
 		}
 	}];
 }
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return _types.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[NSString stringWithFormat:@"%ld", (long)indexPath.row]];
+	NSString *type = _types[indexPath.row];
+	cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", type, _counts[type]];
+	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self loadData:_types[indexPath.row]];
+}
+
 
 @end
