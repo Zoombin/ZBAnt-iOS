@@ -45,7 +45,7 @@ static NSString *GAP = @"\t";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 130;
+	return 150;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -64,6 +64,9 @@ static NSString *GAP = @"\t";
 	[string appendString:@"    "];
 	if ([server.inChargeOfReloadTasks boolValue]) {
 		[string appendFormat:@"inChargeOfReloadTasks: %@", [ZBAntServer onOrOff:server.inChargeOfReloadTasks]];
+	}
+	if ([server.inChargeOfReloadTasksDeep boolValue]) {
+		[string appendFormat:@"ReloadDeepTasks: %@", [ZBAntServer onOrOff:server.inChargeOfReloadTasksDeep]];
 	}
 	[string appendString:@"\n"];
 	
@@ -106,6 +109,15 @@ static NSString *GAP = @"\t";
 	[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjProcessArticlesVar]];
 	[string appendString:GAP];
 	[string appendFormat:@"interval: %@", server.processArticlesJobInterval];
+	[string appendString:@"\n"];
+	
+	[string appendFormat:@"articlesDeep: %@", [ZBAntServer onOrOff:server.grabArticlesDeepJobOn]];
+	[string appendString:GAP];
+	[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjArticlesDeepVar]];
+	[string appendString:GAP];
+	[string appendFormat:@"interval: %@", server.grabArticlesDeepJobInterval];
+	[string appendString:@"\n"];
+	
 	cell.textLabel.text = string;
 	cell.textLabel.numberOfLines = 0;
 	cell.textLabel.font = [UIFont systemFontOfSize:13];
