@@ -16,6 +16,7 @@
 @property (nonatomic, copy) NSString *innerIp;
 @property (nonatomic, copy) NSString *outerIp;
 @property (nonatomic, copy) NSNumber *inChargeOfReloadTasks;
+@property (nonatomic, copy) NSNumber *inChargeOfReloadTasksDeep;
 @property (nonatomic, copy) NSNumber *masterJobOn;
 @property (nonatomic, copy) NSNumber *masterJobInterval;
 @property (nonatomic, copy) NSNumber *grabWeixinsJobOn;

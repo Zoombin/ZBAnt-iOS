@@ -16,6 +16,7 @@
 
 @property (readwrite) UIButton *masterJobButton;
 @property (readwrite) UIButton *inChargeOfReloadTasksButton;
+@property (readwrite) UIButton *inChargeOfReloadTasksDeepButton;
 @property (readwrite) UIButton *grabWeixinsJobButton;
 @property (readwrite) UIButton *grabArticlesJobButton;
 @property (readwrite) UIButton *processWeixinsJobButton;
@@ -86,7 +87,7 @@
 	rect.origin.y = 70;
 	rect.size = labelSize;
 	UILabel *inChargeOfReloadTasksLabel = [[UILabel alloc] initWithFrame:rect];
-	inChargeOfReloadTasksLabel.text = @"inChargeOfReloadTasks";
+	inChargeOfReloadTasksLabel.text = @"ReTasks";
 	[self.view addSubview:inChargeOfReloadTasksLabel];
 	
 	rect.origin.y += 30;
@@ -99,6 +100,23 @@
 	[_inChargeOfReloadTasksButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:_inChargeOfReloadTasksButton];
 	
+	
+	rect.origin.x += 80;
+	rect.origin.y = inChargeOfReloadTasksLabel.frame.origin.y;
+	rect.size = labelSize;
+	UILabel *inChargeOfReloadTasksDeepLabel = [[UILabel alloc] initWithFrame:rect];
+	inChargeOfReloadTasksDeepLabel.text = @"TasksDeep";
+	[self.view addSubview:inChargeOfReloadTasksDeepLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_inChargeOfReloadTasksDeepButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_inChargeOfReloadTasksDeepButton.frame = rect;
+	[_inChargeOfReloadTasksDeepButton setTitle:[ZBAntServer onOrOff:_server.inChargeOfReloadTasksDeep] forState:UIControlStateNormal];
+	[_inChargeOfReloadTasksDeepButton setTitleColor:[ZBAntServer colorOnOrOff:_server.inChargeOfReloadTasksDeep] forState:UIControlStateNormal];
+	_inChargeOfReloadTasksDeepButton.backgroundColor = [UIColor grayColor];
+	[_inChargeOfReloadTasksDeepButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:_inChargeOfReloadTasksDeepButton];
 	
 	
 	rect.origin.x = 10;
@@ -124,6 +142,32 @@
 	_grabWeixinsJobIntervalTextField.backgroundColor = [UIColor grayColor];
 	_grabWeixinsJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.grabWeixinsJobInterval];
 	[self.view addSubview:_grabWeixinsJobIntervalTextField];
+	
+	
+	
+	rect.origin.x += 100;
+	rect.origin.y = grabWeixinsJobLabel.frame.origin.y;
+	rect.size = labelSize;
+	UILabel *processWeixinsJobLabel = [[UILabel alloc] initWithFrame:rect];
+	processWeixinsJobLabel.text = @"processWeixinsJobOn";
+	[self.view addSubview:processWeixinsJobLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_processWeixinsJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_processWeixinsJobButton.frame = rect;
+	[_processWeixinsJobButton setTitle:[ZBAntServer onOrOff:_server.processWeixinsJobOn] forState:UIControlStateNormal];
+	[_processWeixinsJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.processWeixinsJobOn] forState:UIControlStateNormal];
+	_processWeixinsJobButton.backgroundColor = [UIColor grayColor];
+	[_processWeixinsJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:_processWeixinsJobButton];
+	
+	rect.origin.x += 80;
+	rect.size = textFieldSize;
+	_processWeixinsJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
+	_processWeixinsJobIntervalTextField.backgroundColor = [UIColor grayColor];
+	_processWeixinsJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.processWeixinsJobInterval];
+	[self.view addSubview:_processWeixinsJobIntervalTextField];
 	
 	
 	
@@ -153,34 +197,8 @@
 	
 	
 	
-	rect.origin.x = 10;
-	rect.origin.y += 50;
-	rect.size = labelSize;
-	UILabel *processWeixinsJobLabel = [[UILabel alloc] initWithFrame:rect];
-	processWeixinsJobLabel.text = @"processWeixinsJobOn";
-	[self.view addSubview:processWeixinsJobLabel];
-	
-	rect.origin.y += 30;
-	rect.size = buttonSize;
-	_processWeixinsJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	_processWeixinsJobButton.frame = rect;
-	[_processWeixinsJobButton setTitle:[ZBAntServer onOrOff:_server.processWeixinsJobOn] forState:UIControlStateNormal];
-	[_processWeixinsJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.processWeixinsJobOn] forState:UIControlStateNormal];
-	_processWeixinsJobButton.backgroundColor = [UIColor grayColor];
-	[_processWeixinsJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_processWeixinsJobButton];
-	
-	rect.origin.x += 80;
-	rect.size = textFieldSize;
-	_processWeixinsJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
-	_processWeixinsJobIntervalTextField.backgroundColor = [UIColor grayColor];
-	_processWeixinsJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.processWeixinsJobInterval];
-	[self.view addSubview:_processWeixinsJobIntervalTextField];
-	
-	
-	
-	rect.origin.x = 10;
-	rect.origin.y += 50;
+	rect.origin.x += 100;
+	rect.origin.y = grabArticlesJobLabel.frame.origin.y;
 	rect.size = labelSize;
 	UILabel *processArticlesJobLabel = [[UILabel alloc] initWithFrame:rect];
 	processArticlesJobLabel.text = @"processArticlesJobOn";
@@ -251,6 +269,9 @@
 	} else if (sender == _inChargeOfReloadTasksButton) {
 		_server.inChargeOfReloadTasks = @(![_server.inChargeOfReloadTasks boolValue]);
 		value = _server.inChargeOfReloadTasks;
+	} else if (sender == _inChargeOfReloadTasksDeepButton) {
+		_server.inChargeOfReloadTasksDeep = @(![_server.inChargeOfReloadTasksDeep boolValue]);
+		value = _server.inChargeOfReloadTasksDeep;
 	}
 	if (value) {
 		[sender setTitle:[ZBAntServer onOrOff:value] forState:UIControlStateNormal];
