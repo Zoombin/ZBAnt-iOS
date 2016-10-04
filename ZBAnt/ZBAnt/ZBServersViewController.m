@@ -16,7 +16,8 @@ static NSString *GAP = @"\t";
 @interface ZBServersViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, readwrite) UITableView *tableView;
-@property (nonatomic, readwrite) NSArray *servers;
+@property (nonatomic, readwrite) NSArray *weiboyis;
+@property (nonatomic, readwrite) NSArray *newranks;
 
 @end
 
@@ -33,28 +34,48 @@ static NSString *GAP = @"\t";
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(loadData)];
 }
 
+- (NSDictionary *)newrankDataWithSameInnerIp:(NSString *)innerIp {
+	for (int i = 0; i < _newranks.count; i++) {
+		NSDictionary *dict = _newranks[i];
+		if ([dict[@"innerIp"] isEqualToString:innerIp]) {
+			return dict;
+		}
+	}
+	return @{};
+}
+
 - (void)loadData {
-	[[ZBHTTPManager shared] settingsWithBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] settings:WEIBOYI withBlock:^(id responseObject, NSError *error) {
 		if (!error) {
 			if (responseObject[@"data"]) {
-				_servers = [NSArray arrayWithArray:responseObject[@"data"]];
-				[_tableView reloadData];
+				_weiboyis = [NSArray arrayWithArray:responseObject[@"data"]];
 			}
+			[[ZBHTTPManager shared] settings:NEWRANK withBlock:^(id responseObject, NSError *error) {
+				if (!error) {
+					if (responseObject[@"data"]) {
+						_newranks = [NSArray arrayWithArray:responseObject[@"data"]];
+						[_tableView reloadData];
+					}
+				}
+			}];
 		}
 	}];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 150;
+	return 250;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return _servers.count;
+	return _weiboyis.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[NSString stringWithFormat:@"%ld", (long)indexPath.row]];
-	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_servers[indexPath.row]];
+	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_weiboyis[indexPath.row]];
+	NSDictionary *data = [self newrankDataWithSameInnerIp:server.innerIp];
+	[server setNewrankData:data];
+	
 	NSMutableString *string = [NSMutableString string];
 	[string appendString:server.name];
 	[string appendString:@"    "];
@@ -117,6 +138,34 @@ static NSString *GAP = @"\t";
 	[string appendString:GAP];
 	[string appendFormat:@"interval: %@", server.grabArticlesDeepJobInterval];
 	[string appendString:@"\n"];
+	[string appendString:@"\n"];
+	
+
+	//newrank
+	[string appendFormat:@"nkGrabArticles: %@", [ZBAntServer onOrOff:server.nkGrabArticlesJobOn]];
+	[string appendString:GAP];
+	[string appendFormat:@"interval: %@", server.nkGrabArticlesJobInterval];
+	[string appendString:@"\n"];
+	
+	[string appendFormat:@"nkGrabDetails: %@", [ZBAntServer onOrOff:server.nkGrabDetailsJobOn]];
+	[string appendString:GAP];
+	[string appendFormat:@"interval: %@", server.nkGrabDetailsJobInterval];
+	[string appendString:@"\n"];
+	
+	[string appendFormat:@"nkProcessArticles: %@", [ZBAntServer onOrOff:server.nkProcessArticlesJobOn]];
+	[string appendString:GAP];
+	[string appendFormat:@"interval: %@", server.nkProcessArticlesJobInterval];
+	[string appendString:@"\n"];
+	
+	[string appendFormat:@"nkProcessDetails: %@", [ZBAntServer onOrOff:server.nkProcessDetailsJobOn]];
+	[string appendString:GAP];
+	[string appendFormat:@"interval: %@", server.nkProcessDetailsJobInterval];
+	[string appendString:@"\n"];
+	
+	[string appendFormat:@"nkReloadArticles: %@", [ZBAntServer onOrOff:server.nkInChargeOfReloadArticlesTasks]];
+	[string appendString:GAP];
+	[string appendFormat:@"nkReloadDetails: %@", [ZBAntServer onOrOff:server.nkInChargeOfReloadDetailsTasks]];
+	[string appendString:@"\n"];
 	
 	cell.textLabel.text = string;
 	cell.textLabel.numberOfLines = 0;
@@ -125,7 +174,7 @@ static NSString *GAP = @"\t";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_servers[indexPath.row]];
+	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_weiboyis[indexPath.row]];
 	ZBServerSettingsViewController *serverSettingsViewController = [[ZBServerSettingsViewController alloc] init];
 	serverSettingsViewController.server = server;
 	serverSettingsViewController.hidesBottomBarWhenPushed = YES;

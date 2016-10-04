@@ -14,6 +14,9 @@ NSString * const PORT = @"3000";
 //NSString * const HOST = @"http://ant.zoombin.com";
 //NSString * const PORT = @"3008";
 
+NSString * const WEIBOYI = @"weiboyi";
+NSString * const NEWRANK = @"newrank";
+
 static ZBHTTPManager *httpManager;
 static AFHTTPRequestOperationManager *manager;
 static NSString *BASE_URL_STRING;
@@ -24,13 +27,13 @@ static NSString *BASE_URL_STRING;
 	if (!httpManager) {
 		httpManager = [[ZBHTTPManager alloc] init];
 		manager = [AFHTTPRequestOperationManager manager];
-		BASE_URL_STRING = [NSString stringWithFormat:@"%@:%@/api/weiboyi/", HOST, PORT];
+		BASE_URL_STRING = [NSString stringWithFormat:@"%@:%@/api/", HOST, PORT];
 	}
 	return httpManager;
 }
 
 - (void)statistics:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@?type=%@", BASE_URL_STRING, @"statistics", type];
+	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@%@?type=%@", BASE_URL_STRING, WEIBOYI, @"/statistics", type];
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);
@@ -42,8 +45,11 @@ static NSString *BASE_URL_STRING;
 	}];
 }
 
-- (void)settingsWithBlock:(void (^)(id responseObject, NSError *error))block {
-	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@", BASE_URL_STRING, @"settings"];
+- (void)settings:(NSString *)channel withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [NSString stringWithFormat:@"%@%@%@", BASE_URL_STRING, WEIBOYI, @"/settings"];
+	if ([channel isEqualToString:@"newrank"]) {
+		requestUrl = [NSString stringWithFormat:@"%@%@%@", BASE_URL_STRING, NEWRANK, @"/settings"];
+	}
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);

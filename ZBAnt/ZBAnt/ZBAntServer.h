@@ -37,8 +37,22 @@
 @property (nonatomic, copy) NSNumber *grabArticlesDeepJobInterval;
 @property (nonatomic, copy) NSNumber *sjArticlesDeepVar;
 
+//newrank
+@property (nonatomic, copy) NSNumber *nkGrabArticlesJobInterval;
+@property (nonatomic, copy) NSNumber *nkGrabArticlesJobOn;
+@property (nonatomic, copy) NSNumber *nkGrabDetailsJobInterval;
+@property (nonatomic, copy) NSNumber *nkGrabDetailsJobOn;
+@property (nonatomic, copy) NSNumber *nkProcessArticlesJobInterval;
+@property (nonatomic, copy) NSNumber *nkProcessArticlesJobOn;
+@property (nonatomic, copy) NSNumber *nkProcessDetailsJobInterval;
+@property (nonatomic, copy) NSNumber *nkProcessDetailsJobOn;
+@property (nonatomic, copy) NSNumber *nkInChargeOfReloadArticlesTasks;
+@property (nonatomic, copy) NSNumber *nkInChargeOfReloadDetailsTasks;
+
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 - (NSDictionary *)settings;
+- (void)setNewrankData:(NSDictionary *)data;
 + (NSString *)onOrOff:(NSNumber *)onOrOff;
 + (UIColor *)colorOnOrOff:(NSNumber *)onOrOff;
 

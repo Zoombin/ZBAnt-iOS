@@ -41,6 +41,19 @@
 	return self;
 }
 
+- (void)setNewrankData:(NSDictionary *)data {
+	_nkGrabArticlesJobInterval = data[@"grabArticlesJobInterval"];
+	_nkGrabArticlesJobOn = data[@"grabArticlesJobOn"];
+	_nkGrabDetailsJobInterval = data[@"grabDetailsJobInterval"];
+	_nkGrabDetailsJobOn = data[@"grabDetailsJobOn"];
+	_nkProcessArticlesJobInterval = data[@"processArticlesJobInterval"];
+	_nkProcessArticlesJobOn = data[@"processArticlesJobOn"];
+	_nkProcessDetailsJobInterval = data[@"processDetailsJobInterval"];
+	_nkProcessDetailsJobOn = data[@"processDetailsJobOn"];
+	_nkInChargeOfReloadArticlesTasks = data[@"inChargeOfReloadArticlesTasks"];
+	_nkInChargeOfReloadDetailsTasks = data[@"inChargeOfReloadDetailsTasks"];
+}
+
 - (NSDictionary *)settings {
 	NSMutableDictionary *settings = [@{} mutableCopy];
 	

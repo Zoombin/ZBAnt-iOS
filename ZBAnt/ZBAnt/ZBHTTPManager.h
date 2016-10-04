@@ -10,9 +10,13 @@
 
 @interface ZBHTTPManager : NSObject
 
+
+extern NSString * const WEIBOYI;
+extern NSString * const NEWRANK;
+
 + (instancetype)shared;
 - (void)statistics:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block;
-- (void)settingsWithBlock:(void (^)(id responseObject, NSError *error))block;
+- (void)settings:(NSString *)channel withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)save:(NSString *)outerIp settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)captcha:(NSString *)outerIp withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)login:(NSString *)outerIp code:(NSString *)code withBlock:(void (^)(id responseObject, NSError *error))block;
