@@ -32,6 +32,18 @@
 
 @property (readwrite) NSMutableDictionary *options;
 
+//newrank
+@property (readwrite) UIButton *nkGrabArticlesJobButton;
+@property (readwrite) UITextField *nkGrabArticlesJobIntervalTextField;
+@property (readwrite) UIButton *nkGrabDetailsJobButton;
+@property (readwrite) UITextField *nkGrabDetailsJobIntervalTextField;
+@property (readwrite) UIButton *nkProcessArticlesJobButton;
+@property (readwrite) UITextField *nkProcessArticlesJobIntervalTextField;
+@property (readwrite) UIButton *nkProcessDetailsJobButton;
+@property (readwrite) UITextField *nkProcessDetailsJobIntervalTextField;
+@property (readwrite) UIButton *nkInChargeOfReloadArticlesTasksButton;
+@property (readwrite) UIButton *nkInChargeOfReloadDetailsTasksButton;
+
 @end
 
 @implementation ZBServerSettingsViewController
@@ -39,6 +51,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor whiteColor];
+	
 	self.title = [NSString stringWithFormat:@"%@:%@", _server.name, _server.outerIp];
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self.view action:@selector(endEditing:)];
 	[self.view addGestureRecognizer:tap];
@@ -57,6 +70,9 @@
 				  kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionRight)
 				  } mutableCopy];
 	
+	UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+	[self.view addSubview:scrollView];
+	
 	CGRect rect = CGRectMake(10, 70, 60, 40);
 	CGSize labelSize = CGSizeMake(320, 30);
 	CGSize buttonSize = CGSizeMake(60, 40);
@@ -65,7 +81,7 @@
 	rect.size = labelSize;
 	UILabel *masterJobLabel = [[UILabel alloc] initWithFrame:rect];
 	masterJobLabel.text = @"masterJobOn";
-	[self.view addSubview:masterJobLabel];
+	[scrollView addSubview:masterJobLabel];
 	
 	rect.origin.y += 30;
 	rect.size = buttonSize;
@@ -75,14 +91,14 @@
 	[_masterJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.masterJobOn] forState:UIControlStateNormal];
 	_masterJobButton.backgroundColor = [UIColor grayColor];
 	[_masterJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_masterJobButton];
+	[scrollView addSubview:_masterJobButton];
 	
 	rect.origin.x += 80;
 	rect.size = textFieldSize;
 	_masterJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
 	_masterJobIntervalTextField.backgroundColor = [UIColor grayColor];
 	_masterJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.masterJobInterval];
-	[self.view addSubview:_masterJobIntervalTextField];
+	[scrollView addSubview:_masterJobIntervalTextField];
 	
 	
 	rect.origin.x += 100;
@@ -90,7 +106,7 @@
 	rect.size = labelSize;
 	UILabel *inChargeOfReloadTasksLabel = [[UILabel alloc] initWithFrame:rect];
 	inChargeOfReloadTasksLabel.text = @"ReTasks";
-	[self.view addSubview:inChargeOfReloadTasksLabel];
+	[scrollView addSubview:inChargeOfReloadTasksLabel];
 	
 	rect.origin.y += 30;
 	rect.size = buttonSize;
@@ -100,7 +116,7 @@
 	[_inChargeOfReloadTasksButton setTitleColor:[ZBAntServer colorOnOrOff:_server.inChargeOfReloadTasks] forState:UIControlStateNormal];
 	_inChargeOfReloadTasksButton.backgroundColor = [UIColor grayColor];
 	[_inChargeOfReloadTasksButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_inChargeOfReloadTasksButton];
+	[scrollView addSubview:_inChargeOfReloadTasksButton];
 	
 	
 	rect.origin.x += 80;
@@ -108,7 +124,7 @@
 	rect.size = labelSize;
 	UILabel *inChargeOfReloadTasksDeepLabel = [[UILabel alloc] initWithFrame:rect];
 	inChargeOfReloadTasksDeepLabel.text = @"TasksDeep";
-	[self.view addSubview:inChargeOfReloadTasksDeepLabel];
+	[scrollView addSubview:inChargeOfReloadTasksDeepLabel];
 	
 	rect.origin.y += 30;
 	rect.size = buttonSize;
@@ -118,7 +134,7 @@
 	[_inChargeOfReloadTasksDeepButton setTitleColor:[ZBAntServer colorOnOrOff:_server.inChargeOfReloadTasksDeep] forState:UIControlStateNormal];
 	_inChargeOfReloadTasksDeepButton.backgroundColor = [UIColor grayColor];
 	[_inChargeOfReloadTasksDeepButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_inChargeOfReloadTasksDeepButton];
+	[scrollView addSubview:_inChargeOfReloadTasksDeepButton];
 	
 	
 	rect.origin.x = 10;
@@ -126,7 +142,7 @@
 	rect.size = labelSize;
 	UILabel *grabWeixinsJobLabel = [[UILabel alloc] initWithFrame:rect];
 	grabWeixinsJobLabel.text = @"grabWeixinsJobOn";
-	[self.view addSubview:grabWeixinsJobLabel];
+	[scrollView addSubview:grabWeixinsJobLabel];
 	
 	rect.origin.y += 30;
 	rect.size = buttonSize;
@@ -136,14 +152,14 @@
 	[_grabWeixinsJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.grabWeixinsJobOn] forState:UIControlStateNormal];
 	_grabWeixinsJobButton.backgroundColor = [UIColor grayColor];
 	[_grabWeixinsJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_grabWeixinsJobButton];
+	[scrollView addSubview:_grabWeixinsJobButton];
 	
 	rect.origin.x += 80;
 	rect.size = textFieldSize;
 	_grabWeixinsJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
 	_grabWeixinsJobIntervalTextField.backgroundColor = [UIColor grayColor];
 	_grabWeixinsJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.grabWeixinsJobInterval];
-	[self.view addSubview:_grabWeixinsJobIntervalTextField];
+	[scrollView addSubview:_grabWeixinsJobIntervalTextField];
 	
 	
 	
@@ -152,7 +168,7 @@
 	rect.size = labelSize;
 	UILabel *processWeixinsJobLabel = [[UILabel alloc] initWithFrame:rect];
 	processWeixinsJobLabel.text = @"processWeixinsJobOn";
-	[self.view addSubview:processWeixinsJobLabel];
+	[scrollView addSubview:processWeixinsJobLabel];
 	
 	rect.origin.y += 30;
 	rect.size = buttonSize;
@@ -162,14 +178,14 @@
 	[_processWeixinsJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.processWeixinsJobOn] forState:UIControlStateNormal];
 	_processWeixinsJobButton.backgroundColor = [UIColor grayColor];
 	[_processWeixinsJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_processWeixinsJobButton];
+	[scrollView addSubview:_processWeixinsJobButton];
 	
 	rect.origin.x += 80;
 	rect.size = textFieldSize;
 	_processWeixinsJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
 	_processWeixinsJobIntervalTextField.backgroundColor = [UIColor grayColor];
 	_processWeixinsJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.processWeixinsJobInterval];
-	[self.view addSubview:_processWeixinsJobIntervalTextField];
+	[scrollView addSubview:_processWeixinsJobIntervalTextField];
 	
 	
 	
@@ -178,7 +194,7 @@
 	rect.size = labelSize;
 	UILabel *grabArticlesJobLabel = [[UILabel alloc] initWithFrame:rect];
 	grabArticlesJobLabel.text = @"grabArticlesJobOn";
-	[self.view addSubview:grabArticlesJobLabel];
+	[scrollView addSubview:grabArticlesJobLabel];
 	
 	rect.origin.y += 30;
 	rect.size = buttonSize;
@@ -188,14 +204,14 @@
 	[_grabArticlesJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.grabArticlesJobOn] forState:UIControlStateNormal];
 	_grabArticlesJobButton.backgroundColor = [UIColor grayColor];
 	[_grabArticlesJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_grabArticlesJobButton];
+	[scrollView addSubview:_grabArticlesJobButton];
 	
 	rect.origin.x += 80;
 	rect.size = textFieldSize;
 	_grabArticlesJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
 	_grabArticlesJobIntervalTextField.backgroundColor = [UIColor grayColor];
 	_grabArticlesJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.grabArticlesJobInterval];
-	[self.view addSubview:_grabArticlesJobIntervalTextField];
+	[scrollView addSubview:_grabArticlesJobIntervalTextField];
 	
 	
 	
@@ -204,7 +220,7 @@
 	rect.size = labelSize;
 	UILabel *processArticlesJobLabel = [[UILabel alloc] initWithFrame:rect];
 	processArticlesJobLabel.text = @"processArticlesJobOn";
-	[self.view addSubview:processArticlesJobLabel];
+	[scrollView addSubview:processArticlesJobLabel];
 	
 	rect.origin.y += 30;
 	rect.size = buttonSize;
@@ -214,14 +230,14 @@
 	[_processArticlesJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.processArticlesJobOn] forState:UIControlStateNormal];
 	_processArticlesJobButton.backgroundColor = [UIColor grayColor];
 	[_processArticlesJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_processArticlesJobButton];
+	[scrollView addSubview:_processArticlesJobButton];
 	
 	rect.origin.x += 80;
 	rect.size = textFieldSize;
 	_processArticlesJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
 	_processArticlesJobIntervalTextField.backgroundColor = [UIColor grayColor];
 	_processArticlesJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.processArticlesJobInterval];
-	[self.view addSubview:_processArticlesJobIntervalTextField];
+	[scrollView addSubview:_processArticlesJobIntervalTextField];
 	
 	
 	
@@ -230,7 +246,7 @@
 	rect.size = labelSize;
 	UILabel *grabArticlesDeepLabel = [[UILabel alloc] initWithFrame:rect];
 	grabArticlesDeepLabel.text = @"articlesDeep";
-	[self.view addSubview:grabArticlesDeepLabel];
+	[scrollView addSubview:grabArticlesDeepLabel];
 	
 	rect.origin.y += 30;
 	rect.size = buttonSize;
@@ -240,14 +256,14 @@
 	[_grabArticlesDeepJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.grabArticlesDeepJobOn] forState:UIControlStateNormal];
 	_grabArticlesDeepJobButton.backgroundColor = [UIColor grayColor];
 	[_grabArticlesDeepJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:_grabArticlesDeepJobButton];
+	[scrollView addSubview:_grabArticlesDeepJobButton];
 	
 	rect.origin.x += 80;
 	rect.size = textFieldSize;
 	_grabArticlesDeepJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
 	_grabArticlesDeepJobIntervalTextField.backgroundColor = [UIColor grayColor];
 	_grabArticlesDeepJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.grabArticlesDeepJobInterval];
-	[self.view addSubview:_grabArticlesDeepJobIntervalTextField];
+	[scrollView addSubview:_grabArticlesDeepJobIntervalTextField];
 	
 	
 	
@@ -255,7 +271,7 @@
 	//save button
 	rect.origin.x = 0;
 	rect.origin.y += 50;
-	rect.size.width = self.view.bounds.size.width;
+	rect.size.width = self.view.bounds.size.width / 2;
 	rect.size.height = 50;
 	UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	saveButton.showsTouchWhenHighlighted = YES;
@@ -264,10 +280,10 @@
 	[saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	saveButton.backgroundColor = [UIColor orangeColor];
 	[saveButton addTarget:self action:@selector(saveSettings) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:saveButton];
+	[scrollView addSubview:saveButton];
 	
 	//login button
-	rect.origin.y += 70;
+	rect.origin.x += self.view.bounds.size.width / 2;
 	UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	loginButton.showsTouchWhenHighlighted = YES;
 	loginButton.frame = rect;
@@ -275,7 +291,163 @@
 	[loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	loginButton.backgroundColor = [UIColor greenColor];
 	[loginButton addTarget:self action:@selector(pushToLogin) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:loginButton];
+	[scrollView addSubview:loginButton];
+	
+	
+	//newrank
+	rect.origin.x = grabArticlesJobLabel.frame.origin.x;
+	rect.origin.y += 50;
+	rect.size = labelSize;
+	UILabel *nkGrabArticlesLabel = [[UILabel alloc] initWithFrame:rect];
+	nkGrabArticlesLabel.text = @"nkArticlesJob";
+	[scrollView addSubview:nkGrabArticlesLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_nkGrabArticlesJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_nkGrabArticlesJobButton.frame = rect;
+	[_nkGrabArticlesJobButton setTitle:[ZBAntServer onOrOff:_server.nkGrabArticlesJobOn] forState:UIControlStateNormal];
+	[_nkGrabArticlesJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.grabArticlesDeepJobOn] forState:UIControlStateNormal];
+	_nkGrabArticlesJobButton.backgroundColor = [UIColor grayColor];
+	[_nkGrabArticlesJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:_nkGrabArticlesJobButton];
+	
+	rect.origin.x += 80;
+	rect.size = textFieldSize;
+	_nkGrabArticlesJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
+	_nkGrabArticlesJobIntervalTextField.backgroundColor = [UIColor grayColor];
+	_nkGrabArticlesJobIntervalTextField.text = [NSString stringWithFormat:@"%@", _server.nkGrabArticlesJobInterval];
+	[scrollView addSubview:_nkGrabArticlesJobIntervalTextField];
+	
+	
+	rect.origin.x += 100;
+	rect.origin.y = nkGrabArticlesLabel.frame.origin.y;
+	rect.size = labelSize;
+	UILabel *nkGrabDetailsLabel = [[UILabel alloc] initWithFrame:rect];
+	nkGrabDetailsLabel.text = @"nkDetailsJob";
+	[scrollView addSubview:nkGrabDetailsLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_nkGrabDetailsJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_nkGrabDetailsJobButton.frame = rect;
+	[_nkGrabDetailsJobButton setTitle:[ZBAntServer onOrOff:_server.nkGrabDetailsJobOn] forState:UIControlStateNormal];
+	[_nkGrabDetailsJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.nkGrabDetailsJobOn] forState:UIControlStateNormal];
+	_nkGrabDetailsJobButton.backgroundColor = [UIColor grayColor];
+	[_nkGrabDetailsJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:_nkGrabDetailsJobButton];
+	
+	rect.origin.x += 80;
+	rect.size = textFieldSize;
+	_nkGrabDetailsJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
+	_nkGrabDetailsJobIntervalTextField.backgroundColor = [UIColor grayColor];
+	_nkGrabDetailsJobIntervalTextField.text = [NSString stringWithFormat:@"%@", _server.nkGrabDetailsJobInterval];
+	[scrollView addSubview:_nkGrabDetailsJobIntervalTextField];
+	
+
+	
+	rect.origin.x = grabArticlesJobLabel.frame.origin.x;
+	rect.origin.y += 50;
+	rect.size = labelSize;
+	UILabel *nkProcessArticlesLabel = [[UILabel alloc] initWithFrame:rect];
+	nkProcessArticlesLabel.text = @"nkProcessArticles";
+	[scrollView addSubview:nkProcessArticlesLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_nkProcessArticlesJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_nkProcessArticlesJobButton.frame = rect;
+	[_nkProcessArticlesJobButton setTitle:[ZBAntServer onOrOff:_server.nkProcessArticlesJobOn] forState:UIControlStateNormal];
+	[_nkProcessArticlesJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.nkProcessArticlesJobOn] forState:UIControlStateNormal];
+	_nkProcessArticlesJobButton.backgroundColor = [UIColor grayColor];
+	[_nkProcessArticlesJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:_nkProcessArticlesJobButton];
+	
+	rect.origin.x += 80;
+	rect.size = textFieldSize;
+	_nkProcessArticlesJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
+	_nkProcessArticlesJobIntervalTextField.backgroundColor = [UIColor grayColor];
+	_nkProcessArticlesJobIntervalTextField.text = [NSString stringWithFormat:@"%@", _server.nkProcessArticlesJobInterval];
+	[scrollView addSubview:_nkProcessArticlesJobIntervalTextField];
+	
+	
+	
+	rect.origin.x += 100;
+	rect.origin.y = nkProcessArticlesLabel.frame.origin.y;
+	rect.size = labelSize;
+	UILabel *nkProcessDetailsLabel = [[UILabel alloc] initWithFrame:rect];
+	nkProcessDetailsLabel.text = @"nkProcessDetails";
+	[scrollView addSubview:nkProcessDetailsLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_nkProcessDetailsJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_nkProcessDetailsJobButton.frame = rect;
+	[_nkProcessDetailsJobButton setTitle:[ZBAntServer onOrOff:_server.nkProcessDetailsJobOn] forState:UIControlStateNormal];
+	[_nkProcessDetailsJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.nkProcessDetailsJobOn] forState:UIControlStateNormal];
+	_nkProcessDetailsJobButton.backgroundColor = [UIColor grayColor];
+	[_nkProcessDetailsJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:_nkProcessDetailsJobButton];
+	
+	rect.origin.x += 80;
+	rect.size = textFieldSize;
+	_nkProcessDetailsJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
+	_nkProcessDetailsJobIntervalTextField.backgroundColor = [UIColor grayColor];
+	_nkProcessDetailsJobIntervalTextField.text = [NSString stringWithFormat:@"%@", _server.nkProcessDetailsJobInterval];
+	[scrollView addSubview:_nkProcessDetailsJobIntervalTextField];
+	
+	
+	rect.origin.x = grabArticlesJobLabel.frame.origin.x;
+	rect.origin.y += 50;
+	rect.size = labelSize;
+	UILabel *nkInChargeOfReloadArticlesTasksLabel = [[UILabel alloc] initWithFrame:rect];
+	nkInChargeOfReloadArticlesTasksLabel.text = @"nkReloadArticles";
+	[scrollView addSubview:nkInChargeOfReloadArticlesTasksLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_nkInChargeOfReloadArticlesTasksButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_nkInChargeOfReloadArticlesTasksButton.frame = rect;
+	[_nkInChargeOfReloadArticlesTasksButton setTitle:[ZBAntServer onOrOff:_server.nkInChargeOfReloadArticlesTasks] forState:UIControlStateNormal];
+	[_nkInChargeOfReloadArticlesTasksButton setTitleColor:[ZBAntServer colorOnOrOff:_server.nkInChargeOfReloadArticlesTasks] forState:UIControlStateNormal];
+	_nkInChargeOfReloadArticlesTasksButton.backgroundColor = [UIColor grayColor];
+	[_nkInChargeOfReloadArticlesTasksButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:_nkInChargeOfReloadArticlesTasksButton];
+
+	
+	rect.origin.x = nkProcessDetailsLabel.frame.origin.x;
+	rect.origin.y = nkInChargeOfReloadArticlesTasksLabel.frame.origin.y;
+	rect.size = labelSize;
+	UILabel *nkInChargeOfReloadDetailsTasksLabel = [[UILabel alloc] initWithFrame:rect];
+	nkInChargeOfReloadDetailsTasksLabel.text = @"nkReloadDetails";
+	[scrollView addSubview:nkInChargeOfReloadDetailsTasksLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_nkInChargeOfReloadDetailsTasksButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_nkInChargeOfReloadDetailsTasksButton.frame = rect;
+	[_nkInChargeOfReloadDetailsTasksButton setTitle:[ZBAntServer onOrOff:_server.nkInChargeOfReloadDetailsTasks] forState:UIControlStateNormal];
+	[_nkInChargeOfReloadDetailsTasksButton setTitleColor:[ZBAntServer colorOnOrOff:_server.nkInChargeOfReloadDetailsTasks] forState:UIControlStateNormal];
+	_nkInChargeOfReloadDetailsTasksButton.backgroundColor = [UIColor grayColor];
+	[_nkInChargeOfReloadDetailsTasksButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:_nkInChargeOfReloadDetailsTasksButton];
+	
+	
+	//save button
+	rect.origin.x = 0;
+	rect.origin.y += 50;
+	rect.size.width = self.view.bounds.size.width;
+	rect.size.height = 50;
+	UIButton *saveButton2 = [UIButton buttonWithType:UIButtonTypeCustom];
+	saveButton2.showsTouchWhenHighlighted = YES;
+	saveButton2.frame = rect;
+	[saveButton2 setTitle:@"Save2" forState:UIControlStateNormal];
+	[saveButton2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	saveButton2.backgroundColor = [UIColor orangeColor];
+	[saveButton2 addTarget:self action:@selector(saveSettings2) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:saveButton2];
+	
+	scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, 1000);
 }
 
 - (void)dismiss {
@@ -308,6 +480,24 @@
 	} else if (sender == _grabArticlesDeepJobButton) {
 		_server.grabArticlesDeepJobOn = @(![_server.grabArticlesDeepJobOn boolValue]);
 		value = _server.grabArticlesDeepJobOn;
+	} else if (sender == _nkGrabArticlesJobButton) {
+		_server.nkGrabArticlesJobOn = @(![_server.nkGrabArticlesJobOn boolValue]);
+		value = _server.nkGrabArticlesJobOn;
+	} else if (sender == _nkGrabDetailsJobButton) {
+		_server.nkGrabDetailsJobOn = @(![_server.nkGrabDetailsJobOn boolValue]);
+		value = _server.nkGrabDetailsJobOn;
+	} else if (sender == _nkProcessArticlesJobButton) {
+		_server.nkProcessArticlesJobOn = @(![_server.nkProcessArticlesJobOn boolValue]);
+		value = _server.nkProcessArticlesJobOn;
+	} else if (sender == _nkProcessDetailsJobButton) {
+		_server.nkProcessDetailsJobOn = @(![_server.nkProcessDetailsJobOn boolValue]);
+		value = _server.nkProcessDetailsJobOn;
+	} else if (sender == _nkInChargeOfReloadArticlesTasksButton) {
+		_server.nkInChargeOfReloadArticlesTasks = @(![_server.nkInChargeOfReloadArticlesTasks boolValue]);
+		value = _server.nkInChargeOfReloadArticlesTasks;
+	} else if (sender == _nkInChargeOfReloadDetailsTasksButton) {
+		_server.nkInChargeOfReloadDetailsTasks = @(![_server.nkInChargeOfReloadDetailsTasks boolValue]);
+		value = _server.nkInChargeOfReloadDetailsTasks;
 	}
 	if (value) {
 		[sender setTitle:[ZBAntServer onOrOff:value] forState:UIControlStateNormal];
@@ -323,7 +513,29 @@
 	_server.processArticlesJobInterval = @([_processArticlesJobIntervalTextField.text integerValue]);
 	_server.grabArticlesDeepJobInterval = @([_grabArticlesDeepJobIntervalTextField.text integerValue]);
 	
-	[[ZBHTTPManager shared] save:_server.outerIp settings:[_server settings] withBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] save:WEIBOYI outerIp:_server.outerIp settings:[_server settings] withBlock:^(id responseObject, NSError *error) {
+		if (error) {
+			_options[kCRToastTextKey] = @"设置失败!";
+			_options[kCRToastBackgroundColorKey] = [UIColor redColor];
+		}
+		
+		if (![responseObject[@"error"] isEqual:@0]) {
+			_options[kCRToastTextKey] = @"设置失败!";
+			_options[kCRToastBackgroundColorKey] = [UIColor redColor];
+		}
+		
+		[CRToastManager showNotificationWithOptions:_options completionBlock:^{
+		}];
+	}];
+}
+
+- (void)saveSettings2 {
+	_server.nkGrabArticlesJobInterval = @([_nkGrabArticlesJobIntervalTextField.text integerValue]);
+	_server.nkGrabDetailsJobInterval = @([_nkGrabDetailsJobIntervalTextField.text integerValue]);
+	_server.nkProcessArticlesJobInterval = @([_nkProcessArticlesJobIntervalTextField.text integerValue]);
+	_server.nkProcessDetailsJobInterval = @([_nkProcessDetailsJobIntervalTextField.text integerValue]);
+	
+	[[ZBHTTPManager shared] save:NEWRANK outerIp:_server.outerIp settings:[_server settings2] withBlock:^(id responseObject, NSError *error) {
 		if (error) {
 			_options[kCRToastTextKey] = @"设置失败!";
 			_options[kCRToastBackgroundColorKey] = [UIColor redColor];

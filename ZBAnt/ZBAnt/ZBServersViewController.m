@@ -175,6 +175,8 @@ static NSString *GAP = @"\t";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_weiboyis[indexPath.row]];
+	NSDictionary *data = [self newrankDataWithSameInnerIp:server.innerIp];
+	[server setNewrankData:data];
 	ZBServerSettingsViewController *serverSettingsViewController = [[ZBServerSettingsViewController alloc] init];
 	serverSettingsViewController.server = server;
 	serverSettingsViewController.hidesBottomBarWhenPushed = YES;

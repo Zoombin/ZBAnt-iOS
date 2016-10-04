@@ -80,6 +80,26 @@
 	return settings;
 }
 
+- (NSDictionary *)settings2 {
+	NSMutableDictionary *settings2 = [@{} mutableCopy];
+	settings2[@"processArticlesJobOn"] = [self trueOrFalseString:_nkProcessArticlesJobOn];
+	settings2[@"processArticlesJobInterval"] = _nkProcessArticlesJobInterval;
+	
+	settings2[@"processDetailsJobOn"] = [self trueOrFalseString:_nkProcessDetailsJobOn];
+	settings2[@"processDetailsJobInterval"] = _nkProcessDetailsJobInterval;
+	
+	settings2[@"grabArticlesJobOn"] = [self trueOrFalseString:_nkGrabArticlesJobOn];
+	settings2[@"grabArticlesJobInterval"] = _nkGrabArticlesJobInterval;
+	
+	settings2[@"grabDetailsJobOn"] = [self trueOrFalseString:_nkGrabDetailsJobOn];
+	settings2[@"grabDetailsJobInterval"] = _nkGrabDetailsJobInterval;
+	
+	settings2[@"inChargeOfReloadArticlesTasks"] = [self trueOrFalseString:_nkInChargeOfReloadArticlesTasks];
+	settings2[@"inChargeOfReloadDetailsTasks"] = [self trueOrFalseString:_nkInChargeOfReloadDetailsTasks];
+	return settings2;
+}
+
+
 - (NSString *)trueOrFalseString:(NSNumber *)number {
 	return [number boolValue] ? @"true" : @"false";
 }

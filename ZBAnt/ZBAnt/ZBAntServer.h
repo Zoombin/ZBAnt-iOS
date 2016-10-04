@@ -52,6 +52,7 @@
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 - (NSDictionary *)settings;
+- (NSDictionary *)settings2;
 - (void)setNewrankData:(NSDictionary *)data;
 + (NSString *)onOrOff:(NSNumber *)onOrOff;
 + (UIColor *)colorOnOrOff:(NSNumber *)onOrOff;

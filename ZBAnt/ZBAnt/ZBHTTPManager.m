@@ -47,7 +47,7 @@ static NSString *BASE_URL_STRING;
 
 - (void)settings:(NSString *)channel withBlock:(void (^)(id responseObject, NSError *error))block {
 	NSString *requestUrl = [NSString stringWithFormat:@"%@%@%@", BASE_URL_STRING, WEIBOYI, @"/settings"];
-	if ([channel isEqualToString:@"newrank"]) {
+	if ([channel isEqualToString:NEWRANK]) {
 		requestUrl = [NSString stringWithFormat:@"%@%@%@", BASE_URL_STRING, NEWRANK, @"/settings"];
 	}
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -61,9 +61,13 @@ static NSString *BASE_URL_STRING;
 	}];
 }
 
-- (void)save:(NSString *)outerIp settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/weiboyi/", outerIp, PORT];
-	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@", baseUrlString, @"settings"];
+- (void)save:(NSString *)channel outerIp:(NSString *)outerIp settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/weiboyi", outerIp, PORT];
+	NSString *requestUrl = [NSString stringWithFormat:@"%@%@", baseUrlString, @"settings"];
+	if ([channel isEqualToString:NEWRANK]) {
+		baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/newrank", outerIp, PORT];
+		requestUrl = [NSString stringWithFormat:@"%@%@", baseUrlString, @"/settings"];
+	}
 	[manager POST:requestUrl parameters:settings success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);
