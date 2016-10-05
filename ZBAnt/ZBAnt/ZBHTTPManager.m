@@ -9,10 +9,10 @@
 #import "ZBHTTPManager.h"
 #import "AFNetworking.h"
 
-NSString * const HOST = @"http://localhost";
-NSString * const PORT = @"3000";
-//NSString * const HOST = @"http://ant.zoombin.com";
-//NSString * const PORT = @"3008";
+//NSString * const HOST = @"http://localhost";
+//NSString * const PORT = @"3000";
+NSString * const HOST = @"http://ant.zoombin.com";
+NSString * const PORT = @"3008";
 
 NSString * const WEIBOYI = @"weiboyi";
 NSString * const NEWRANK = @"newrank";
@@ -32,8 +32,11 @@ static NSString *BASE_URL_STRING;
 	return httpManager;
 }
 
-- (void)statistics:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@%@?type=%@", BASE_URL_STRING, WEIBOYI, @"/statistics", type];
+- (void)statistics:(NSString *)channel type:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [NSString stringWithFormat:@"%@%@%@?type=%@", BASE_URL_STRING, WEIBOYI, @"/statistics", type];
+	if ([channel isEqualToString:NEWRANK]) {
+		requestUrl = [NSString stringWithFormat:@"%@%@%@?type=%@", BASE_URL_STRING, NEWRANK, @"/statistics", type];
+	}
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);

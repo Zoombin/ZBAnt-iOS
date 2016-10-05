@@ -10,7 +10,7 @@
 #import "ZBAnt.h"
 #import "ZBStatisticsViewController.h"
 #import "ZBServersViewController.h"
-#import "ZBNewrankViewController.h"
+#import "ZBHTTPManager.h"
 
 @interface AppDelegate ()
 
@@ -25,11 +25,13 @@
 	serversViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Servers" image:[UIImage imageNamed:@"first"] tag:1];
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:serversViewController];
 	
-	ZBStatisticsViewController *statisticsViewController = [[ZBStatisticsViewController alloc] init];
-	statisticsViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Weiboyi" image:[UIImage imageNamed:@"second"] tag:0];
-	UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:statisticsViewController];
+	ZBStatisticsViewController *weiboyiViewController = [[ZBStatisticsViewController alloc] init];
+	weiboyiViewController.channel = WEIBOYI;
+	weiboyiViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Weiboyi" image:[UIImage imageNamed:@"second"] tag:0];
+	UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:weiboyiViewController];
 	
-	ZBNewrankViewController *newrankViewController = [[ZBNewrankViewController alloc] init];
+	ZBStatisticsViewController *newrankViewController = [[ZBStatisticsViewController alloc] init];
+	newrankViewController.channel = NEWRANK;
 	newrankViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Newrank" image:[UIImage imageNamed:@"first"] tag:1];
 	UINavigationController *nav3 = [[UINavigationController alloc] initWithRootViewController:newrankViewController];
 	

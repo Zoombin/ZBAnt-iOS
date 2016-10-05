@@ -21,7 +21,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.title = _channel;
 	_types = @[@"phpsessids", @"weixins", @"articles", @"articlesToday", @"tasks", @"tasksDeep", @"grabbed", @"weixinsNotProcessed", @"articlesNotProcessed"];
+	if ([_channel isEqualToString:NEWRANK]) {
+		_types = @[@"settings", @"tasksDetails", @"tasksArticles", @"weixins", @"articles", @"grabbed", @"detailsNotProcessed", @"articlesNotProcessed"];
+	}
 	
 	_counts = [NSMutableDictionary dictionary];
 	
@@ -32,7 +36,7 @@
 }
 
 - (void)loadData:(NSString *)type {
-	[[ZBHTTPManager shared] statistics:type withBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] statistics:_channel type:type withBlock:^(id responseObject, NSError *error) {
 		if (!error) {
 			NSDictionary *tmp = responseObject[@"data"];
 			if (tmp) {

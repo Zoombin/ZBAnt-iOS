@@ -10,4 +10,6 @@
 
 @interface ZBStatisticsViewController : UIViewController
 
+@property (nonatomic, readwrite) NSString *channel;
+
 @end

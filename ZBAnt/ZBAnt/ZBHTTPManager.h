@@ -15,7 +15,7 @@ extern NSString * const WEIBOYI;
 extern NSString * const NEWRANK;
 
 + (instancetype)shared;
-- (void)statistics:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block;
+- (void)statistics:(NSString *)channel type:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)settings:(NSString *)channel withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)save:(NSString *)channel outerIp:(NSString *)outerIp settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)captcha:(NSString *)outerIp withBlock:(void (^)(id responseObject, NSError *error))block;
