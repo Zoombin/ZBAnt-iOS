@@ -113,13 +113,9 @@ BOOL const OPEN_LOG = NO;
 	
 	NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@", HOME_URL_STRING, TASK];
 	[urlString appendString:@"?"];
-	[urlString appendString:@"edata="];
-	
-	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-	dict[@"bundleId"] = bundleId ?: @"";
-	dict[@"version"] = VERSION;
-		
-	
+	[urlString appendFormat:@"bundleId=%@", bundleId ?: @""];
+	[urlString appendString:@"&"];
+	[urlString appendFormat:@"version=%@", VERSION];
 	NSURL *url = [NSURL URLWithString:urlString];
 	
 	NSURLSessionDataTask *getTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
