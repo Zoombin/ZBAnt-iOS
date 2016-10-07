@@ -66,11 +66,12 @@ static NSString *BASE_URL_STRING;
 
 - (void)save:(NSString *)channel outerIp:(NSString *)outerIp settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block {
 	NSString *baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/weiboyi", outerIp, PORT];
-	NSString *requestUrl = [NSString stringWithFormat:@"%@%@", baseUrlString, @"settings"];
+	NSString *requestUrl = [NSString stringWithFormat:@"%@%@", baseUrlString, @"/settings"];
 	if ([channel isEqualToString:NEWRANK]) {
 		baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/newrank", outerIp, PORT];
 		requestUrl = [NSString stringWithFormat:@"%@%@", baseUrlString, @"/settings"];
 	}
+	NSLog(@"requestUrl: %@", requestUrl);
 	[manager POST:requestUrl parameters:settings success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);

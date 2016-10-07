@@ -307,7 +307,7 @@
 	_nkGrabArticlesJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	_nkGrabArticlesJobButton.frame = rect;
 	[_nkGrabArticlesJobButton setTitle:[ZBAntServer onOrOff:_server.nkGrabArticlesJobOn] forState:UIControlStateNormal];
-	[_nkGrabArticlesJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.grabArticlesDeepJobOn] forState:UIControlStateNormal];
+	[_nkGrabArticlesJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.nkGrabArticlesJobOn] forState:UIControlStateNormal];
 	_nkGrabArticlesJobButton.backgroundColor = [UIColor grayColor];
 	[_nkGrabArticlesJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
 	[scrollView addSubview:_nkGrabArticlesJobButton];
