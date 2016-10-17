@@ -44,6 +44,7 @@
 	
 	UIButton *captchaButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	captchaButton.frame = rect;
+	captchaButton.showsTouchWhenHighlighted = YES;
 	[captchaButton setTitle:@"Captcha" forState:UIControlStateNormal];
 	captchaButton.backgroundColor = [UIColor blueColor];
 	[captchaButton addTarget:self action:@selector(captcha) forControlEvents:UIControlEventTouchUpInside];
