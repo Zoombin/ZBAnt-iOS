@@ -54,6 +54,12 @@
 	_nkInChargeOfReloadDetailsTasks = data[@"inChargeOfReloadDetailsTasks"];
 }
 
+- (void)setGsdataData:(NSDictionary *)data {
+	_gsGrabRankJobOn = data[@"grabRankJobOn"];
+	_gsGrabRankJobInterval = data[@"grabRankJobInterval"];
+	_gsInchargeOfReloadRankTasks = data[@"inChargeOfReloadRankTasks"];
+}
+
 - (NSDictionary *)settings {
 	NSMutableDictionary *settings = [@{} mutableCopy];
 	
@@ -99,6 +105,14 @@
 	return settings2;
 }
 
+- (NSDictionary *)settings3 {
+	NSMutableDictionary *settings3 = [@{} mutableCopy];
+	settings3[@"grabRankJobOn"] = [self trueOrFalseString:_gsGrabRankJobOn];
+	settings3[@"grabRankJobInterval"] = _gsGrabRankJobInterval;
+	settings3[@"inChargeOfReloadRankTasks"] = [self trueOrFalseString:_gsInchargeOfReloadRankTasks];
+	return settings3;
+
+}
 
 - (NSString *)trueOrFalseString:(NSNumber *)number {
 	return [number boolValue] ? @"true" : @"false";
@@ -121,6 +135,8 @@
 		return @"ant7";
 	} else if ([outerIp isEqualToString:@"115.29.138.228"]) {
 		return @"ant8";
+	} else if ([outerIp isEqualToString:@"139.196.33.46"]) {
+		return @"ant9";
 	}
 	return outerIp;
 }

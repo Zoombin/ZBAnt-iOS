@@ -18,6 +18,7 @@ static NSString *GAP = @"\t";
 @property (nonatomic, readwrite) UITableView *tableView;
 @property (nonatomic, readwrite) NSArray *weiboyis;
 @property (nonatomic, readwrite) NSArray *newranks;
+@property (nonatomic, readwrite) NSArray *gsdatas;
 
 @end
 
@@ -44,26 +45,37 @@ static NSString *GAP = @"\t";
 	return @{};
 }
 
+- (NSDictionary *)gsdataDataWithSameInnerIp:(NSString *)innerIp {
+	for (int i = 0; i < _gsdatas.count; i++) {
+		NSDictionary *dict = _gsdatas[i];
+		if ([dict[@"innerIp"] isEqualToString:innerIp]) {
+			return dict;
+		}
+	}
+	return @{};
+}
+
+
 - (void)loadData {
 	[[ZBHTTPManager shared] settings:WEIBOYI withBlock:^(id responseObject, NSError *error) {
-		if (!error) {
-			if (responseObject[@"data"]) {
-				_weiboyis = [NSArray arrayWithArray:responseObject[@"data"]];
-			}
-			[[ZBHTTPManager shared] settings:NEWRANK withBlock:^(id responseObject, NSError *error) {
-				if (!error) {
-					if (responseObject[@"data"]) {
-						_newranks = [NSArray arrayWithArray:responseObject[@"data"]];
-						[_tableView reloadData];
-					}
-				}
+		if (error) return;
+		_weiboyis = [NSArray arrayWithArray:responseObject[@"data"]];
+		
+		[[ZBHTTPManager shared] settings:NEWRANK withBlock:^(id responseObject, NSError *error) {
+			if (error) return;
+			_newranks = [NSArray arrayWithArray:responseObject[@"data"]];
+			
+			[[ZBHTTPManager shared] settings:GSDATA withBlock:^(id responseObject, NSError *error) {
+				if (error) return;
+				_gsdatas = [NSArray arrayWithArray:responseObject[@"data"]];
+				[_tableView reloadData];
 			}];
-		}
+		}];
 	}];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 250;
+	return 290;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -73,8 +85,9 @@ static NSString *GAP = @"\t";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[NSString stringWithFormat:@"%ld", (long)indexPath.row]];
 	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_weiboyis[indexPath.row]];
-	NSDictionary *data = [self newrankDataWithSameInnerIp:server.innerIp];
-	[server setNewrankData:data];
+	[server setNewrankData:[self newrankDataWithSameInnerIp:server.innerIp]];
+	[server setGsdataData:[self gsdataDataWithSameInnerIp:server.innerIp]];
+	
 	
 	NSMutableString *string = [NSMutableString string];
 	[string appendString:server.name];
@@ -166,6 +179,16 @@ static NSString *GAP = @"\t";
 	[string appendString:GAP];
 	[string appendFormat:@"nkReloadDetails: %@", [ZBAntServer onOrOff:server.nkInChargeOfReloadDetailsTasks]];
 	[string appendString:@"\n"];
+	[string appendString:@"\n"];
+	
+	
+	//gsdata
+	[string appendFormat:@"gsGrabRank: %@", [ZBAntServer onOrOff:server.gsGrabRankJobOn]];
+	[string appendString:GAP];
+	[string appendFormat:@"interval: %@", server.gsGrabRankJobInterval];
+	[string appendString:@"\n"];
+	[string appendFormat:@"gsReloadRank: %@", [ZBAntServer onOrOff:server.gsInchargeOfReloadRankTasks]];
+	[string appendString:@"\n"];
 	
 	cell.textLabel.text = string;
 	cell.textLabel.numberOfLines = 0;
@@ -175,8 +198,8 @@ static NSString *GAP = @"\t";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_weiboyis[indexPath.row]];
-	NSDictionary *data = [self newrankDataWithSameInnerIp:server.innerIp];
-	[server setNewrankData:data];
+	[server setNewrankData:[self newrankDataWithSameInnerIp:server.innerIp]];
+	[server setGsdataData:[self gsdataDataWithSameInnerIp:server.innerIp]];
 	ZBServerSettingsViewController *serverSettingsViewController = [[ZBServerSettingsViewController alloc] init];
 	serverSettingsViewController.server = server;
 	serverSettingsViewController.hidesBottomBarWhenPushed = YES;

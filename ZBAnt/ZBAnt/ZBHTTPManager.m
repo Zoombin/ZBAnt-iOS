@@ -9,13 +9,14 @@
 #import "ZBHTTPManager.h"
 #import "AFNetworking.h"
 
-//NSString * const HOST = @"http://localhost";
-//NSString * const PORT = @"3000";
-NSString * const HOST = @"http://ant.zoombin.com";
-NSString * const PORT = @"3008";
+NSString * const HOST = @"http://localhost";
+NSString * const PORT = @"3000";
+//NSString * const HOST = @"http://ant.zoombin.com";
+//NSString * const PORT = @"3008";
 
 NSString * const WEIBOYI = @"weiboyi";
 NSString * const NEWRANK = @"newrank";
+NSString * const GSDATA = @"gsdata";
 
 static ZBHTTPManager *httpManager;
 static AFHTTPRequestOperationManager *manager;
@@ -52,6 +53,8 @@ static NSString *BASE_URL_STRING;
 	NSString *requestUrl = [NSString stringWithFormat:@"%@%@%@", BASE_URL_STRING, WEIBOYI, @"/settings"];
 	if ([channel isEqualToString:NEWRANK]) {
 		requestUrl = [NSString stringWithFormat:@"%@%@%@", BASE_URL_STRING, NEWRANK, @"/settings"];
+	} else if ([channel isEqualToString:GSDATA]) {
+		requestUrl = [NSString stringWithFormat:@"%@%@%@", BASE_URL_STRING, GSDATA, @"/settings"];
 	}
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
@@ -70,8 +73,11 @@ static NSString *BASE_URL_STRING;
 	if ([channel isEqualToString:NEWRANK]) {
 		baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/newrank", outerIp, PORT];
 		requestUrl = [NSString stringWithFormat:@"%@%@", baseUrlString, @"/settings"];
+	} else if ([channel isEqualToString:GSDATA]) {
+		baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/gsdata", outerIp, PORT];
+		requestUrl = [NSString stringWithFormat:@"%@%@", baseUrlString, @"/settings"];
 	}
-	NSLog(@"requestUrl: %@", requestUrl);
+
 	[manager POST:requestUrl parameters:settings success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);
@@ -87,10 +93,12 @@ static NSString *BASE_URL_STRING;
 	NSString *baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/weiboyi/", outerIp, PORT];
 	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@?isApi=true", baseUrlString, @"captcha"];
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		NSLog(@"responseObject: %@", responseObject);
 		if (block) {
 			block(responseObject, nil);
 		}
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		NSLog(@"captcha error: %@", error);
 		if (block) {
 			block(nil, error);
 		}

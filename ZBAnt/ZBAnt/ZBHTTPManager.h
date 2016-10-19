@@ -13,6 +13,7 @@
 
 extern NSString * const WEIBOYI;
 extern NSString * const NEWRANK;
+extern NSString * const GSDATA;
 
 + (instancetype)shared;
 - (void)statistics:(NSString *)channel type:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block;

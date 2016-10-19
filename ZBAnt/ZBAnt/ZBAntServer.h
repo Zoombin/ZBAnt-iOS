@@ -49,11 +49,17 @@
 @property (nonatomic, copy) NSNumber *nkInChargeOfReloadArticlesTasks;
 @property (nonatomic, copy) NSNumber *nkInChargeOfReloadDetailsTasks;
 
+//gsdata
+@property (nonatomic, copy) NSNumber *gsGrabRankJobOn;
+@property (nonatomic, copy) NSNumber *gsGrabRankJobInterval;
+@property (nonatomic, copy) NSNumber *gsInchargeOfReloadRankTasks;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 - (NSDictionary *)settings;
 - (NSDictionary *)settings2;
+- (NSDictionary *)settings3;
 - (void)setNewrankData:(NSDictionary *)data;
+- (void)setGsdataData:(NSDictionary *)data;
 + (NSString *)onOrOff:(NSNumber *)onOrOff;
 + (UIColor *)colorOnOrOff:(NSNumber *)onOrOff;
 
