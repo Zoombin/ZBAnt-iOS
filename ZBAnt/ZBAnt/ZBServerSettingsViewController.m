@@ -47,6 +47,8 @@
 @property (readwrite) UIButton *gsGrabRankJobButton;
 @property (readwrite) UITextField *gsGrabRankIntervalTextField;
 @property (readwrite) UIButton *gsInChargeOfReloadRankTasksButton;
+@property (readwrite) UIButton *gsProcessRankJobButton;
+@property (readwrite) UITextField *gsProcessRankJobIntervalTextField;
 
 @end
 
@@ -494,6 +496,31 @@
 	_gsInChargeOfReloadRankTasksButton.backgroundColor = [UIColor grayColor];
 	[_gsInChargeOfReloadRankTasksButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
 	[scrollView addSubview:_gsInChargeOfReloadRankTasksButton];
+	
+	
+	rect.origin.x = grabArticlesJobLabel.frame.origin.x;
+	rect.origin.y += 50;
+	rect.size = labelSize;
+	UILabel *gsProcessRankLabel = [[UILabel alloc] initWithFrame:rect];
+	gsProcessRankLabel.text = @"gsProcessRank";
+	[scrollView addSubview:gsProcessRankLabel];
+	
+	rect.origin.y += 30;
+	rect.size = buttonSize;
+	_gsProcessRankJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_gsProcessRankJobButton.frame = rect;
+	[_gsProcessRankJobButton setTitle:[ZBAntServer onOrOff:_server.gsProcessRankJobOn] forState:UIControlStateNormal];
+	[_gsProcessRankJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.gsProcessRankJobOn] forState:UIControlStateNormal];
+	_gsProcessRankJobButton.backgroundColor = [UIColor grayColor];
+	[_gsProcessRankJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:_gsProcessRankJobButton];
+	
+	rect.origin.x += 80;
+	rect.size = textFieldSize;
+	_gsProcessRankJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
+	_gsProcessRankJobIntervalTextField.backgroundColor = [UIColor grayColor];
+	_gsProcessRankJobIntervalTextField.text = [NSString stringWithFormat:@"%@", _server.gsProcessRankJobInterval];
+	[scrollView addSubview:_gsProcessRankJobIntervalTextField];
 
 	
 	//save button
@@ -507,7 +534,7 @@
 	[saveButton3 setTitle:@"Save3" forState:UIControlStateNormal];
 	[saveButton3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	saveButton3.backgroundColor = [UIColor orangeColor];
-	[saveButton3 addTarget:self action:@selector(saveButton3) forControlEvents:UIControlEventTouchUpInside];
+	[saveButton3 addTarget:self action:@selector(saveSettings3) forControlEvents:UIControlEventTouchUpInside];
 	[scrollView addSubview:saveButton3];
 	
 	scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, 1200);
@@ -567,6 +594,9 @@
 	} else if (sender == _gsInChargeOfReloadRankTasksButton) {
 		_server.gsInchargeOfReloadRankTasks = @(![_server.gsInchargeOfReloadRankTasks boolValue]);
 		value = _server.gsInchargeOfReloadRankTasks;
+	} else if (sender == _gsProcessRankJobButton) {
+		_server.gsProcessRankJobOn = @(![_server.gsProcessRankJobOn boolValue]);
+		value = _server.gsProcessRankJobOn;
 	}
 	if (value) {
 		[sender setTitle:[ZBAntServer onOrOff:value] forState:UIControlStateNormal];
@@ -620,8 +650,9 @@
 	}];
 }
 
-- (void)saveButton3 {
+- (void)saveSettings3 {
 	_server.gsGrabRankJobInterval = @([_gsGrabRankIntervalTextField.text integerValue]);
+	_server.gsProcessRankJobInterval = @([_gsProcessRankJobIntervalTextField.text integerValue]);
 	[[ZBHTTPManager shared] save:GSDATA outerIp:_server.outerIp settings:[_server settings3] withBlock:^(id responseObject, NSError *error) {
 		if (error) {
 			_options[kCRToastTextKey] = @"设置失败!";

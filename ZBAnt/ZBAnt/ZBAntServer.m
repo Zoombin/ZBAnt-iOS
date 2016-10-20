@@ -58,6 +58,8 @@
 	_gsGrabRankJobOn = data[@"grabRankJobOn"];
 	_gsGrabRankJobInterval = data[@"grabRankJobInterval"];
 	_gsInchargeOfReloadRankTasks = data[@"inChargeOfReloadRankTasks"];
+	_gsProcessRankJobOn = data[@"processRankJobOn"];
+	_gsProcessRankJobInterval = data[@"processRankJobInterval"];
 }
 
 - (NSDictionary *)settings {
@@ -110,6 +112,8 @@
 	settings3[@"grabRankJobOn"] = [self trueOrFalseString:_gsGrabRankJobOn];
 	settings3[@"grabRankJobInterval"] = _gsGrabRankJobInterval;
 	settings3[@"inChargeOfReloadRankTasks"] = [self trueOrFalseString:_gsInchargeOfReloadRankTasks];
+	settings3[@"processRankJobOn"] = [self trueOrFalseString:_gsProcessRankJobOn];
+	settings3[@"processRankJobInterval"] = _gsProcessRankJobInterval;
 	return settings3;
 
 }

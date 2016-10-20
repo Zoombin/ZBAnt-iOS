@@ -53,6 +53,8 @@
 @property (nonatomic, copy) NSNumber *gsGrabRankJobOn;
 @property (nonatomic, copy) NSNumber *gsGrabRankJobInterval;
 @property (nonatomic, copy) NSNumber *gsInchargeOfReloadRankTasks;
+@property (nonatomic, copy) NSNumber *gsProcessRankJobOn;
+@property (nonatomic, copy) NSNumber *gsProcessRankJobInterval;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 - (NSDictionary *)settings;

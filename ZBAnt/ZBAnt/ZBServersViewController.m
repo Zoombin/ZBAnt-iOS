@@ -75,7 +75,7 @@ static NSString *GAP = @"\t";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 290;
+	return 300;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -188,6 +188,10 @@ static NSString *GAP = @"\t";
 	[string appendFormat:@"interval: %@", server.gsGrabRankJobInterval];
 	[string appendString:@"\n"];
 	[string appendFormat:@"gsReloadRank: %@", [ZBAntServer onOrOff:server.gsInchargeOfReloadRankTasks]];
+	[string appendString:@"\n"];
+	[string appendFormat:@"gsProcessRank: %@", [ZBAntServer onOrOff:server.gsProcessRankJobOn]];
+	[string appendString:GAP];
+	[string appendFormat:@"interval: %@", server.gsProcessRankJobInterval];
 	[string appendString:@"\n"];
 	
 	cell.textLabel.text = string;
