@@ -56,12 +56,10 @@
 @property (nonatomic, copy) NSNumber *gsProcessRankJobOn;
 @property (nonatomic, copy) NSNumber *gsProcessRankJobInterval;
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary channel:(NSString *)channel;
 - (NSDictionary *)settings;
 - (NSDictionary *)settings2;
 - (NSDictionary *)settings3;
-- (void)setNewrankData:(NSDictionary *)data;
-- (void)setGsdataData:(NSDictionary *)data;
 + (NSString *)onOrOff:(NSNumber *)onOrOff;
 + (UIColor *)colorOnOrOff:(NSNumber *)onOrOff;
 

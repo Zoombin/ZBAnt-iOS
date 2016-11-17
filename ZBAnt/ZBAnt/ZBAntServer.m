@@ -7,59 +7,58 @@
 //
 
 #import "ZBAntServer.h"
+#import "ZBHTTPManager.h"
 
 @implementation ZBAntServer
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary {
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary channel:(NSString *)channel {
 	self = [super init];
 	if (self) {
-		_status = dictionary[@"status"];
-		_innerIp = dictionary[@"innerIp"];
-		_outerIp = dictionary[@"outerIp"];
-		_inChargeOfReloadTasks = dictionary[@"inChargeOfReloadTasks"];
-		_inChargeOfReloadTasksDeep = dictionary[@"inChargeOfReloadTasksDeep"];
-		_masterJobOn = dictionary[@"masterJobOn"];
-		_masterJobInterval = dictionary[@"masterJobInterval"];
-		_grabWeixinsJobOn = dictionary[@"grabWeixinsJobOn"];
-		_grabWeixinsJobInterval = dictionary[@"grabWeixinsJobInterval"];
-		_grabArticlesJobOn = dictionary[@"grabArticlesJobOn"];
-		_grabArticlesJobInterval = dictionary[@"grabArticlesJobInterval"];
-		_processWeixinsJobOn = dictionary[@"processWeixinsJobOn"];
-		_processWeixinsJobInterval = dictionary[@"processWeixinsJobInterval"];
-		_processArticlesJobOn = dictionary[@"processArticlesJobOn"];
-		_processArticlesJobInterval = dictionary[@"processArticlesJobInterval"];
-		_sjMasterVar = dictionary[@"sjMasterVar"];
-		_sjWeixinsVar = dictionary[@"sjWeixinsVar"];
-		_sjArticlesVar = dictionary[@"sjArticlesVar"];
-		_sjProcessWeixinsVar = dictionary[@"sjProcessWeixinsVar"];
-		_sjProcessArticlesVar = dictionary[@"sjProcessArticlesVar"];
-		_name = [self nameWithOuterIp:_outerIp];
-		_grabArticlesDeepJobOn = dictionary[@"grabArticlesDeepJobOn"];
-		_grabArticlesDeepJobInterval = dictionary[@"grabArticlesDeepJobInterval"];
-		_sjArticlesDeepVar = dictionary[@"sjArticlesDeepVar"];
+		if ([channel isEqualToString:WEIBOYI]) {
+			_status = dictionary[@"status"];
+			_innerIp = dictionary[@"innerIp"];
+			_outerIp = dictionary[@"outerIp"];
+			_inChargeOfReloadTasks = dictionary[@"inChargeOfReloadTasks"];
+			_inChargeOfReloadTasksDeep = dictionary[@"inChargeOfReloadTasksDeep"];
+			_masterJobOn = dictionary[@"masterJobOn"];
+			_masterJobInterval = dictionary[@"masterJobInterval"];
+			_grabWeixinsJobOn = dictionary[@"grabWeixinsJobOn"];
+			_grabWeixinsJobInterval = dictionary[@"grabWeixinsJobInterval"];
+			_grabArticlesJobOn = dictionary[@"grabArticlesJobOn"];
+			_grabArticlesJobInterval = dictionary[@"grabArticlesJobInterval"];
+			_processWeixinsJobOn = dictionary[@"processWeixinsJobOn"];
+			_processWeixinsJobInterval = dictionary[@"processWeixinsJobInterval"];
+			_processArticlesJobOn = dictionary[@"processArticlesJobOn"];
+			_processArticlesJobInterval = dictionary[@"processArticlesJobInterval"];
+			_sjMasterVar = dictionary[@"sjMasterVar"];
+			_sjWeixinsVar = dictionary[@"sjWeixinsVar"];
+			_sjArticlesVar = dictionary[@"sjArticlesVar"];
+			_sjProcessWeixinsVar = dictionary[@"sjProcessWeixinsVar"];
+			_sjProcessArticlesVar = dictionary[@"sjProcessArticlesVar"];
+			_name = [self nameWithOuterIp:_outerIp];
+			_grabArticlesDeepJobOn = dictionary[@"grabArticlesDeepJobOn"];
+			_grabArticlesDeepJobInterval = dictionary[@"grabArticlesDeepJobInterval"];
+			_sjArticlesDeepVar = dictionary[@"sjArticlesDeepVar"];
+		} else if ([channel isEqualToString:NEWRANK]) {
+			_nkGrabArticlesJobInterval = dictionary[@"grabArticlesJobInterval"];
+			_nkGrabArticlesJobOn = dictionary[@"grabArticlesJobOn"];
+			_nkGrabDetailsJobInterval = dictionary[@"grabDetailsJobInterval"];
+			_nkGrabDetailsJobOn = dictionary[@"grabDetailsJobOn"];
+			_nkProcessArticlesJobInterval = dictionary[@"processArticlesJobInterval"];
+			_nkProcessArticlesJobOn = dictionary[@"processArticlesJobOn"];
+			_nkProcessDetailsJobInterval = dictionary[@"processDetailsJobInterval"];
+			_nkProcessDetailsJobOn = dictionary[@"processDetailsJobOn"];
+			_nkInChargeOfReloadArticlesTasks = dictionary[@"inChargeOfReloadArticlesTasks"];
+			_nkInChargeOfReloadDetailsTasks = dictionary[@"inChargeOfReloadDetailsTasks"];
+		} else if ([channel isEqualToString:GSDATA]) {
+			_gsGrabRankJobOn = dictionary[@"grabRankJobOn"];
+			_gsGrabRankJobInterval = dictionary[@"grabRankJobInterval"];
+			_gsInchargeOfReloadRankTasks = dictionary[@"inChargeOfReloadRankTasks"];
+			_gsProcessRankJobOn = dictionary[@"processRankJobOn"];
+			_gsProcessRankJobInterval = dictionary[@"processRankJobInterval"];
+		}
 	}
 	return self;
-}
-
-- (void)setNewrankData:(NSDictionary *)data {
-	_nkGrabArticlesJobInterval = data[@"grabArticlesJobInterval"];
-	_nkGrabArticlesJobOn = data[@"grabArticlesJobOn"];
-	_nkGrabDetailsJobInterval = data[@"grabDetailsJobInterval"];
-	_nkGrabDetailsJobOn = data[@"grabDetailsJobOn"];
-	_nkProcessArticlesJobInterval = data[@"processArticlesJobInterval"];
-	_nkProcessArticlesJobOn = data[@"processArticlesJobOn"];
-	_nkProcessDetailsJobInterval = data[@"processDetailsJobInterval"];
-	_nkProcessDetailsJobOn = data[@"processDetailsJobOn"];
-	_nkInChargeOfReloadArticlesTasks = data[@"inChargeOfReloadArticlesTasks"];
-	_nkInChargeOfReloadDetailsTasks = data[@"inChargeOfReloadDetailsTasks"];
-}
-
-- (void)setGsdataData:(NSDictionary *)data {
-	_gsGrabRankJobOn = data[@"grabRankJobOn"];
-	_gsGrabRankJobInterval = data[@"grabRankJobInterval"];
-	_gsInchargeOfReloadRankTasks = data[@"inChargeOfReloadRankTasks"];
-	_gsProcessRankJobOn = data[@"processRankJobOn"];
-	_gsProcessRankJobInterval = data[@"processRankJobInterval"];
 }
 
 - (NSDictionary *)settings {

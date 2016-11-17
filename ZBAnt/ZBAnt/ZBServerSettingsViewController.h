@@ -12,5 +12,6 @@
 @interface ZBServerSettingsViewController : UIViewController
 
 @property (nonatomic, readwrite) ZBAntServer *server;
+@property (nonatomic, readwrite) NSString *channel;
 
 @end
