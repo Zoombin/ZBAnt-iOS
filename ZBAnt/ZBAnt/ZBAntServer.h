@@ -11,14 +11,13 @@
 
 @interface ZBAntServer : NSObject
 
+@property (nonatomic, copy) NSString *domain;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSNumber *status;
 @property (nonatomic, copy) NSString *innerIp;
 @property (nonatomic, copy) NSString *outerIp;
 @property (nonatomic, copy) NSNumber *inChargeOfReloadTasks;
 @property (nonatomic, copy) NSNumber *inChargeOfReloadTasksDeep;
-@property (nonatomic, copy) NSNumber *masterJobOn;
-@property (nonatomic, copy) NSNumber *masterJobInterval;
 @property (nonatomic, copy) NSNumber *grabWeixinsJobOn;
 @property (nonatomic, copy) NSNumber *grabWeixinsJobInterval;
 @property (nonatomic, copy) NSNumber *grabArticlesJobOn;

@@ -11,14 +11,17 @@
 
 NSString * const SECRET_KV = @"secret=18662606288";
 
-//NSString * const HOST = @"http://localhost";
+//NSString * const SCHEME = @"http://";
+//NSString * const HOST = @"localhost";
 //NSString * const PORT = @"3000";
-NSString * const HOST = @"http://ant.zoombin.com";
+
+NSString * const SCHEME = @"https://";
+NSString * const HOST = @"ant.zoombin.com";
 NSString * const PORT = @"3008";
-//NSString * const HOST = @"http://ant.zoombin.com";
+
+//NSString * const SCHEME = @"https://";
+//NSString * const HOST = @"ant.zoombin.com";
 //NSString * const PORT = @"4008";
-//NSString * const HOST = @"http://139.196.33.46";//ant9
-//NSString * const PORT = @"4008";//qa
 
 
 NSString * const WEIBOYI = @"weiboyi";
@@ -35,7 +38,7 @@ static NSString *BASE_URL_STRING;
 	if (!httpManager) {
 		httpManager = [[ZBHTTPManager alloc] init];
 		manager = [AFHTTPRequestOperationManager manager];
-		BASE_URL_STRING = [NSString stringWithFormat:@"%@:%@/api/", HOST, PORT];
+		BASE_URL_STRING = [NSString stringWithFormat:@"%@%@:%@/api/", SCHEME, HOST, PORT];
 	}
 	return httpManager;
 }
@@ -74,17 +77,18 @@ static NSString *BASE_URL_STRING;
 	}];
 }
 
-- (void)save:(NSString *)channel outerIp:(NSString *)outerIp settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/weiboyi", outerIp, PORT];
+- (void)save:(NSString *)channel server:(ZBAntServer *)server settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/weiboyi", SCHEME, server.domain, PORT];
 	NSString *requestUrl = [NSString stringWithFormat:@"%@%@?%@", baseUrlString, @"/settings", SECRET_KV];
 	if ([channel isEqualToString:NEWRANK]) {
-		baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/newrank", outerIp, PORT];
+		baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/newrank", SCHEME, server.domain, PORT];
 		requestUrl = [NSString stringWithFormat:@"%@%@?%@", baseUrlString, @"/settings", SECRET_KV];
 	} else if ([channel isEqualToString:GSDATA]) {
-		baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/gsdata", outerIp, PORT];
+		baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/gsdata", SCHEME, server.domain, PORT];
 		requestUrl = [NSString stringWithFormat:@"%@%@?%@", baseUrlString, @"/settings", SECRET_KV];
 	}
-
+	
+	NSLog(@"requestUrl: %@", requestUrl);
 	[manager POST:requestUrl parameters:settings success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
 			block(responseObject, nil);
@@ -96,8 +100,8 @@ static NSString *BASE_URL_STRING;
 	}];
 }
 
-- (void)captcha:(NSString *)outerIp withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/weiboyi/", outerIp, PORT];
+- (void)captcha:(ZBAntServer *)server withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/weiboyi/", SCHEME, server.domain, PORT];
 	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@?isApi=true&%@", baseUrlString, @"captcha", SECRET_KV];
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSLog(@"responseObject: %@", responseObject);
@@ -112,8 +116,8 @@ static NSString *BASE_URL_STRING;
 	}];
 }
 
-- (void)login:(NSString *)outerIp code:(NSString *)code withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *baseUrlString = [NSString stringWithFormat:@"http://%@:%@/api/weiboyi/", outerIp, PORT];
+- (void)login:(ZBAntServer *)server code:(NSString *)code withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/weiboyi/", SCHEME, server.domain, PORT];
 	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@?captcha=%@&%@", baseUrlString, @"login", code, SECRET_KV];
 	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if (block) {
@@ -126,8 +130,8 @@ static NSString *BASE_URL_STRING;
 	}];
 }
 
-- (NSString *)adminLoginUrlStringWithOuterIp:(NSString *)outerIp {
-	NSString *urlString = [NSString stringWithFormat:@"http://%@:%@/admin/login?%@", outerIp, PORT, SECRET_KV];
+- (NSString *)adminLoginUrlStringWithServer:(ZBAntServer *)server {
+	NSString *urlString = [NSString stringWithFormat:@"%@%@:%@/admin/login?%@", SCHEME, server.domain, PORT, SECRET_KV];
 	return urlString;
 }
 

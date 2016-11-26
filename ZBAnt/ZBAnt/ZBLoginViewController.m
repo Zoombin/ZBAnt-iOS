@@ -26,7 +26,7 @@
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.title = [NSString stringWithFormat:@"%@:%@", _server.name, _server.outerIp];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(pop)];
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self.view action:@selector(endEditing:)];
 	[self.view addGestureRecognizer:tap];
 	
@@ -90,12 +90,12 @@
 	[self.view addSubview:loginButton];
 }
 
-- (void)dismiss {
-	[self dismissViewControllerAnimated:YES completion:nil];
+- (void)pop {
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)captcha {
-	[[ZBHTTPManager shared] captcha:_server.outerIp withBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] captcha:_server withBlock:^(id responseObject, NSError *error) {
 		if (!error) {
 			NSDictionary *data = responseObject[@"data"];
 			_imageUrlLabel.text = data[@"captchaUrl"];
@@ -106,7 +106,7 @@
 
 - (void)login {
 	if (_codeTextField.text.length) {
-		[[ZBHTTPManager shared] login:_server.outerIp code:_codeTextField.text withBlock:^(id responseObject, NSError *error) {
+		[[ZBHTTPManager shared] login:_server code:_codeTextField.text withBlock:^(id responseObject, NSError *error) {
 			BOOL success = NO;
 			_options[kCRToastTextKey] = @"登录失败!";
 			_options[kCRToastBackgroundColorKey] = [UIColor redColor];
@@ -121,7 +121,7 @@
 			
 			[CRToastManager showNotificationWithOptions:_options completionBlock:^{
 				if (success) {
-					[self dismiss];
+					[self pop];
 				}
 			}];
 		}];

@@ -19,7 +19,7 @@
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor lightTextColor];
 	UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-	NSString *urlString = [[ZBHTTPManager shared] adminLoginUrlStringWithOuterIp:_server.outerIp];
+	NSString *urlString = [[ZBHTTPManager shared] adminLoginUrlStringWithServer:_server];
 	[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
 	[self.view addSubview:webView];
 }

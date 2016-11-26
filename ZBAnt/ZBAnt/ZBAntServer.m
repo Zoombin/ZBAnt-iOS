@@ -20,8 +20,6 @@
 			_outerIp = dictionary[@"outerIp"];
 			_inChargeOfReloadTasks = dictionary[@"inChargeOfReloadTasks"];
 			_inChargeOfReloadTasksDeep = dictionary[@"inChargeOfReloadTasksDeep"];
-			_masterJobOn = dictionary[@"masterJobOn"];
-			_masterJobInterval = dictionary[@"masterJobInterval"];
 			_grabWeixinsJobOn = dictionary[@"grabWeixinsJobOn"];
 			_grabWeixinsJobInterval = dictionary[@"grabWeixinsJobInterval"];
 			_grabArticlesJobOn = dictionary[@"grabArticlesJobOn"];
@@ -35,7 +33,6 @@
 			_sjArticlesVar = dictionary[@"sjArticlesVar"];
 			_sjProcessWeixinsVar = dictionary[@"sjProcessWeixinsVar"];
 			_sjProcessArticlesVar = dictionary[@"sjProcessArticlesVar"];
-			_name = [self nameWithOuterIp:_outerIp];
 			_grabArticlesDeepJobOn = dictionary[@"grabArticlesDeepJobOn"];
 			_grabArticlesDeepJobInterval = dictionary[@"grabArticlesDeepJobInterval"];
 			_sjArticlesDeepVar = dictionary[@"sjArticlesDeepVar"];
@@ -57,6 +54,8 @@
 			_gsProcessRankJobOn = dictionary[@"processRankJobOn"];
 			_gsProcessRankJobInterval = dictionary[@"processRankJobInterval"];
 		}
+		_name = dictionary[@"name"];
+		_domain = [NSString stringWithFormat:@"%@.zoombin.com", _name];
 	}
 	return self;
 }
@@ -66,9 +65,6 @@
 	
 	settings[@"inChargeOfReloadTasks"] = [self trueOrFalseString:_inChargeOfReloadTasks];
 	settings[@"inChargeOfReloadTasksDeep"] = [self trueOrFalseString:_inChargeOfReloadTasksDeep];
-	
-	settings[@"masterJobOn"] = [self trueOrFalseString:_masterJobOn];
-	settings[@"masterJobInterval"] = _masterJobInterval;
 	
 	settings[@"grabWeixinsJobOn"] = [self trueOrFalseString:_grabWeixinsJobOn];
 	settings[@"grabWeixinsJobInterval"] = _grabWeixinsJobInterval;
@@ -119,29 +115,6 @@
 
 - (NSString *)trueOrFalseString:(NSNumber *)number {
 	return [number boolValue] ? @"true" : @"false";
-}
-
-- (NSString *)nameWithOuterIp:(NSString *)outerIp {
-	if ([outerIp isEqualToString:@"121.199.29.134"]) {
-		return @"ant1";
-	} else if ([outerIp isEqualToString:@"139.196.185.42"]) {
-		return @"ant2";
-	} else if ([outerIp isEqualToString:@"139.224.72.238"]) {
-		return @"ant3";
-	} else if ([outerIp isEqualToString:@"139.224.72.56"]) {
-		return @"ant4";
-	} else if ([outerIp isEqualToString:@"115.28.202.112"]) {
-		return @"ant5";
-	} else if ([outerIp isEqualToString:@"115.29.136.212"]) {
-		return @"ant6";
-	} else if ([outerIp isEqualToString:@"115.29.145.52"]) {
-		return @"ant7";
-	} else if ([outerIp isEqualToString:@"115.29.138.228"]) {
-		return @"ant8";
-	} else if ([outerIp isEqualToString:@"139.196.33.46"]) {
-		return @"ant9";
-	}
-	return outerIp;
 }
 
 + (NSString *)onOrOff:(NSNumber *)number {

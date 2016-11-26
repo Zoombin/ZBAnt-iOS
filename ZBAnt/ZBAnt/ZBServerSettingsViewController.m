@@ -14,7 +14,6 @@
 
 @interface ZBServerSettingsViewController ()
 
-@property (readwrite) UIButton *masterJobButton;
 @property (readwrite) UIButton *inChargeOfReloadTasksButton;
 @property (readwrite) UIButton *inChargeOfReloadTasksDeepButton;
 @property (readwrite) UIButton *grabWeixinsJobButton;
@@ -23,7 +22,6 @@
 @property (readwrite) UIButton *processArticlesJobButton;
 @property (readwrite) UIButton *grabArticlesDeepJobButton;
 
-@property (readwrite) UITextField *masterJobIntervalTextField;
 @property (readwrite) UITextField *grabWeixinsJobIntervalTextField;
 @property (readwrite) UITextField *grabArticlesJobIntervalTextField;
 @property (readwrite) UITextField *processWeixinsJobIntervalTextField;
@@ -88,27 +86,8 @@
 	
 	if ([_channel isEqualToString:WEIBOYI]) {
 		rect.size = labelSize;
-		UILabel *masterJobLabel = [[UILabel alloc] initWithFrame:rect];
-		masterJobLabel.text = @"masterJobOn";
-		[scrollView addSubview:masterJobLabel];
-		
 		rect.origin.y += 30;
 		rect.size = buttonSize;
-		_masterJobButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		_masterJobButton.frame = rect;
-		[_masterJobButton setTitle:[ZBAntServer onOrOff:_server.masterJobOn] forState:UIControlStateNormal];
-		[_masterJobButton setTitleColor:[ZBAntServer colorOnOrOff:_server.masterJobOn] forState:UIControlStateNormal];
-		_masterJobButton.backgroundColor = [UIColor grayColor];
-		[_masterJobButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
-		[scrollView addSubview:_masterJobButton];
-		
-		rect.origin.x += 80;
-		rect.size = textFieldSize;
-		_masterJobIntervalTextField = [[UITextField alloc] initWithFrame:rect];
-		_masterJobIntervalTextField.backgroundColor = [UIColor grayColor];
-		_masterJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.masterJobInterval];
-		[scrollView addSubview:_masterJobIntervalTextField];
-		
 		
 		rect.origin.x += 100;
 		rect.origin.y = 70;
@@ -541,10 +520,7 @@
 
 - (void)toogleButton:(UIButton *)sender {
 	NSNumber *value = NULL;
-	if (sender == _masterJobButton) {
-		_server.masterJobOn = @(![_server.masterJobOn boolValue]);
-		value = _server.masterJobOn;
-	} else if (sender == _grabWeixinsJobButton) {
+	if (sender == _grabWeixinsJobButton) {
 		_server.grabWeixinsJobOn = @(![_server.grabWeixinsJobOn boolValue]);
 		value = _server.grabWeixinsJobOn;
 	} else if (sender == _grabArticlesJobButton) {
@@ -600,14 +576,13 @@
 }
 
 - (void)saveSettings {
-	_server.masterJobInterval = @([_masterJobIntervalTextField.text integerValue]);
 	_server.grabWeixinsJobInterval = @([_grabWeixinsJobIntervalTextField.text integerValue]);
 	_server.grabArticlesJobInterval = @([_grabArticlesJobIntervalTextField.text integerValue]);
 	_server.processWeixinsJobInterval = @([_processWeixinsJobIntervalTextField.text integerValue]);
 	_server.processArticlesJobInterval = @([_processArticlesJobIntervalTextField.text integerValue]);
 	_server.grabArticlesDeepJobInterval = @([_grabArticlesDeepJobIntervalTextField.text integerValue]);
 	
-	[[ZBHTTPManager shared] save:WEIBOYI outerIp:_server.outerIp settings:[_server settings] withBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] save:WEIBOYI server:_server settings:[_server settings] withBlock:^(id responseObject, NSError *error) {
 		if (error) {
 			_options[kCRToastTextKey] = @"设置失败!";
 			_options[kCRToastBackgroundColorKey] = [UIColor redColor];
@@ -629,7 +604,7 @@
 	_server.nkProcessArticlesJobInterval = @([_nkProcessArticlesJobIntervalTextField.text integerValue]);
 	_server.nkProcessDetailsJobInterval = @([_nkProcessDetailsJobIntervalTextField.text integerValue]);
 	
-	[[ZBHTTPManager shared] save:NEWRANK outerIp:_server.outerIp settings:[_server settings2] withBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] save:NEWRANK server:_server settings:[_server settings2] withBlock:^(id responseObject, NSError *error) {
 		if (error) {
 			_options[kCRToastTextKey] = @"设置失败!";
 			_options[kCRToastBackgroundColorKey] = [UIColor redColor];
@@ -648,7 +623,7 @@
 - (void)saveSettings3 {
 	_server.gsGrabRankJobInterval = @([_gsGrabRankIntervalTextField.text integerValue]);
 	_server.gsProcessRankJobInterval = @([_gsProcessRankJobIntervalTextField.text integerValue]);
-	[[ZBHTTPManager shared] save:GSDATA outerIp:_server.outerIp settings:[_server settings3] withBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] save:GSDATA server:_server settings:[_server settings3] withBlock:^(id responseObject, NSError *error) {
 		if (error) {
 			_options[kCRToastTextKey] = @"设置失败!";
 			_options[kCRToastBackgroundColorKey] = [UIColor redColor];

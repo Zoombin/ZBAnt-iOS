@@ -65,7 +65,7 @@ static NSString *GAP = @"\t";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 160;
+	return 155;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -91,15 +91,7 @@ static NSString *GAP = @"\t";
 		[string appendString:@"    "];
 		[string appendFormat:@"innerIp: %@", server.innerIp];
 		[string appendString:@"\n"];
-		
-		[string appendFormat:@"masterJob: %@", [ZBAntServer onOrOff:server.masterJobOn]];
-		[string appendString:GAP];
-		[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjMasterVar]];
-		[string appendString:GAP];
-		[string appendFormat:@"interval: %@", server.masterJobInterval];
-		[string appendString:GAP];
-		[string appendString:@"\n"];
-		
+				
 		[string appendFormat:@"weixinsJob: %@", [ZBAntServer onOrOff:server.grabWeixinsJobOn]];
 		[string appendString:GAP];
 		[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjWeixinsVar]];
@@ -133,8 +125,7 @@ static NSString *GAP = @"\t";
 		[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjArticlesDeepVar]];
 		[string appendString:GAP];
 		[string appendFormat:@"interval: %@", server.grabArticlesDeepJobInterval];
-		[string appendString:@"\n"];
-		[string appendString:@"\n"];
+		//[string appendString:@"\n"];
 	} else if ([_selectedChannel isEqualToString:NEWRANK]) {
 		[string appendFormat:@"nkGrabArticles: %@", [ZBAntServer onOrOff:server.nkGrabArticlesJobOn]];
 		[string appendString:GAP];
@@ -159,8 +150,7 @@ static NSString *GAP = @"\t";
 		[string appendFormat:@"nkReloadArticles: %@", [ZBAntServer onOrOff:server.nkInChargeOfReloadArticlesTasks]];
 		[string appendString:GAP];
 		[string appendFormat:@"nkReloadDetails: %@", [ZBAntServer onOrOff:server.nkInChargeOfReloadDetailsTasks]];
-		[string appendString:@"\n"];
-		[string appendString:@"\n"];
+		//[string appendString:@"\n"];
 	} else if ([_selectedChannel isEqualToString:GSDATA]) {
 		[string appendFormat:@"gsGrabRank: %@", [ZBAntServer onOrOff:server.gsGrabRankJobOn]];
 		[string appendString:GAP];
@@ -171,7 +161,7 @@ static NSString *GAP = @"\t";
 		[string appendFormat:@"gsProcessRank: %@", [ZBAntServer onOrOff:server.gsProcessRankJobOn]];
 		[string appendString:GAP];
 		[string appendFormat:@"interval: %@", server.gsProcessRankJobInterval];
-		[string appendString:@"\n"];
+		//[string appendString:@"\n"];
 	}
 	cell.textLabel.text = string;
 	cell.textLabel.numberOfLines = 0;
