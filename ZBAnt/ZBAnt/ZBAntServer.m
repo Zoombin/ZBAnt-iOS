@@ -55,7 +55,11 @@
 			_gsProcessRankJobInterval = dictionary[@"processRankJobInterval"];
 		}
 		_name = dictionary[@"name"];
-		_domain = [NSString stringWithFormat:@"%@.zoombin.com", _name];
+		if ([_name isEqualToString:@"localhost"]) {
+			_domain = [NSString stringWithFormat:@"%@", _name];
+		} else {
+			_domain = [NSString stringWithFormat:@"%@.zoombin.com", _name];
+		}
 	}
 	return self;
 }

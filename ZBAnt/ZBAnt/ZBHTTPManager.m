@@ -8,132 +8,111 @@
 
 #import "ZBHTTPManager.h"
 #import "AFNetworking.h"
+#import "NSString+AESCrypt.h"
+#import "NSData+AESCrypt.h"
 
-NSString * const SECRET_KV = @"secret=18662606288";
 
 //NSString * const SCHEME = @"http://";
 //NSString * const HOST = @"localhost";
 //NSString * const PORT = @"3000";
 
-NSString * const SCHEME = @"https://";
-NSString * const HOST = @"ant.zoombin.com";
-NSString * const PORT = @"3008";
-
 //NSString * const SCHEME = @"https://";
 //NSString * const HOST = @"ant.zoombin.com";
-//NSString * const PORT = @"4008";
+//NSString * const PORT = @"3008";
 
+NSString * const SCHEME = @"https://";
+NSString * const HOST = @"vultr-ant.zoombin.com";
+NSString * const PORT = @"4008";
 
 NSString * const WEIBOYI = @"weiboyi";
 NSString * const NEWRANK = @"newrank";
 NSString * const GSDATA = @"gsdata";
+NSString * const SECRET = @"18662606288";
+NSString * const API_SECRET = @"4525df7a4b2111e68bab00ff8821fdcf";
 
 static ZBHTTPManager *httpManager;
-static AFHTTPRequestOperationManager *manager;
-static NSString *BASE_URL_STRING;
+static AFURLSessionManager *manager;
 
 @implementation ZBHTTPManager
 
 + (instancetype)shared {
 	if (!httpManager) {
 		httpManager = [[ZBHTTPManager alloc] init];
-		manager = [AFHTTPRequestOperationManager manager];
-		BASE_URL_STRING = [NSString stringWithFormat:@"%@%@:%@/api/", SCHEME, HOST, PORT];
+		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+		manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+		manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 	}
 	return httpManager;
 }
 
-- (void)statistics:(NSString *)channel type:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *requestUrl = [NSString stringWithFormat:@"%@%@%@?type=%@&%@", BASE_URL_STRING, WEIBOYI, @"/statistics", type, SECRET_KV];
-	if ([channel isEqualToString:NEWRANK]) {
-		requestUrl = [NSString stringWithFormat:@"%@%@%@?type=%@&%@", BASE_URL_STRING, NEWRANK, @"/statistics", type, SECRET_KV];
-	}
-	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		if (block) {
-			block(responseObject, nil);
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		if (block) {
-			block(nil, error);
-		}
-	}];
-}
-
-- (void)settings:(NSString *)channel withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *requestUrl = [NSString stringWithFormat:@"%@%@%@?%@", BASE_URL_STRING, WEIBOYI, @"/settings", SECRET_KV];
-	if ([channel isEqualToString:NEWRANK]) {
-		requestUrl = [NSString stringWithFormat:@"%@%@%@?%@", BASE_URL_STRING, NEWRANK, @"/settings", SECRET_KV	];
-	} else if ([channel isEqualToString:GSDATA]) {
-		requestUrl = [NSString stringWithFormat:@"%@%@%@?%@", BASE_URL_STRING, GSDATA, @"/settings", SECRET_KV];
-	}
-	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		if (block) {
-			block(responseObject, nil);
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		if (block) {
-			block(nil, error);
-		}
-	}];
-}
-
-- (void)save:(NSString *)channel server:(ZBAntServer *)server settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/weiboyi", SCHEME, server.domain, PORT];
-	NSString *requestUrl = [NSString stringWithFormat:@"%@%@?%@", baseUrlString, @"/settings", SECRET_KV];
-	if ([channel isEqualToString:NEWRANK]) {
-		baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/newrank", SCHEME, server.domain, PORT];
-		requestUrl = [NSString stringWithFormat:@"%@%@?%@", baseUrlString, @"/settings", SECRET_KV];
-	} else if ([channel isEqualToString:GSDATA]) {
-		baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/gsdata", SCHEME, server.domain, PORT];
-		requestUrl = [NSString stringWithFormat:@"%@%@?%@", baseUrlString, @"/settings", SECRET_KV];
-	}
-	
-	NSLog(@"requestUrl: %@", requestUrl);
-	[manager POST:requestUrl parameters:settings success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		if (block) {
-			block(responseObject, nil);
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		if (block) {
-			block(nil, error);
-		}
-	}];
-}
-
-- (void)captcha:(ZBAntServer *)server withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/weiboyi/", SCHEME, server.domain, PORT];
-	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@?isApi=true&%@", baseUrlString, @"captcha", SECRET_KV];
-	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		NSLog(@"responseObject: %@", responseObject);
-		if (block) {
-			block(responseObject, nil);
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		NSLog(@"captcha error: %@", error);
-		if (block) {
-			block(nil, error);
-		}
-	}];
-}
-
-- (void)login:(ZBAntServer *)server code:(NSString *)code withBlock:(void (^)(id responseObject, NSError *error))block {
-	NSString *baseUrlString = [NSString stringWithFormat:@"%@%@:%@/api/weiboyi/", SCHEME, server.domain, PORT];
-	NSMutableString *requestUrl = [NSMutableString stringWithFormat:@"%@%@?captcha=%@&%@", baseUrlString, @"login", code, SECRET_KV];
-	[manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		if (block) {
-			block(responseObject, nil);
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		if (block) {
-			block(nil, error);
-		}
-	}];
-}
-
 - (NSString *)adminLoginUrlStringWithServer:(ZBAntServer *)server {
-	NSString *urlString = [NSString stringWithFormat:@"%@%@:%@/admin/login?%@", SCHEME, server.domain, PORT, SECRET_KV];
+	NSString *urlString = [NSString stringWithFormat:@"%@%@:%@/admin/login", SCHEME, server.domain, PORT];
+	NSLog(@"ping url: %@", urlString);
 	return urlString;
 }
 
+- (id)decryptResponseObject:(id)responseObject {
+	NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+	string = [string AES256DecryptWithKey:API_SECRET];
+	NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+	id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+	return json;
+}
+
+- (void)startDataTaskWithUrlString:(NSString *)string params:(NSDictionary *)params andBlock:(void (^)(id responseObject, NSError *error))block {
+	NSMutableDictionary *mParams = [[NSMutableDictionary alloc] initWithDictionary:params ?: @{}];
+	mParams[@"secret"] = SECRET;
+	NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mParams options:0 error:nil];
+	NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+	NSLog(@"jsonString: %@", jsonString);
+	jsonString = [jsonString AES256EncryptWithKey:API_SECRET];
+	NSString *encodedString = [jsonString stringByAddingPercentEncodingWithAllowedCharacters:[[NSCharacterSet characterSetWithCharactersInString:@"/+=\n"] invertedSet]];
+	NSLog(@"encodedString: %@", encodedString);
+	NSString *urlString = [NSString stringWithFormat:@"%@?edata=%@", string, encodedString];
+	
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+	NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+		if (error) {
+			NSLog(@"error: %@", error);
+			if (block) block(nil, error);
+		} else {
+			id json = [self decryptResponseObject:responseObject];
+			NSLog(@"json: %@", json);
+			if (block) block(json, nil);
+		}
+	}];
+	[dataTask resume];
+}
+
+- (NSString *)baseUrlStringWithDomain:(NSString *)domain channel:(NSString *)channel prefix:(NSString *)prefix {
+	domain = domain ?: HOST;
+	prefix = prefix ?: @"";
+	return [NSString stringWithFormat:@"%@%@:%@/%@/%@/%@", SCHEME, domain, PORT, @"api", channel, prefix];
+}
+
+- (void)statistics:(NSString *)channel type:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [self baseUrlStringWithDomain:nil channel:channel prefix:@"statistics"];
+	[self startDataTaskWithUrlString:requestUrl params:@{@"type": type} andBlock:block];
+}
+
+- (void)settings:(NSString *)channel withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [self baseUrlStringWithDomain:nil channel:channel prefix:@"settings"];
+	[self startDataTaskWithUrlString:requestUrl params:nil andBlock:block];
+}
+
+- (void)save:(NSString *)channel server:(ZBAntServer *)server settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [self baseUrlStringWithDomain:server.domain channel:channel prefix:@"saveSettings"];
+	[self startDataTaskWithUrlString:requestUrl params:settings andBlock:block];
+}
+
+- (void)captcha:(ZBAntServer *)server withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [self baseUrlStringWithDomain:server.domain channel:WEIBOYI prefix:@"captcha"];
+	[self startDataTaskWithUrlString:requestUrl params:nil andBlock:block];
+}
+
+- (void)login:(ZBAntServer *)server code:(NSString *)code withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [self baseUrlStringWithDomain:server.domain channel:WEIBOYI prefix:@"login"];
+	[self startDataTaskWithUrlString:requestUrl params:@{@"captcha": code} andBlock:block];
+}
 
 @end

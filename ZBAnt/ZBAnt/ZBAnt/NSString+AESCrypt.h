@@ -3,7 +3,7 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import "NSData+AESCrypt.h"
+#import "NSData+AESCrypt.h"
 
 @interface NSString (AESCrypt)
 
