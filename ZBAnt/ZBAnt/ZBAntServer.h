@@ -13,9 +13,11 @@
 
 @property (nonatomic, copy) NSString *domain;
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSNumber *status;
 @property (nonatomic, copy) NSString *innerIp;
 @property (nonatomic, copy) NSString *outerIp;
+@property (nonatomic, copy) NSNumber *active;
+@property (nonatomic, copy) NSNumber *master;
+
 @property (nonatomic, copy) NSNumber *inChargeOfReloadTasks;
 @property (nonatomic, copy) NSNumber *inChargeOfReloadTasksDeep;
 @property (nonatomic, copy) NSNumber *grabWeixinsJobOn;
@@ -55,6 +57,7 @@
 @property (nonatomic, copy) NSNumber *gsProcessRankJobOn;
 @property (nonatomic, copy) NSNumber *gsProcessRankJobInterval;
 
+- (instancetype)initWithAttribues:(NSDictionary *)dictionary;
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary channel:(NSString *)channel;
 - (NSDictionary *)settings;
 - (NSDictionary *)settings2;

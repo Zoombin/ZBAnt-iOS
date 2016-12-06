@@ -1,5 +1,5 @@
 //
-//  ZBServerSettingsViewController.h
+//  ZBSettingsDetailsViewController.h
 //  ZBAnt
 //
 //  Created by zhangbin on 9/18/16.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ZBAntServer.h"
 
-@interface ZBServerSettingsViewController : UIViewController
+@interface ZBSettingsDetailsViewController : UIViewController
 
 @property (nonatomic, readwrite) ZBAntServer *server;
 @property (nonatomic, readwrite) NSString *channel;

@@ -11,11 +11,22 @@
 
 @implementation ZBAntServer
 
+- (instancetype)initWithAttribues:(NSDictionary *)dictionary {
+	self = [super init];
+	if (self) {
+		_innerIp = dictionary[@"innerIp"];
+		_outerIp = dictionary[@"outerIp"];
+		_name = dictionary[@"name"];
+		_active = dictionary[@"active"];
+		_master = dictionary[@"master"];
+	}
+	return self;
+}
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary channel:(NSString *)channel {
 	self = [super init];
 	if (self) {
 		if ([channel isEqualToString:WEIBOYI]) {
-			_status = dictionary[@"status"];
 			_innerIp = dictionary[@"innerIp"];
 			_outerIp = dictionary[@"outerIp"];
 			_inChargeOfReloadTasks = dictionary[@"inChargeOfReloadTasks"];

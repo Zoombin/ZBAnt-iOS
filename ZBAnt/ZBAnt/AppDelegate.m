@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ZBAnt.h"
+#import "ZBSettingsViewController.h"
 #import "ZBStatisticsViewController.h"
 #import "ZBServersViewController.h"
 #import "ZBHTTPManager.h"
@@ -21,9 +22,9 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	ZBServersViewController *serversViewController = [[ZBServersViewController alloc] init];
-	serversViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Servers" image:[UIImage imageNamed:@"first"] tag:1];
-	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:serversViewController];
+	ZBSettingsViewController *settingsViewController = [[ZBSettingsViewController alloc] init];
+	settingsViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[UIImage imageNamed:@"first"] tag:1];
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
 	
 	ZBStatisticsViewController *weiboyiViewController = [[ZBStatisticsViewController alloc] init];
 	weiboyiViewController.channel = WEIBOYI;
@@ -35,8 +36,12 @@
 	newrankViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Newrank" image:[UIImage imageNamed:@"first"] tag:1];
 	UINavigationController *nav3 = [[UINavigationController alloc] initWithRootViewController:newrankViewController];
 	
+	ZBServersViewController *serversViewController = [[ZBServersViewController alloc] init];
+	serversViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Servers" image:[UIImage imageNamed:@"second"] tag:1];
+	UINavigationController *nav4 = [[UINavigationController alloc] initWithRootViewController:serversViewController];
+	
 	UITabBarController *tabBarController = [[UITabBarController alloc] initWithNibName:nil bundle:nil];
-	tabBarController.viewControllers = @[nav, nav2, nav3];
+	tabBarController.viewControllers = @[nav, nav2, nav3, nav4];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = tabBarController;

@@ -1,18 +1,18 @@
 //
-//  ZBServerSettingsViewController.m
+//  ZBSettingsDetailsViewController.m
 //  ZBAnt
 //
 //  Created by zhangbin on 9/18/16.
 //  Copyright © 2016 Zoombin. All rights reserved.
 //
 
-#import "ZBServerSettingsViewController.h"
+#import "ZBSettingsDetailsViewController.h"
 #import "ZBHTTPManager.h"
 #import "ZBLoginViewController.h"
 #import "CRToast.h"
 #import "ZBPingViewController.h"
 
-@interface ZBServerSettingsViewController ()
+@interface ZBSettingsDetailsViewController ()
 
 @property (readwrite) UIButton *inChargeOfReloadTasksButton;
 @property (readwrite) UIButton *inChargeOfReloadTasksDeepButton;
@@ -50,7 +50,7 @@
 
 @end
 
-@implementation ZBServerSettingsViewController
+@implementation ZBSettingsDetailsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

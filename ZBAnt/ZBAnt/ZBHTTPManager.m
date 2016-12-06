@@ -12,17 +12,21 @@
 #import "NSData+AESCrypt.h"
 
 
-//NSString * const SCHEME = @"http://";
-//NSString * const HOST = @"localhost";
-//NSString * const PORT = @"3000";
+NSString * const SCHEME = @"http://";
+NSString * const HOST = @"localhost";
+NSString * const PORT = @"3000";
+BOOL const NEED_CRYPT = NO;
 
 //NSString * const SCHEME = @"https://";
 //NSString * const HOST = @"ant.zoombin.com";
 //NSString * const PORT = @"3008";
+//BOOL const NEED_CRYPT = YES;
 
-NSString * const SCHEME = @"https://";
-NSString * const HOST = @"vultr-ant.zoombin.com";
-NSString * const PORT = @"4008";
+//NSString * const SCHEME = @"https://";
+//NSString * const HOST = @"vultr-ant.zoombin.com";
+//NSString * const PORT = @"4008";
+//BOOL const NEED_CRYPT = YES;
+
 
 NSString * const WEIBOYI = @"weiboyi";
 NSString * const NEWRANK = @"newrank";
@@ -53,25 +57,43 @@ static AFURLSessionManager *manager;
 
 - (id)decryptResponseObject:(id)responseObject {
 	NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-	string = [string AES256DecryptWithKey:API_SECRET];
+	if (NEED_CRYPT) {
+		string = [string AES256DecryptWithKey:API_SECRET];
+	}
 	NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+	NSLog(@"data: %@", data);
 	id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 	return json;
 }
 
 - (void)startDataTaskWithUrlString:(NSString *)string params:(NSDictionary *)params andBlock:(void (^)(id responseObject, NSError *error))block {
-	NSMutableDictionary *mParams = [[NSMutableDictionary alloc] initWithDictionary:params ?: @{}];
-	mParams[@"secret"] = SECRET;
-	NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mParams options:0 error:nil];
-	NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-	NSLog(@"jsonString: %@", jsonString);
-	jsonString = [jsonString AES256EncryptWithKey:API_SECRET];
-	NSString *encodedString = [jsonString stringByAddingPercentEncodingWithAllowedCharacters:[[NSCharacterSet characterSetWithCharactersInString:@"/+=\n"] invertedSet]];
-	NSLog(@"encodedString: %@", encodedString);
-	NSString *urlString = [NSString stringWithFormat:@"%@?edata=%@", string, encodedString];
+	NSString *urlString = NULL;
+	if (NEED_CRYPT) {
+		NSMutableDictionary *mParams = [[NSMutableDictionary alloc] initWithDictionary:params ?: @{}];
+		mParams[@"secret"] = SECRET;
+		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mParams options:0 error:nil];
+		NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+		NSLog(@"jsonString: %@", jsonString);
+		jsonString = [jsonString AES256EncryptWithKey:API_SECRET];
+		NSString *encodedString = [jsonString stringByAddingPercentEncodingWithAllowedCharacters:[[NSCharacterSet characterSetWithCharactersInString:@"/+=\n"] invertedSet]];
+		NSLog(@"encodedString: %@", encodedString);
+		urlString = [NSString stringWithFormat:@"%@?edata=%@", string, encodedString];
+	} else {
+		NSMutableString *url = [NSMutableString stringWithString:string];
+		[url appendString:@"?"];
+		for (NSString *key in params) {
+			NSString *value = params[key];
+			[url appendFormat:@"%@=%@&", key, value];
+		}
+		[url appendFormat:@"secret=%@", SECRET];
+		urlString = [NSString stringWithString:url];
+		NSLog(@"urlString: %@", urlString);
+	}
+	
 	
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 	NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+		NSLog(@"responseObject: %@", responseObject);
 		if (error) {
 			NSLog(@"error: %@", error);
 			if (block) block(nil, error);
@@ -113,6 +135,11 @@ static AFURLSessionManager *manager;
 - (void)login:(ZBAntServer *)server code:(NSString *)code withBlock:(void (^)(id responseObject, NSError *error))block {
 	NSString *requestUrl = [self baseUrlStringWithDomain:server.domain channel:WEIBOYI prefix:@"login"];
 	[self startDataTaskWithUrlString:requestUrl params:@{@"captcha": code} andBlock:block];
+}
+
+- (void)serversWithBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [NSString stringWithFormat:@"%@%@:%@/api/admin/servers", SCHEME, HOST, PORT];
+	[self startDataTaskWithUrlString:requestUrl params:nil andBlock:block];
 }
 
 @end

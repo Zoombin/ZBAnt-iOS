@@ -17,11 +17,12 @@ extern NSString * const NEWRANK;
 extern NSString * const GSDATA;
 
 + (instancetype)shared;
+- (NSString *)adminLoginUrlStringWithServer:(ZBAntServer *)server;
 - (void)statistics:(NSString *)channel type:(NSString *)type withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)settings:(NSString *)channel withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)save:(NSString *)channel server:(ZBAntServer *)server settings:(NSDictionary *)settings withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)captcha:(ZBAntServer *)server withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)login:(ZBAntServer *)server code:(NSString *)code withBlock:(void (^)(id responseObject, NSError *error))block;
-- (NSString *)adminLoginUrlStringWithServer:(ZBAntServer *)server;
+- (void)serversWithBlock:(void (^)(id responseObject, NSError *error))block;
 
 @end
