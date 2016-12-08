@@ -150,6 +150,11 @@ static AFURLSessionManager *manager;
 	[self startDataTaskWithUrlString:requestUrl params:attributes andBlock:block];
 }
 
+- (void)removeServer:(NSString *)name withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [NSString stringWithFormat:@"%@%@:%@/api/admin/removeServer", SCHEME, HOST, PORT];
+	[self startDataTaskWithUrlString:requestUrl params:@{@"name": name} andBlock:block];
+}
+
 - (void)server:(NSString *)name hasWeiboyiSettingsWithBlock:(void (^)(id responseObject, NSError *error))block {
 	NSString *requestUrl = [NSString stringWithFormat:@"%@%@:%@/api/admin/serverHasWeiboyiSettings", SCHEME, HOST, PORT];
 	[self startDataTaskWithUrlString:requestUrl params:@{@"name": name} andBlock:block];

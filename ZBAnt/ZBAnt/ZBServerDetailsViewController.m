@@ -14,6 +14,7 @@
 @interface ZBServerDetailsViewController ()
 
 @property (readwrite) NSMutableDictionary *options;
+@property (readwrite) UIButton *removeButton;
 @property (readwrite) UIButton *activeButton;
 @property (readwrite) UIButton *masterButton;
 @property (readwrite) UITextField *innerIpTextField;
@@ -73,6 +74,15 @@
 	
 	rect.size = labelSize;
 	rect.size = buttonSize;
+	
+	if (!_isNew) {
+		_removeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		_removeButton.frame = rect;
+		[_removeButton setTitle:@"删除" forState:UIControlStateNormal];
+		_removeButton.backgroundColor = [UIColor redColor];
+		[_removeButton addTarget:self action:@selector(removeServer) forControlEvents:UIControlEventTouchUpInside];
+		[scrollView addSubview:_removeButton];
+	}
 	
 	rect.origin.x += 100;
 	rect.size = labelSize;
@@ -173,15 +183,16 @@
 	[saveButton addTarget:self action:@selector(saveSettings) forControlEvents:UIControlEventTouchUpInside];
 	[scrollView addSubview:saveButton];
 	
-	
-	rect.origin.x = originRect.origin.x;
-	rect.origin.y += 80;
-	rect.size = buttonSize;
-	_weiboyiSettings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	_weiboyiSettings.frame = rect;
-	[_weiboyiSettings addTarget:self action:@selector(createWeiboyiSettings) forControlEvents:UIControlEventTouchUpInside];
-	[scrollView addSubview:_weiboyiSettings];
-	
+	if (!_isNew) {
+		rect.origin.x = originRect.origin.x;
+		rect.origin.y += 80;
+		rect.size = buttonSize;
+		_weiboyiSettings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		_weiboyiSettings.frame = rect;
+		[_weiboyiSettings addTarget:self action:@selector(createWeiboyiSettings) forControlEvents:UIControlEventTouchUpInside];
+		[scrollView addSubview:_weiboyiSettings];
+	}
+
 	[self refresh];
 }
 
@@ -241,27 +252,35 @@
 	}];
 }
 
+- (void)removeServer {
+	[[ZBHTTPManager shared] removeServer:_server.name withBlock:^(id responseObject, NSError *error) {
+		if (error) {
+			[self displayErrorWithMessage:nil];
+		} else {
+			[self displaySuccess];
+		}
+	}];
+}
+
 - (void)hasWeiboyiSettings {
-	if (!_isNew) {
-		[[ZBHTTPManager shared] server:_server.name hasWeiboyiSettingsWithBlock:^(id responseObject, NSError *error) {
-			if (error) {
-				[self displayErrorWithMessage:@"访问失败"];
-				return;
+	[[ZBHTTPManager shared] server:_server.name hasWeiboyiSettingsWithBlock:^(id responseObject, NSError *error) {
+		if (error) {
+			[self displayErrorWithMessage:@"访问失败"];
+			return;
+		}
+		if (responseObject[@"data"]) {
+			NSString *name = responseObject[@"data"][@"name"];
+			if (name.length) {
+				_weiboyiSettings.backgroundColor = [UIColor greenColor];
+				_weiboyiSettings.userInteractionEnabled = NO;
+				[_weiboyiSettings setTitle:@"YES" forState:UIControlStateNormal];
+			} else {
+				_weiboyiSettings.backgroundColor = [UIColor grayColor];
+				_weiboyiSettings.userInteractionEnabled = YES;
+				[_weiboyiSettings setTitle:@"NO" forState:UIControlStateNormal];
 			}
-			if (responseObject[@"data"]) {
-				NSString *name = responseObject[@"data"][@"name"];
-				if (name.length) {
-					_weiboyiSettings.backgroundColor = [UIColor greenColor];
-					_weiboyiSettings.userInteractionEnabled = NO;
-					[_weiboyiSettings setTitle:@"YES" forState:UIControlStateNormal];
-				} else {
-					_weiboyiSettings.backgroundColor = [UIColor grayColor];
-					_weiboyiSettings.userInteractionEnabled = YES;
-					[_weiboyiSettings setTitle:@"NO" forState:UIControlStateNormal];
-				}
-			}
-		}];
-	}
+		}
+	}];
 }
 
 - (void)createWeiboyiSettings {
