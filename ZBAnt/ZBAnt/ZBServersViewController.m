@@ -8,8 +8,8 @@
 
 #import "ZBServersViewController.h"
 #import "ZBHTTPManager.h"
-#import "ZBSettingsDetailsViewController.h"
 #import "ZBAntServer.h"
+#import "ZBServerDetailsViewController.h"
 
 static NSString *GAP = @"\t";
 
@@ -28,9 +28,17 @@ static NSString *GAP = @"\t";
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	[self.view addSubview:_tableView];
+	
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNew)];
+	[self refresh];
 
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
 	[self refresh];
+}
+
+- (void)addNew {
+	ZBServerDetailsViewController *serverDetailsViewController = [[ZBServerDetailsViewController alloc] init];
+	[self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:serverDetailsViewController ] animated:YES completion:nil];
 }
 
 - (void)refresh {
@@ -71,12 +79,10 @@ static NSString *GAP = @"\t";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//	ZBAntServer *server = [[ZBAntServer alloc] initWithDictionary:_channelData[indexPath.row] channel:_selectedChannel];
-//	ZBSettingsDetailsViewController *settingsDetailsViewController = [[ZBSettingsDetailsViewController alloc] init];
-//	settingsDetailsViewController.server = server;
-//	settingsDetailsViewController.channel = _selectedChannel;
-//	settingsDetailsViewController.hidesBottomBarWhenPushed = YES;
-//	[self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:settingsDetailsViewController ] animated:YES completion:nil];
+	ZBAntServer *server = [[ZBAntServer alloc] initWithAttribues:_servers[indexPath.row]];
+	ZBServerDetailsViewController *serverDetailsViewController = [[ZBServerDetailsViewController alloc] init];
+	serverDetailsViewController.server = server;
+	[self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:serverDetailsViewController ] animated:YES completion:nil];
 }
 
 @end

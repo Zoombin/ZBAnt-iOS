@@ -10,7 +10,7 @@
 #import "ZBHTTPManager.h"
 #import "ZBLoginViewController.h"
 #import "CRToast.h"
-#import "ZBPingViewController.h"
+#import "ZBWebViewController.h"
 
 @interface ZBSettingsDetailsViewController ()
 
@@ -646,9 +646,9 @@
 }
 
 - (void)ping {
-	ZBPingViewController *pingViewController = [[ZBPingViewController alloc] init];
-	pingViewController.server = _server;
-	[self.navigationController pushViewController:pingViewController animated:YES];
+	ZBWebViewController *webViewController = [[ZBWebViewController alloc] init];
+	webViewController.urlString = [[ZBHTTPManager shared] adminLoginUrlStringWithServer:_server];
+	[self.navigationController pushViewController:webViewController animated:YES];
 }
 
 

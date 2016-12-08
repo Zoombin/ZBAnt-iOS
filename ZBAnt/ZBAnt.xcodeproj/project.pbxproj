@@ -26,7 +26,9 @@
 		779161691CB2324E00CB0C77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779161671CB2324E00CB0C77 /* LaunchScreen.storyboard */; };
 		77C9CD0F1D6F2AD90049097F /* NSString+AESCrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C9CD0E1D6F2AD90049097F /* NSString+AESCrypt.m */; };
 		77DFA5C31DF6B19A00638456 /* ZBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77DFA5C21DF6B19A00638456 /* ZBSettingsViewController.m */; };
-		77EB905D1D8FF1F5004C74DC /* ZBPingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77EB905C1D8FF1F5004C74DC /* ZBPingViewController.m */; };
+		77DFA5C61DF6BDA500638456 /* ZBServerDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77DFA5C51DF6BDA500638456 /* ZBServerDetailsViewController.m */; };
+		77DFA5C91DF6CC4700638456 /* ZBLatestArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77DFA5C81DF6CC4700638456 /* ZBLatestArticleViewController.m */; };
+		77EB905D1D8FF1F5004C74DC /* ZBWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77EB905C1D8FF1F5004C74DC /* ZBWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,8 +66,12 @@
 		77C9CD0E1D6F2AD90049097F /* NSString+AESCrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AESCrypt.m"; sourceTree = "<group>"; };
 		77DFA5C11DF6B19A00638456 /* ZBSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBSettingsViewController.h; path = ZBAnt/ZBSettingsViewController.h; sourceTree = "<group>"; };
 		77DFA5C21DF6B19A00638456 /* ZBSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBSettingsViewController.m; path = ZBAnt/ZBSettingsViewController.m; sourceTree = "<group>"; };
-		77EB905B1D8FF1F5004C74DC /* ZBPingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBPingViewController.h; path = ZBAnt/ZBPingViewController.h; sourceTree = "<group>"; };
-		77EB905C1D8FF1F5004C74DC /* ZBPingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBPingViewController.m; path = ZBAnt/ZBPingViewController.m; sourceTree = "<group>"; };
+		77DFA5C41DF6BDA500638456 /* ZBServerDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBServerDetailsViewController.h; path = ZBAnt/ZBServerDetailsViewController.h; sourceTree = "<group>"; };
+		77DFA5C51DF6BDA500638456 /* ZBServerDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBServerDetailsViewController.m; path = ZBAnt/ZBServerDetailsViewController.m; sourceTree = "<group>"; };
+		77DFA5C71DF6CC4700638456 /* ZBLatestArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBLatestArticleViewController.h; path = ZBAnt/ZBLatestArticleViewController.h; sourceTree = "<group>"; };
+		77DFA5C81DF6CC4700638456 /* ZBLatestArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBLatestArticleViewController.m; path = ZBAnt/ZBLatestArticleViewController.m; sourceTree = "<group>"; };
+		77EB905B1D8FF1F5004C74DC /* ZBWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZBWebViewController.h; path = ZBAnt/ZBWebViewController.h; sourceTree = "<group>"; };
+		77EB905C1D8FF1F5004C74DC /* ZBWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZBWebViewController.m; path = ZBAnt/ZBWebViewController.m; sourceTree = "<group>"; };
 		A056646329995E61274C7746 /* Pods-ZBAnt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZBAnt.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZBAnt/Pods-ZBAnt.debug.xcconfig"; sourceTree = "<group>"; };
 		F74214331E04B05602FDEE98 /* Pods-ZBAnt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZBAnt.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZBAnt/Pods-ZBAnt.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,22 +114,26 @@
 		7791614A1CB2324E00CB0C77 = {
 			isa = PBXGroup;
 			children = (
-				77DFA5C11DF6B19A00638456 /* ZBSettingsViewController.h */,
-				77DFA5C21DF6B19A00638456 /* ZBSettingsViewController.m */,
-				7707A6FB1D8C3A6D00B2328F /* ZBServersViewController.h */,
-				7707A6FC1D8C3A6D00B2328F /* ZBServersViewController.m */,
-				7707A6F81D8C362A00B2328F /* ZBStatisticsViewController.h */,
-				7707A6F91D8C362A00B2328F /* ZBStatisticsViewController.m */,
-				77EB905B1D8FF1F5004C74DC /* ZBPingViewController.h */,
-				77EB905C1D8FF1F5004C74DC /* ZBPingViewController.m */,
-				774B42711D8E99FD006AE931 /* ZBLoginViewController.h */,
-				774B42721D8E99FD006AE931 /* ZBLoginViewController.m */,
-				774B426D1D8E68CB006AE931 /* ZBAntServer.h */,
-				774B426E1D8E68CB006AE931 /* ZBAntServer.m */,
-				774B426A1D8E5894006AE931 /* ZBSettingsDetailsViewController.h */,
-				774B426B1D8E5894006AE931 /* ZBSettingsDetailsViewController.m */,
 				7730ED061D8BF0EE0056877C /* ZBHTTPManager.h */,
 				7730ED071D8BF0EE0056877C /* ZBHTTPManager.m */,
+				774B426D1D8E68CB006AE931 /* ZBAntServer.h */,
+				774B426E1D8E68CB006AE931 /* ZBAntServer.m */,
+				7707A6FB1D8C3A6D00B2328F /* ZBServersViewController.h */,
+				7707A6FC1D8C3A6D00B2328F /* ZBServersViewController.m */,
+				77DFA5C41DF6BDA500638456 /* ZBServerDetailsViewController.h */,
+				77DFA5C51DF6BDA500638456 /* ZBServerDetailsViewController.m */,
+				77DFA5C11DF6B19A00638456 /* ZBSettingsViewController.h */,
+				77DFA5C21DF6B19A00638456 /* ZBSettingsViewController.m */,
+				774B426A1D8E5894006AE931 /* ZBSettingsDetailsViewController.h */,
+				774B426B1D8E5894006AE931 /* ZBSettingsDetailsViewController.m */,
+				7707A6F81D8C362A00B2328F /* ZBStatisticsViewController.h */,
+				7707A6F91D8C362A00B2328F /* ZBStatisticsViewController.m */,
+				77DFA5C71DF6CC4700638456 /* ZBLatestArticleViewController.h */,
+				77DFA5C81DF6CC4700638456 /* ZBLatestArticleViewController.m */,
+				774B42711D8E99FD006AE931 /* ZBLoginViewController.h */,
+				774B42721D8E99FD006AE931 /* ZBLoginViewController.m */,
+				77EB905B1D8FF1F5004C74DC /* ZBWebViewController.h */,
+				77EB905C1D8FF1F5004C74DC /* ZBWebViewController.m */,
 				772687541CB6468B005A9CC3 /* ZBAnt */,
 				779161591CB2324E00CB0C77 /* AppDelegate.h */,
 				7791615A1CB2324E00CB0C77 /* AppDelegate.m */,
@@ -293,6 +303,7 @@
 			files = (
 				77C9CD0F1D6F2AD90049097F /* NSString+AESCrypt.m in Sources */,
 				779161611CB2324E00CB0C77 /* SecondViewController.m in Sources */,
+				77DFA5C61DF6BDA500638456 /* ZBServerDetailsViewController.m in Sources */,
 				774B426F1D8E68CB006AE931 /* ZBAntServer.m in Sources */,
 				774B426C1D8E5894006AE931 /* ZBSettingsDetailsViewController.m in Sources */,
 				7791615B1CB2324E00CB0C77 /* AppDelegate.m in Sources */,
@@ -303,9 +314,10 @@
 				772687591CB6468B005A9CC3 /* ZBAnt.m in Sources */,
 				779161581CB2324E00CB0C77 /* main.m in Sources */,
 				7707A6FD1D8C3A6D00B2328F /* ZBServersViewController.m in Sources */,
-				77EB905D1D8FF1F5004C74DC /* ZBPingViewController.m in Sources */,
+				77EB905D1D8FF1F5004C74DC /* ZBWebViewController.m in Sources */,
 				77DFA5C31DF6B19A00638456 /* ZBSettingsViewController.m in Sources */,
 				771218A41DF1CD25009F3972 /* NSData+AESCrypt.m in Sources */,
+				77DFA5C91DF6CC4700638456 /* ZBLatestArticleViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

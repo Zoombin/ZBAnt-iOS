@@ -8,6 +8,7 @@
 
 #import "ZBStatisticsViewController.h"
 #import "ZBHTTPManager.h"
+#import "ZBLatestArticleViewController.h"
 
 @interface ZBStatisticsViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -57,11 +58,19 @@
 	UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[NSString stringWithFormat:@"%ld", (long)indexPath.row]];
 	NSString *type = _types[indexPath.row];
 	cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", type, _counts[type]];
+	if ([type isEqualToString:@"articles"]) {
+		cell.accessoryType = UITableViewCellAccessoryDetailButton;
+	}
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[self loadData:_types[indexPath.row]];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	ZBLatestArticleViewController *latestArticleViewController = [[ZBLatestArticleViewController alloc] init];
+	[self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:latestArticleViewController ] animated:YES completion:nil];
 }
 
 

@@ -142,4 +142,17 @@ static AFURLSessionManager *manager;
 	[self startDataTaskWithUrlString:requestUrl params:nil andBlock:block];
 }
 
+- (void)updateServer:(NSDictionary *)attributes upsert:(BOOL)upsert withBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [NSString stringWithFormat:@"%@%@:%@/api/admin/updateServer", SCHEME, HOST, PORT];
+	if (upsert) {
+		requestUrl = [NSString stringWithFormat:@"%@%@:%@/api/admin/addServer", SCHEME, HOST, PORT];
+	}
+	[self startDataTaskWithUrlString:requestUrl params:attributes andBlock:block];
+}
+
+- (void)latestArticleWithBlock:(void (^)(id responseObject, NSError *error))block {
+	NSString *requestUrl = [NSString stringWithFormat:@"%@%@:%@/api/latestArticle", SCHEME, HOST, PORT];
+	[self startDataTaskWithUrlString:requestUrl params:nil andBlock:block];
+}
+
 @end

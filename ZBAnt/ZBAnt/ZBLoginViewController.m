@@ -73,6 +73,8 @@
 	rect.origin.x += 150;
 	rect.size = CGSizeMake(100, 40);
 	_codeTextField = [[UITextField alloc] initWithFrame:rect];
+	_codeTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+	_codeTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	_codeTextField.backgroundColor = [UIColor grayColor];
 	[self.view addSubview:_codeTextField];
 	
