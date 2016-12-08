@@ -50,7 +50,9 @@
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+	if (!_isNew) {
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+	}
 	
 	_options = [@{
 				  kCRToastTextKey : @"设置成功",
@@ -235,6 +237,7 @@
 			[self displayErrorWithMessage:nil];
 		} else {
 			[self displaySuccess];
+			[self dismiss];
 		}
 	}];
 }
@@ -258,6 +261,7 @@
 			[self displayErrorWithMessage:nil];
 		} else {
 			[self displaySuccess];
+			[self dismiss];
 		}
 	}];
 }
@@ -289,6 +293,7 @@
 			[self displayErrorWithMessage:nil];
 		} else {
 			[self displaySuccess];
+			[self dismiss];
 		}
 	}];
 }
