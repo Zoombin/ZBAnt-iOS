@@ -59,6 +59,7 @@
 
 - (instancetype)initWithAttribues:(NSDictionary *)dictionary;
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary channel:(NSString *)channel;
+- (NSDictionary *)baseSettings;
 - (NSDictionary *)settings;
 - (NSDictionary *)settings2;
 - (NSDictionary *)settings3;

@@ -25,6 +25,8 @@ extern NSString * const GSDATA;
 - (void)login:(ZBAntServer *)server code:(NSString *)code withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)serversWithBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)updateServer:(NSDictionary *)attributes upsert:(BOOL)upsert withBlock:(void (^)(id responseObject, NSError *error))block;
+- (void)server:(NSString *)name hasWeiboyiSettingsWithBlock:(void (^)(id responseObject, NSError *error))block;
+- (void)createWeiboyiBaseSettings:(NSDictionary *)attributes withBlock:(void (^)(id responseObject, NSError *error))block;
 - (void)latestArticleWithBlock:(void (^)(id responseObject, NSError *error))block;
 
 @end

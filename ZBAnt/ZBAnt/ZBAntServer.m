@@ -19,6 +19,7 @@
 		_name = dictionary[@"name"];
 		_active = dictionary[@"active"];
 		_master = dictionary[@"master"];
+		[self addDomain];
 	}
 	return self;
 }
@@ -66,13 +67,27 @@
 			_gsProcessRankJobInterval = dictionary[@"processRankJobInterval"];
 		}
 		_name = dictionary[@"name"];
-		if ([_name isEqualToString:@"localhost"]) {
-			_domain = [NSString stringWithFormat:@"%@", _name];
-		} else {
-			_domain = [NSString stringWithFormat:@"%@.zoombin.com", _name];
-		}
+		[self addDomain];
 	}
 	return self;
+}
+
+- (void)addDomain {
+	if ([_name isEqualToString:@"localhost"]) {
+		_domain = [NSString stringWithFormat:@"%@", _name];
+	} else {
+		_domain = [NSString stringWithFormat:@"%@.zoombin.com", _name];
+	}
+}
+
+- (NSDictionary *)baseSettings {
+	NSMutableDictionary *settings = [@{} mutableCopy];
+	settings[@"active"] = _active;
+	settings[@"master"] = _master;
+	settings[@"innerIp"] = _innerIp;
+	settings[@"outerIp"] = _outerIp;
+	settings[@"name"] = _name;
+	return settings;
 }
 
 - (NSDictionary *)settings {
@@ -129,7 +144,7 @@
 }
 
 - (NSString *)trueOrFalseString:(NSNumber *)number {
-	return [number boolValue] ? @"true" : @"false";
+	return [number boolValue] ? @"1" : @"0";
 }
 
 + (NSString *)onOrOff:(NSNumber *)number {

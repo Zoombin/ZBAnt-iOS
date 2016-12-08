@@ -20,6 +20,7 @@
 @property (readwrite) UITextField *outerIpTextField;
 @property (readwrite) UITextField *nameTextField;
 @property (readwrite) BOOL isNew;
+@property (readwrite) UIButton *weiboyiSettings;
 
 @end
 
@@ -47,6 +48,8 @@
 	[self.view addGestureRecognizer:tap];
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
+	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
 	
 	_options = [@{
 				  kCRToastTextKey : @"设置成功",
@@ -170,11 +173,24 @@
 	[saveButton addTarget:self action:@selector(saveSettings) forControlEvents:UIControlEventTouchUpInside];
 	[scrollView addSubview:saveButton];
 	
-	//scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, 800);
+	
+	rect.origin.x = originRect.origin.x;
+	rect.origin.y += 80;
+	rect.size = buttonSize;
+	_weiboyiSettings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	_weiboyiSettings.frame = rect;
+	[_weiboyiSettings addTarget:self action:@selector(createWeiboyiSettings) forControlEvents:UIControlEventTouchUpInside];
+	[scrollView addSubview:_weiboyiSettings];
+	
+	[self refresh];
 }
 
 - (void)dismiss {
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)refresh {
+	[self hasWeiboyiSettings];
 }
 
 - (void)toogleButton:(UIButton *)sender {
@@ -199,29 +215,62 @@
 	_server.name = _nameTextField.text;
 	NSLog(@"name: %@", _server.name);
 	if (!_server.name.length) {
-		_options[kCRToastTextKey] = @"检查输入是否合法";
-		_options[kCRToastBackgroundColorKey] = [UIColor redColor];
-		[CRToastManager showNotificationWithOptions:_options completionBlock:^{
-		}];
+		[self displayErrorWithMessage:@"检查输入是否合法"];
 		return;
 	}
-	
-	NSMutableDictionary *attributes = [@{} mutableCopy];
-	attributes[@"active"] = _server.active;
-	attributes[@"master"] = _server.master;
-	attributes[@"innerIp"] = _server.innerIp;
-	attributes[@"outerIp"] = _server.outerIp;
-	attributes[@"name"] = _server.name;
-	
-	NSLog(@"attributes: %@", attributes);
 
-	[[ZBHTTPManager shared] updateServer:attributes upsert:_isNew withBlock:^(id responseObject, NSError *error) {
+	[[ZBHTTPManager shared] updateServer:[_server baseSettings] upsert:_isNew withBlock:^(id responseObject, NSError *error) {
 		if (error || ![responseObject[@"error"] isEqual:@0]) {
-			_options[kCRToastTextKey] = @"设置失败!";
-			_options[kCRToastBackgroundColorKey] = [UIColor redColor];
+			[self displayErrorWithMessage:nil];
+		} else {
+			[self displaySuccess];
 		}
-		[CRToastManager showNotificationWithOptions:_options completionBlock:^{
+	}];
+}
+
+- (void)displayErrorWithMessage:(NSString *)message {
+	_options[kCRToastTextKey] = message ?: @"失败";
+	_options[kCRToastBackgroundColorKey] = [UIColor redColor];
+	[CRToastManager showNotificationWithOptions:_options completionBlock:^{
+	}];
+}
+
+- (void)displaySuccess {
+	_options[kCRToastBackgroundColorKey] = [UIColor greenColor];
+	[CRToastManager showNotificationWithOptions:_options completionBlock:^{
+	}];
+}
+
+- (void)hasWeiboyiSettings {
+	if (!_isNew) {
+		[[ZBHTTPManager shared] server:_server.name hasWeiboyiSettingsWithBlock:^(id responseObject, NSError *error) {
+			if (error) {
+				[self displayErrorWithMessage:@"访问失败"];
+				return;
+			}
+			if (responseObject[@"data"]) {
+				NSString *name = responseObject[@"data"][@"name"];
+				if (name.length) {
+					_weiboyiSettings.backgroundColor = [UIColor greenColor];
+					_weiboyiSettings.userInteractionEnabled = NO;
+					[_weiboyiSettings setTitle:@"YES" forState:UIControlStateNormal];
+				} else {
+					_weiboyiSettings.backgroundColor = [UIColor grayColor];
+					_weiboyiSettings.userInteractionEnabled = YES;
+					[_weiboyiSettings setTitle:@"NO" forState:UIControlStateNormal];
+				}
+			}
 		}];
+	}
+}
+
+- (void)createWeiboyiSettings {
+	[[ZBHTTPManager shared] createWeiboyiBaseSettings:[_server baseSettings] withBlock:^(id responseObject, NSError *error) {
+		if (error) {
+			[self displayErrorWithMessage:nil];
+		} else {
+			[self displaySuccess];
+		}
 	}];
 }
 
