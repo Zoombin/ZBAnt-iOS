@@ -40,14 +40,10 @@
 			_processWeixinsJobInterval = dictionary[@"processWeixinsJobInterval"];
 			_processArticlesJobOn = dictionary[@"processArticlesJobOn"];
 			_processArticlesJobInterval = dictionary[@"processArticlesJobInterval"];
-			_sjMasterVar = dictionary[@"sjMasterVar"];
-			_sjWeixinsVar = dictionary[@"sjWeixinsVar"];
-			_sjArticlesVar = dictionary[@"sjArticlesVar"];
-			_sjProcessWeixinsVar = dictionary[@"sjProcessWeixinsVar"];
-			_sjProcessArticlesVar = dictionary[@"sjProcessArticlesVar"];
 			_grabArticlesDeepJobOn = dictionary[@"grabArticlesDeepJobOn"];
 			_grabArticlesDeepJobInterval = dictionary[@"grabArticlesDeepJobInterval"];
-			_sjArticlesDeepVar = dictionary[@"sjArticlesDeepVar"];
+			_statJobOn = dictionary[@"statJobOn"];
+			_statJobInterval = dictionary[@"statJobInterval"];
 		} else if ([channel isEqualToString:NEWRANK]) {
 			_nkGrabArticlesJobInterval = dictionary[@"grabArticlesJobInterval"];
 			_nkGrabArticlesJobOn = dictionary[@"grabArticlesJobOn"];
@@ -110,6 +106,9 @@
 
 	settings[@"grabArticlesDeepJobOn"] = [self trueOrFalseString:_grabArticlesDeepJobOn];
 	settings[@"grabArticlesDeepJobInterval"] = _grabArticlesDeepJobInterval;
+	
+	settings[@"statJobOn"] = [self trueOrFalseString:_statJobOn];
+	settings[@"statJobInterval"] = _statJobInterval;
 	return settings;
 }
 

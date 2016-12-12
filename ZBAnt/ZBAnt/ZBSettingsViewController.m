@@ -95,38 +95,34 @@ static NSString *GAP = @"\t";
 		
 		[string appendFormat:@"weixinsJob: %@", [ZBAntServer onOrOff:server.grabWeixinsJobOn]];
 		[string appendString:GAP];
-		[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjWeixinsVar]];
-		[string appendString:GAP];
 		[string appendFormat:@"interval: %@", server.grabWeixinsJobInterval];
 		[string appendString:@"\n"];
 		
 		[string appendFormat:@"articlesJob: %@", [ZBAntServer onOrOff:server.grabArticlesJobOn]];
-		[string appendString:GAP];
-		[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjArticlesVar]];
 		[string appendString:GAP];
 		[string appendFormat:@"interval: %@", server.grabArticlesJobInterval];
 		[string appendString:@"\n"];
 		
 		[string appendFormat:@"pWeixinsJob: %@", [ZBAntServer onOrOff:server.processWeixinsJobOn]];
 		[string appendString:GAP];
-		[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjProcessWeixinsVar]];
-		[string appendString:GAP];
 		[string appendFormat:@"interval: %@", server.processWeixinsJobInterval];
 		[string appendString:@"\n"];
 		
 		[string appendFormat:@"pArticlesJob: %@", [ZBAntServer onOrOff:server.processArticlesJobOn]];
-		[string appendString:GAP];
-		[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjProcessArticlesVar]];
 		[string appendString:GAP];
 		[string appendFormat:@"interval: %@", server.processArticlesJobInterval];
 		[string appendString:@"\n"];
 		
 		[string appendFormat:@"articlesDeep: %@", [ZBAntServer onOrOff:server.grabArticlesDeepJobOn]];
 		[string appendString:GAP];
-		[string appendFormat:@"var: %@",  [ZBAntServer onOrOff:server.sjArticlesDeepVar]];
-		[string appendString:GAP];
 		[string appendFormat:@"interval: %@", server.grabArticlesDeepJobInterval];
-		//[string appendString:@"\n"];
+		[string appendString:@"\n"];
+		
+		[string appendFormat:@"statOn: %@", server.statJobOn];
+		[string appendString:GAP];
+		[string appendString:GAP];
+		[string appendString:GAP];
+		[string appendFormat:@"interval: %@", server.statJobInterval];
 	} else if ([_selectedChannel isEqualToString:NEWRANK]) {
 		[string appendFormat:@"nkGrabArticles: %@", [ZBAntServer onOrOff:server.nkGrabArticlesJobOn]];
 		[string appendString:GAP];
@@ -151,7 +147,6 @@ static NSString *GAP = @"\t";
 		[string appendFormat:@"nkReloadArticles: %@", [ZBAntServer onOrOff:server.nkInChargeOfReloadArticlesTasks]];
 		[string appendString:GAP];
 		[string appendFormat:@"nkReloadDetails: %@", [ZBAntServer onOrOff:server.nkInChargeOfReloadDetailsTasks]];
-		//[string appendString:@"\n"];
 	} else if ([_selectedChannel isEqualToString:GSDATA]) {
 		[string appendFormat:@"gsGrabRank: %@", [ZBAntServer onOrOff:server.gsGrabRankJobOn]];
 		[string appendString:GAP];
@@ -162,7 +157,6 @@ static NSString *GAP = @"\t";
 		[string appendFormat:@"gsProcessRank: %@", [ZBAntServer onOrOff:server.gsProcessRankJobOn]];
 		[string appendString:GAP];
 		[string appendFormat:@"interval: %@", server.gsProcessRankJobInterval];
-		//[string appendString:@"\n"];
 	}
 	cell.textLabel.text = string;
 	cell.textLabel.numberOfLines = 0;

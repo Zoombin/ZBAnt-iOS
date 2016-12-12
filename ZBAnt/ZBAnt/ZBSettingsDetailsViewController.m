@@ -21,12 +21,14 @@
 @property (readwrite) UIButton *processWeixinsJobButton;
 @property (readwrite) UIButton *processArticlesJobButton;
 @property (readwrite) UIButton *grabArticlesDeepJobButton;
-
 @property (readwrite) UITextField *grabWeixinsJobIntervalTextField;
 @property (readwrite) UITextField *grabArticlesJobIntervalTextField;
 @property (readwrite) UITextField *processWeixinsJobIntervalTextField;
 @property (readwrite) UITextField *processArticlesJobIntervalTextField;
 @property (readwrite) UITextField *grabArticlesDeepJobIntervalTextField;
+
+@property (readwrite) UIButton *statButton;
+@property (readwrite) UITextField *statTextField;
 
 @property (readwrite) NSMutableDictionary *options;
 
@@ -77,7 +79,7 @@
 	UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
 	[self.view addSubview:scrollView];
 	
-	CGRect originRect = CGRectMake(10, 70, 60, 40);
+	CGRect originRect = CGRectMake(10, 30, 60, 40);
 	CGRect rect = originRect;
 	CGSize labelSize = CGSizeMake(320, 30);
 	CGSize buttonSize = CGSizeMake(60, 40);
@@ -86,11 +88,7 @@
 	
 	if ([_channel isEqualToString:WEIBOYI]) {
 		rect.size = labelSize;
-		rect.origin.y += 30;
-		rect.size = buttonSize;
-		
 		rect.origin.x += 100;
-		rect.origin.y = 70;
 		rect.size = labelSize;
 		UILabel *inChargeOfReloadTasksLabel = [[UILabel alloc] initWithFrame:rect];
 		inChargeOfReloadTasksLabel.text = @"ReTasks";
@@ -252,6 +250,33 @@
 		_grabArticlesDeepJobIntervalTextField.backgroundColor = [UIColor grayColor];
 		_grabArticlesDeepJobIntervalTextField.text = [NSString stringWithFormat:@"%@",_server.grabArticlesDeepJobInterval];
 		[scrollView addSubview:_grabArticlesDeepJobIntervalTextField];
+		
+		
+		rect.origin.x = grabArticlesJobLabel.frame.origin.x;
+		rect.origin.y += 50;
+		rect.size = labelSize;
+		UILabel *statLabel = [[UILabel alloc] initWithFrame:rect];
+		statLabel.text = @"statJob";
+		[scrollView addSubview:statLabel];
+
+		
+		rect.origin.y += 30;
+		rect.size = buttonSize;
+		_statButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		_statButton.frame = rect;
+		[_statButton setTitle:[ZBAntServer onOrOff:_server.statJobOn] forState:UIControlStateNormal];
+		[_statButton setTitleColor:[ZBAntServer colorOnOrOff:_server.statJobOn] forState:UIControlStateNormal];
+		_statButton.backgroundColor = [UIColor grayColor];
+		[_statButton addTarget:self action:@selector(toogleButton:) forControlEvents:UIControlEventTouchUpInside];
+		[scrollView addSubview:_statButton];
+		
+		
+		rect.origin.x += 80;
+		rect.size = textFieldSize;
+		_statTextField = [[UITextField alloc] initWithFrame:rect];
+		_statTextField.backgroundColor = [UIColor grayColor];
+		_statTextField.text = [NSString stringWithFormat:@"%@",_server.statJobInterval];
+		[scrollView addSubview:_statTextField];
 		
 		
 		//save button
@@ -568,6 +593,9 @@
 	} else if (sender == _gsProcessRankJobButton) {
 		_server.gsProcessRankJobOn = @(![_server.gsProcessRankJobOn boolValue]);
 		value = _server.gsProcessRankJobOn;
+	} else if (sender == _statButton) {
+		_server.statJobOn = @(![_server.statJobOn boolValue]);
+		value = _server.statJobOn;
 	}
 	if (value) {
 		[sender setTitle:[ZBAntServer onOrOff:value] forState:UIControlStateNormal];
@@ -581,6 +609,7 @@
 	_server.processWeixinsJobInterval = @([_processWeixinsJobIntervalTextField.text integerValue]);
 	_server.processArticlesJobInterval = @([_processArticlesJobIntervalTextField.text integerValue]);
 	_server.grabArticlesDeepJobInterval = @([_grabArticlesDeepJobIntervalTextField.text integerValue]);
+	_server.statJobInterval = @([_statTextField.text integerValue]);
 	
 	[[ZBHTTPManager shared] save:WEIBOYI server:_server settings:[_server settings] withBlock:^(id responseObject, NSError *error) {
 		if (error) {

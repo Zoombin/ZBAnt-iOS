@@ -28,15 +28,11 @@
 @property (nonatomic, copy) NSNumber *processWeixinsJobInterval;
 @property (nonatomic, copy) NSNumber *processArticlesJobOn;
 @property (nonatomic, copy) NSNumber *processArticlesJobInterval;
-@property (nonatomic, copy) NSNumber *sjMasterVar;
-@property (nonatomic, copy) NSNumber *sjWeixinsVar;
-@property (nonatomic, copy) NSNumber *sjArticlesVar;
-@property (nonatomic, copy) NSNumber *sjProcessWeixinsVar;
-@property (nonatomic, copy) NSNumber *sjProcessArticlesVar;
-
 @property (nonatomic, copy) NSNumber *grabArticlesDeepJobOn;
 @property (nonatomic, copy) NSNumber *grabArticlesDeepJobInterval;
-@property (nonatomic, copy) NSNumber *sjArticlesDeepVar;
+@property (nonatomic, copy) NSNumber *statJobOn;
+@property (nonatomic, copy) NSNumber *statJobInterval;
+
 
 //newrank
 @property (nonatomic, copy) NSNumber *nkGrabArticlesJobInterval;
